@@ -1,196 +1,108 @@
 #!/usr/bin/python3
-
 # -*-coding:UTF-8-*-
-
 # count version: 1.1.0
-
 # copyright (c) jason-bowen-zheng 2018-2020
-
 # license is GPLv3
 
+import statistic
 import os
-
 import sys
 
 data = {'dict':{}, 'list':[]}
-
 ver = [1, 1, 0]
 
 def add(value):
-
     # add key:value
-
     # or
-
     # add key:value1, value2, value3...
-
     k, v = value.split(':', 1)
-
     if ',' in v:
-
         # if value is list
-
         v = v.split(',')
-
         l = list()
-
         for item in v:
-
             if number(item) == False:
-
                 print(f"ERROR: '{item}' isn't a number.")
-
             else:
-
                 l.append(number(item))
-
         else:
-
             data['dict'][k] = l
-
     else:
-
         # if value is a number
-
         if number(v) == False:
-
             print(f"ERROR: '{v}' isn't a number.")
-
         else:
-
             data['dict'][k] = number(v)
 
 def main():
-
     print(f'count version: {ver[0]}.{ver[1]}.{ver[2]}')
-
     while True:
-
         i = input('[' + str(len(data['dict'])) + ', ' + str(len(data['list'])) + ']- ')
-
         if i == '':
-
             pass
-
         elif i[:4] == 'add ':
-
             add(i[4:])
-
         elif i == 'quit':
-
             sys.exit()
-
         elif i == 'show':
-
             show()
-
         elif i[:5] == 'vadd ':
-
             vadd(i[5:])
-
         elif i[0] == '!':
-
             os.system(i[1:])
-
         else:
-
             print(f"ERROR: '{i}' not found.")
 
 def number(value):
-
     # turn string into number
-
     try:
-
         if ('e' in value) or ('E' in value):
-
             # if value is in scientific counting
-
             return float(value)
-
         elif '.' in value:
-
             # if value is a decimal number
-
             return float(value)
-
         else:
-
             # if value is a integer
-
             return int(value)
-
     except:
-
         # if transform failed
-
         return False
-
     else:
-
         pass
 
 def show():
-
     # print all of the data
-
     print(data)
 
 def store():
-
     pass
 
 def vadd(value):
-
     # vadd value
-
     # or
-
     # vadd value1, value2, value3...
-
     if ',' in value:
-
         # if value is a list
-
         v = value.split(',')
-
         for item in v:
-
             if number(item) == False:
-
                 print(f"ERROR: '{item}' isn't a number.")
-
             else:
-
                 data['list'].append(number(item))
-
         else:
-
             pass
-
     else:
-
         # if value is a number
-
         if number(value) == False:
-
             print(f"ERROR: '{value}' isn't a number.")
-
         else:
-
             data['list'].append(number(value))
 
 if __name__ == '__main__':
-
     try:
-
         main()
-
     except KeyboardInterrupt:
-
         store()
-
     else:
-
         pass
-
