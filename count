@@ -4,11 +4,12 @@
 # copyright (c) jason-bowen-zheng 2018-2020
 # license is GPLv3
 
-import statistic
+import statistics
 import os
 import sys
 
 data = {'dict':{}, 'list':[]}
+ext = []
 ver = [1, 1, 0]
 
 def add(value):
