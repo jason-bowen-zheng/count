@@ -5,7 +5,7 @@
   We have extra system by module.
 
 # Command
-  We have several command to control data, you can find them by typing `key-word`.<br>
+  We have several command to control data, you can find them by typing `key-word`.
   Command  | Use
   ---------|-------------
   `(v)add` | add data
