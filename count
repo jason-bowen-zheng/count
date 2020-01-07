@@ -4,7 +4,6 @@
 # copyright (c) jason-bowen-zheng 2018-2020
 # license is GPLv3
 
-import statistics as stic
 import os
 import sys
 
