@@ -55,6 +55,8 @@ def ipt(i):
         add(i[4:])
     elif i[:6] == 'extra ':
         extra(i[6:])
+    elif i == 'key-word':
+        keyWord()
     elif i == 'quit':
         sys.exit()
     elif i[:5] == 'vadd ':
@@ -65,8 +67,16 @@ def ipt(i):
         if (r := ipt(i)) == False:
             print(f"ERROR: '{i}' not found.")
 
+def keyWord():
+    print('Key Word:\n')
+    print(' (v)add ... add data')
+    print('  - add KEY:VALUE')
+    print('  - add KEY:VALUE1, VALUE2...')
+    print('  - vadd VALUE')
+    print('  - vadd VALUE1, VALUE2...')
+
 def main():
-    print(f'count version: {ver[0]}.{ver[1]}.{ver[2]}')
+    print('count version: %d.%d.%d'%(ver[0], ver[1], ver[2]))
     while True:
         i = input('[' + str(len(data['dict'])) + ', ' + str(len(data['list'])) + ']- ')
         ipt(i)
