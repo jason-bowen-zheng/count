@@ -42,7 +42,7 @@ def add(value):
 def extra(m):
     # extra module
     try:
-        ext.append( = __import__(f'extra.{m}'))
+        ext.append(__import__(f'extra.{m}'))
     except :
         print(f"ERROR: 'extra.{m}' not found.")
     else:
