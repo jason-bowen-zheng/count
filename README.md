@@ -4,10 +4,10 @@
 
 # Command
   We have several command to control data, you can find them by typing `key-word`.
-Command  | Use
--------- | ------------
-`(v)add` | add data
-`(v)del` | delete data
-`extra`  | extra module
-`quit`   | quit
-`show`   | show data
+  Command|Use
+  -------|---
+  `(v)add`|add data
+  `(v)del`|delete data
+  `extra`|extra module
+  `quit`|quit
+  `show`|show data
