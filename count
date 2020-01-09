@@ -39,11 +39,20 @@ def add(value):
             else:
                 data['dict'][k] = i
 
-def ipt(i):
+def del_(key):
+    # del KEY
+    if data['dict'].pop(key, False) == False:
+        print(f"ERROR: '{key}' not found.")
+    else:
+        print('Delete successfully.')
+
+def interpret(i):
     if i == '':
         pass
     elif i[:4] == 'add ':
         add(i[4:])
+    elif i[:4] == 'del ':
+        del_(i[4:])
     elif i == 'key':
         key()
     elif i == 'quit':
@@ -52,6 +61,8 @@ def ipt(i):
         show()
     elif i[:5] == 'vadd ':
         vadd(i[5:])
+    elif i[:5] == 'vdel ':
+        vdel(i[5:])
     elif i[0] == '!':
         os.system(i[1:])
     else:
@@ -62,7 +73,13 @@ def key():
     print('Command\tUse')
     print()
     print('(v)add\tAdd data')
+    print('\t- add KEY:VALUE')
+    print('\t- add KEY:VALUE1, VALUE2 ...')
+    print('\t- vadd VALUE')
+    print('\t- vadd VALUE1, VALUE2 ...')
     print('(v)del\tDelete data')
+    print('\t- del KEY')
+    print('\t- del [ALL]VALUE')
     print('key\tShow full key-word')
     print('quit\tQuit')
     print('show\tShow data')
@@ -71,7 +88,7 @@ def main(arg):
     print(f'count version: {ver[0]}.{ver[1]}.{ver[2]}')
     while True:
         i = input('[%d, %d]> '%(len(data['dict']), len(data['list'])))
-        ipt(i)
+        interpret(i)
 
 def number(value):
     # turn string into number
@@ -128,6 +145,31 @@ def vadd(value):
             print(f"ERROR: '{value}' isn't a number.")
         else:
             data['list'].append(i)
+
+def vdel(value):
+    # vdel [ALL]VALUE
+    if value[:3] == 'ALL':
+        if (r := number(value[3:])) == False:
+            print(f"ERROR '{value[3:]}' isn't a number.")
+        else:
+            while True:
+                try:
+                    data['list'].remove(r)
+                except:
+                    print('Delete successfully.')
+                    return
+                else:
+                    pass
+            print(f"ERROR: '{str(r)}' not found.")
+    else:
+        if (r := number(value)) == False:
+            print(f"ERROR: '{value}' isn't a number.")
+        else:
+            if r in data['list']:
+                data['list'].remove(r)
+                print('Delete successfully.')
+            else:
+                print(f"ERROR: '{str(r)}' not found.")
 
 if __name__ == '__main__':
     try:
