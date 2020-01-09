@@ -4,12 +4,12 @@
 # copyright (c) jason-bowen-zheng 2018-2020
 # license is GPLv3
 
+import json
 import statistics as stic
 import os
 import sys
 
 data = {'dict':{}, 'list':[]}
-ext = []
 ver = [1, 1, 0]
 
 def add(value):
@@ -39,22 +39,13 @@ def add(value):
             else:
                 data['dict'][k] = i
 
-def extra(m):
-    # extra module
-    try:
-        ext.append(__import__(f'extra.{m}'))
-    except :
-        print(f"ERROR: 'extra.{m}' not found.")
-    else:
-        pass
-
 def ipt(i):
     if i == '':
         pass
     elif i[:4] == 'add ':
         add(i[4:])
-    elif i[:6] == 'extra ':
-        extra(i[6:])
+    elif i == 'key':
+        key()
     elif i == 'quit':
         sys.exit()
     elif i == 'show':
@@ -64,15 +55,22 @@ def ipt(i):
     elif i[0] == '!':
         os.system(i[1:])
     else:
-        if (r := run(i)) == False:
-            print(f"ERROR: '{i}' not found.")
-        else:
-            explain(r)
+        print(f"ERROR: '{i}' not found.")
 
-def main():
+def key():
+    # key
+    print('Command\tUse')
+    print()
+    print('(v)add\tAdd data')
+    print('(v)del\tDelete data')
+    print('key\tShow full key-word')
+    print('quit\tQuit')
+    print('show\tShow data')
+
+def main(arg):
     print(f'count version: {ver[0]}.{ver[1]}.{ver[2]}')
     while True:
-        i = input('[%d, %d]- '%(len(data['dict']), len(data['list'])))
+        i = input('[%d, %d]> '%(len(data['dict']), len(data['list'])))
         ipt(i)
 
 def number(value):
@@ -93,27 +91,17 @@ def number(value):
     else:
         pass
 
-def run(s):
-    # run extra command
-    for m in ext:
-        if 'search' in dir(m):
-            if (r := m.search(data, s)) != False:
-                break
-            else:
-                return r
-        else:
-            print(f"ERROR: '{m.__name__}' is a broken module.")
-    return False
-
 def show():
     # print all of the data
     print('DATA:')
     print('VALUE:')
-    for i in range(len(data['list'])):
-        if (i % 5 != 0) and (i != 0):
-            print(data['list'][i], end='\t')
+    i = 0
+    for item in range(len(data['list'])):
+        i += 1
+        if i % 5 != 0:
+            print(data['list'][item], end='\t')
         else:
-            print(data['list'][i])
+            print(data['list'][item])
     else:
         print()
 
@@ -143,7 +131,7 @@ def vadd(value):
 
 if __name__ == '__main__':
     try:
-        main()
+        main(sys.argv)
     except KeyboardInterrupt:
         sys.exit()
     else:
