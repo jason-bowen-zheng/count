@@ -9,7 +9,7 @@
   * `(v)del`
     > Del data
   * `key`
-    > Show full key-word
+    > Show full key-word list
   * `quit`
     > Quit
   * `show`
