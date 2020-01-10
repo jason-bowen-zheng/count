@@ -46,6 +46,23 @@ def del_(key):
     else:
         print('Delete successfully.')
 
+def info():
+    # info
+    l = len(data['list'])
+    d = data['list']
+    if l != 0:
+        print('Avg:\t', stic.mean(d))
+    else:
+        print('Avg:\t[inf]')
+    if l != 0:
+        print('Media:\t', stic.median(d))
+        print(' -low:\t', stic.median_low(d))
+        print(' -high:\t', stic.median_high(d))
+    else:
+        print('Media:\t[inf]')
+    print('Sum:\t', sum(d))
+    print('Total:\t', len(d))
+
 def interpret(i):
     if i == '':
         pass
@@ -53,6 +70,8 @@ def interpret(i):
         add(i[4:])
     elif i[:4] == 'del ':
         del_(i[4:])
+    elif i == 'info':
+        info()
     elif i == 'key':
         key()
     elif i == 'quit':
@@ -119,7 +138,7 @@ def show():
     print('DATA:')
     print('key\tvalue')
     for k, v in data['dict'].items():
-        if isinstance(v, list) == False:
+        if isinstance(v, list) != True:
             # if v isn't a list, it's a number
             print(f'{k}\t{str(v)}')
         else:
