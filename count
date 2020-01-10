@@ -84,8 +84,9 @@ def key():
     print('quit\tQuit')
     print('show\tShow data')
 
-def main(arg):
+def main():
     print(f'count version: {ver[0]}.{ver[1]}.{ver[2]}')
+    print('A program to calculate data.')
     while True:
         i = input('[%d, %d]> '%(len(data['dict']), len(data['list'])))
         interpret(i)
@@ -111,6 +112,26 @@ def number(value):
 def show():
     # print all of the data
     print('DATA:')
+    print('key\tvalue')
+    for k, v in data['dict'].items():
+        if isinstance(v, list) == False:
+            # if v isn't a list, it's a number
+            print(f'{k}\t{str(v)}')
+        else:
+            # if v is a list
+            print(f'{k}\t[list]')
+            i = 0
+            for item in range(len(v)):
+                i += 1
+                if i % 5 != 0:
+                    print(v[item], end='\t')
+                else:
+                    print(v[item])
+            else:
+                if i % 5 != 0:
+                    print()
+                else:
+                    pass
     print('VALUE:')
     i = 0
     for item in range(len(data['list'])):
@@ -120,7 +141,10 @@ def show():
         else:
             print(data['list'][item])
     else:
-        print()
+        if i % 5 != 0:
+            print()
+        else:
+            pass
 
 def store():
     pass
@@ -149,19 +173,23 @@ def vadd(value):
 def vdel(value):
     # vdel [ALL]VALUE
     if value[:3] == 'ALL':
+        # if command like 'vdel [ALL]...'
         if (r := number(value[3:])) == False:
             print(f"ERROR '{value[3:]}' isn't a number.")
         else:
-            while True:
-                try:
-                    data['list'].remove(r)
-                except:
-                    print('Delete successfully.')
-                    return
-                else:
-                    pass
-            print(f"ERROR: '{str(r)}' not found.")
+            if r in data['list']:
+                while True:
+                    try:
+                        data['list'].remove(r)
+                    except:
+                        print('Delete successfully.')
+                        return
+                    else:
+                        pass
+            else:
+                print(f"ERROR: '{str(r)}' not found.")
     else:
+        # if command like 'vdel ...'
         if (r := number(value)) == False:
             print(f"ERROR: '{value}' isn't a number.")
         else:
@@ -173,7 +201,7 @@ def vdel(value):
 
 if __name__ == '__main__':
     try:
-        main(sys.argv)
+        main()
     except KeyboardInterrupt:
         sys.exit()
     else:
