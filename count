@@ -79,7 +79,7 @@ def key():
     print('\t- vadd VALUE1, VALUE2 ...')
     print('(v)del\tDelete data')
     print('\t- del KEY')
-    print('\t- del [ALL]VALUE')
+    print('\t- vdel [ALL]VALUE')
     print('key\tShow full key-word')
     print('quit\tQuit')
     print('show\tShow data')
@@ -87,9 +87,14 @@ def key():
 def main():
     print(f'count version: {ver[0]}.{ver[1]}.{ver[2]}')
     print('A program to calculate data.')
-    while True:
-        i = input('[%d, %d]> '%(len(data['dict']), len(data['list'])))
-        interpret(i)
+    if sys.version_info[:2] < (3, 8):
+        print('This program is written by python3.8.')
+        print('But this is python%d.%d environment!'%(sys.version_info[0], sys.version_info[1]))
+        sys.exit()
+    else:
+        while True:
+            i = input('[%d, %d]> '%(len(data['dict']), len(data['list'])))
+            interpret(i)
 
 def number(value):
     # turn string into number
@@ -119,7 +124,7 @@ def show():
             print(f'{k}\t{str(v)}')
         else:
             # if v is a list
-            print(f'{k}\t[list]')
+            print(f'{k}\t[list:]')
             i = 0
             for item in range(len(v)):
                 i += 1
