@@ -5,14 +5,14 @@
 # Command
   We have several command to control data, you can find them by typing `key`.
   * `(v)add`
-    > Add data
+    >Add data
   * `(v)del`
-    > Del data
+    >Del data
   * `info`
-    > Show information of data
+    >Show information of data
   * `key`
-    > Show full key-word list
+    >Show full key-word list
   * `quit`
-    > Quit
+    >Quit
   * `show`
-    > Show data
+    >Show data
