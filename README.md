@@ -8,6 +8,8 @@
     > Add data
   * `(v)del`
     > Del data
+  * `info`
+    > Show information of data
   * `key`
     > Show full key-word list
   * `quit`
