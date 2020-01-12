@@ -82,6 +82,8 @@ def interpret(i):
         sys.exit()
     elif i == 'show':
         show()
+    elif i == 'store':
+        store()
     elif i[:5] == 'vadd ':
         vadd(i[5:])
     elif i[:5] == 'vdel ':
@@ -175,7 +177,9 @@ def show():
             pass
 
 def store():
-    pass
+    # store
+    f = open('count-data.json', 'w+')
+    json.dump(data, f)
 
 def vadd(value):
     # vadd value
