@@ -55,12 +55,15 @@ def info():
     else:
         print('Avg:\t[NULL]')
     if l != 0:
+        print('Max:\t', max(d))
         print('Media:\t', stic.median(d))
         print(' -low:\t', stic.median_low(d))
         print(' -high:\t', stic.median_high(d))
-        print(' -grp:\t', stic.median_grouped(d))
+        print('Min:\t', min(d))
     else:
+        print('Max:\t[NULL]')
         print('Media:\t[NULL]')
+        print('Min:\t[NULL]')
     print('Sum:\t', sum(d))
     print('Total:\t', len(d))
 
