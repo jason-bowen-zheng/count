@@ -49,23 +49,26 @@ def del_(key):
 def info():
     # info
     l = len(data['list'])
-    d = data['list']
+    dd = data['dict']
+    dl = data['list']
     if l != 0:
-        print('Avg:\t', stic.mean(d))
+        print('Avg:\t', stic.mean(dl))
     else:
         print('Avg:\t[NULL]')
     if l != 0:
-        print('Max:\t', max(d))
-        print('Media:\t', stic.median(d))
-        print(' -low:\t', stic.median_low(d))
-        print(' -high:\t', stic.median_high(d))
-        print('Min:\t', min(d))
+        print('Max:\t', max(dl))
+        print('Media:\t', stic.median(dl))
+        print(' -low:\t', stic.median_low(dl))
+        print(' -high:\t', stic.median_high(dl))
+        print('Min:\t', min(dl))
     else:
         print('Max:\t[NULL]')
         print('Media:\t[NULL]')
         print('Min:\t[NULL]')
-    print('Sum:\t', sum(d))
-    print('Total:\t', len(d))
+    print('Sum:\t', sum(dl))
+    print('Total:\t', len(dd) + len(dl))
+    print(' -data:\t', len(dd))
+    print(' -val:\t', len(dl))
 
 def interpret(i):
     if i == '':
@@ -178,7 +181,10 @@ def show():
 
 def store():
     # store
-    f = open('count-data.json', 'w+')
+    if sys.platform[:3] == 'win':
+        f = open('_count.data.json', 'w+')
+    else:
+        f = open('.count.data.json', 'w+')
     json.dump(data, f)
 
 def vadd(value):
