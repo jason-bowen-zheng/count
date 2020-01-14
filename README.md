@@ -11,7 +11,7 @@
     *vadd VALUE*<br>
     *vadd VALUE1, VALUE2...*
   * `(v)del`
-    >Del data
+    >Del data<br>
     *del KEY*<br>
     *vdel [ALL]VALUE*
   * `info`
