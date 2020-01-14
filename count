@@ -1,16 +1,38 @@
 #!/usr/bin/python3
 # -*-coding:UTF-8-*-
-# count version: 1.1.0
+# count version: 2.1.0
 # copyright (c) jason-bowen-zheng 2018-2020
 # license is GPLv3
 
 import json
-import statistics as stic
 import os
+import statistics as stic
 import sys
+import tkinter as tk
+from tkinter import ttk
 
-data = {'dict':{}, 'list':[]}
-ver = [1, 1, 0]
+data = {'dict':{}, 'value':[]}
+ver = [2, 1, 0]
+
+class LineChart():
+    
+    def __init__(self, data):
+        self.data = data
+        self.win = tk.Tk()
+        self.win.title('count Graphics')
+        self.win.resizable(tk.FALSE, tk.FALSE)
+        self.chartArea = tk.Canvas(self.win, bg='white', width=500, height=309)
+        # 500 == 309 * 0.618
+        self.xScrollBar = ttk.Scrollbar(self.win, orient=tk.HORIZONTAL, command=self.chartArea.xview)
+        self.yScrollBar = ttk.Scrollbar(self.win, orient=tk.VERTICAL, command=self.chartArea.yview)
+        self.chartArea.configure(xscrollcommand=self.xScrollBar.set, yscrollcommand=self.yScrollBar.set)
+        self.xScrollBar.pack(side=tk.BOTTOM)
+        self.yScrollBar.pack(side=tk.RIGHT)
+        self.chartArea.pack(fill=tk.BOTH)
+
+    def show(self):
+        self.chartArea.create_line(100, 100, 100, 1000)
+        self.win.mainloop()
 
 def add(value):
     # add key:value
@@ -39,6 +61,18 @@ def add(value):
             else:
                 data['dict'][k] = i
 
+def chart(t):
+    # chart LINE
+    if t ==  'LINE':
+        try:
+            chart = LineChart(data['dict'])
+        except:
+            print('ERROR: No $DISPLAY environment.')
+        else:
+           chart.show()
+    else:
+        print(f"ERROR: chart type '{t}' not found")
+
 def del_(key):
     # del KEY
     if data['dict'].pop(key, False) == False:
@@ -48,9 +82,9 @@ def del_(key):
 
 def info():
     # info
-    l = len(data['list'])
+    l = len(data['value'])
     dd = data['dict']
-    dl = data['list']
+    dl = data['value']
     if l != 0:
         print('Avg:\t', stic.mean(dl))
     else:
@@ -75,6 +109,8 @@ def interpret(i):
         pass
     elif i[:4] == 'add ':
         add(i[4:])
+    elif i[:6] == 'chart ':
+        chart(i[6:])
     elif i[:4] == 'del ':
         del_(i[4:])
     elif i == 'info':
@@ -121,7 +157,7 @@ def main():
         sys.exit()
     else:
         while True:
-            i = input('[%d, %d]> '%(len(data['dict']), len(data['list'])))
+            i = input('[%d, %d]> '%(len(data['dict']), len(data['value'])))
             interpret(i)
 
 def number(value):
@@ -167,12 +203,12 @@ def show():
                     pass
     print('VALUE:')
     i = 0
-    for item in range(len(data['list'])):
+    for item in range(len(data['value'])):
         i += 1
         if i % 5 != 0:
-            print(data['list'][item], end='\t')
+            print(data['value'][item], end='\t')
         else:
-            print(data['list'][item])
+            print(data['value'][item])
     else:
         if i % 5 != 0:
             print()
@@ -182,10 +218,17 @@ def show():
 def store():
     # store
     if sys.platform[:3] == 'win':
-        f = open('_count.data.json', 'w+')
+        f = open('_count.data', 'w+')
     else:
-        f = open('.count.data.json', 'w+')
-    json.dump(data, f)
+        f = open('.count.data', 'w+')
+    f.write('DICT:%s'%(os.linesep))
+    for k, v in data['dict'].items():
+        if isinstance(v, list) == False:
+            f.write(f'%s: %s%s'%(k, v, os.linesep))
+        else:
+            f.write(f'%s: %s%s'%(k, str(v)[1: -1], os.linesep))
+    f.write('VALUE:%s'%(os.linesep))
+    f.write('%s%s'%(str(data['value'])[1: -1], os.linesep))
 
 def vadd(value):
     # vadd value
@@ -198,7 +241,7 @@ def vadd(value):
             if (i := number(item)) == False:
                 print(f"ERROR: '{item}' isn't a number.")
             else:
-                data['list'].append(i)
+                data['value'].append(i)
         else:
             pass
     else:
@@ -206,19 +249,19 @@ def vadd(value):
         if (i := number(value)) == False:
             print(f"ERROR: '{value}' isn't a number.")
         else:
-            data['list'].append(i)
+            data['value'].append(i)
 
 def vdel(value):
     # vdel [ALL]VALUE
     if value[:3] == 'ALL':
-        # if command like 'vdel [ALL]...'
+        # if command like 'vdel ALL...'
         if (r := number(value[3:])) == False:
             print(f"ERROR '{value[3:]}' isn't a number.")
         else:
-            if r in data['list']:
+            if r in data['value']:
                 while True:
                     try:
-                        data['list'].remove(r)
+                        data['value'].remove(r)
                     except:
                         print('Delete successfully.')
                         return
@@ -231,8 +274,8 @@ def vdel(value):
         if (r := number(value)) == False:
             print(f"ERROR: '{value}' isn't a number.")
         else:
-            if r in data['list']:
-                data['list'].remove(r)
+            if r in data['value']:
+                data['value'].remove(r)
                 print('Delete successfully.')
             else:
                 print(f"ERROR: '{str(r)}' not found.")
