@@ -6,13 +6,13 @@
   We have several command to control data, you can find them by typing `key`.
   * `(v)add`
     >Add data
-    *add KEY:VALUE*
-    *add KEY:VALUE1, VALUE2...*
-    *vadd VALUE*
-    *vadd VALUE1, VALUE2...*
+    *add KEY:VALUE*<br>
+    *add KEY:VALUE1, VALUE2...*<br>
+    *vadd VALUE*<br>
+    *vadd VALUE1, VALUE2...*<br>
   * `(v)del`
     >Del data
-    *del KEY*
+    *del KEY*<br>
     *vdel [ALL]VALUE*
   * `info`
     >Show information of data
