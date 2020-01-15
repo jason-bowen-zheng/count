@@ -20,9 +20,15 @@
   * `key`
     >Show full key-word list<br>
     *key*
+  * `load`
+    > Load data from hard disk<br>
+    *load FILE*
   * `quit`
     >Quit<br>
     *quit*
   * `show`
     >Show data<br>
     *show*
+  * `store`
+    > Store data<br>
+    *store FILE*
