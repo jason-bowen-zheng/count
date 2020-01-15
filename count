@@ -4,11 +4,12 @@
 # copyright (c) jason-bowen-zheng 2018-2020
 # license is GPLv3
 
-import json
 import os
+import readline
 import statistics as stic
 import sys
 import tkinter as tk
+from tkinter import tix
 from tkinter import ttk
 
 data = {'dict':{}, 'value':[]}
@@ -21,8 +22,7 @@ class LineChart():
         self.win = tk.Tk()
         self.win.title('count Graphics')
         self.win.resizable(tk.FALSE, tk.FALSE)
-        self.chartArea = tk.Canvas(self.win, bg='white', width=500, height=309)
-        # 500 == 309 * 0.618
+        self.chartArea = tk.Canvas(self.win, bg='white', width=750, height=463)
         self.xScrollBar = ttk.Scrollbar(self.win, orient=tk.HORIZONTAL, command=self.chartArea.xview)
         self.yScrollBar = ttk.Scrollbar(self.win, orient=tk.VERTICAL, command=self.chartArea.yview)
         self.chartArea.configure(xscrollcommand=self.xScrollBar.set, yscrollcommand=self.yScrollBar.set)
@@ -31,7 +31,7 @@ class LineChart():
         self.chartArea.pack(fill=tk.BOTH)
 
     def show(self):
-        self.chartArea.create_line(100, 100, 100, 1000)
+        self.chartArea.create_line(0, 0, 100, 100, 200, 500)
         self.win.mainloop()
 
 def add(value):
@@ -55,7 +55,6 @@ def add(value):
             else:
                 data['dict'][k] = l
         else:
-            # if value is a number
             if (i := number(v)) == False:
                 print(f"ERROR: '{v}' isn't a number.")
             else:
@@ -117,6 +116,8 @@ def interpret(i):
         info()
     elif i == 'key':
         key()
+    elif i == 'load':
+        load()
     elif i == 'quit':
         sys.exit()
     elif i == 'show':
@@ -147,6 +148,35 @@ def key():
     print('key\tShow full key-word')
     print('quit\tQuit')
     print('show\tShow data')
+
+def load():
+    if sys.platform[:3] =='win':
+        if '_count.data' in os.listdir():
+            f = open('_count.data', 'r+')
+        else:
+            print('ERROR: No such file or directory.')
+            return
+    else:
+        if '.count.data' in os.listdir():
+            f = open('.count.data', 'r+')
+        else:
+            print('ERROR: No such file or directory.')
+            return
+        isInDict == -1
+        for line in f.readlines():
+            if line == '%':
+                pass
+            elif line[0] == '%' and line[-1] == '%':
+                pass
+            elif line == 'DICT:':
+                isInDict = 0
+            elif line == 'VALUE:':
+                isInDict = 1
+            elif isInDict == 0:
+                add(line)
+            elif isInDict == 1:
+                vadd(line)if (line[0] == '%' and line[-1] == '%') or (line == '%'):
+             
 
 def main():
     print(f'count version: {ver[0]}.{ver[1]}.{ver[2]}')
