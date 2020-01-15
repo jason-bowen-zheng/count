@@ -163,19 +163,19 @@ def load():
             print('ERROR: No such file or directory.')
             return
         isInDict == -1
-        for line in f.readlines():
-            if line == '%':
-                pass
-            elif line[0] == '%' and line[-1] == '%':
-                pass
-            elif line == 'DICT:':
-                isInDict = 0
-            elif line == 'VALUE:':
-                isInDict = 1
-            elif isInDict == 0:
-                add(line)
-            elif isInDict == 1:
-                vadd(line)if (line[0] == '%' and line[-1] == '%') or (line == '%'):
+    for line in f.readlines():
+        if line == '%':
+            pass
+        elif line[0] == '%' and line[-1] == '%':
+            pass
+        elif line == 'DICT:':
+            isInDict = 0
+        elif line == 'VALUE:':
+            isInDict = 1
+        elif isInDict == 0:
+            add(line)
+        elif isInDict == 1:
+            vadd(line)if (line[0] == '%' and line[-1] == '%') or (line == '%'):
              
 
 def main():
