@@ -16,7 +16,7 @@ data = {'dict':{}, 'value':[]}
 ver = [2, 1, 0]
 
 class LineChart():
-    
+    '''A test function'''
     def __init__(self, data):
         self.data = data
         self.win = tk.Tk()
@@ -31,7 +31,6 @@ class LineChart():
         self.chartArea.pack(fill=tk.BOTH)
 
     def show(self):
-        self.chartArea.create_line(0, 0, 100, 100, 200, 500)
         self.win.mainloop()
 
 def add(value):
@@ -116,14 +115,14 @@ def interpret(i):
         info()
     elif i == 'key':
         key()
-    elif i == 'load':
-        load()
+    elif i[:5] == 'load ':
+        load(i[5:])
     elif i == 'quit':
         sys.exit()
     elif i == 'show':
         show()
-    elif i == 'store':
-        store()
+    elif i[:6] == 'store ':
+        store(i[6:])
     elif i[:5] == 'vadd ':
         vadd(i[5:])
     elif i[:5] == 'vdel ':
@@ -146,23 +145,20 @@ def key():
     print('\t- del KEY')
     print('\t- vdel [ALL]VALUE')
     print('key\tShow full key-word')
+    print('load\tLoad data from hard disk.')
+    print('\t- load FILE')
     print('quit\tQuit')
     print('show\tShow data')
+    print('store\tStore data')
+    print('\t- store FILE')
 
-def load():
-    # load
-    if sys.platform[:3] =='win':
-        if '_count.data' in os.listdir():
-            f = open('_count.data', 'r+')
-        else:
-            print('ERROR: No such file or directory.')
-            return
+def load(name):
+    # load FILE
+    if (name in os.listdir()) and (os.path.isfile(name) == True):
+        f = open(name, 'r+')
     else:
-        if '.count.data' in os.listdir():
-            f = open('.count.data', 'r+')
-        else:
-            print('ERROR: No such file or directory.')
-            return
+        print('ERROR: No such file or directory.')
+        return
     isInDict = -1
     # -1 -- other
     #  0 -- in dict
@@ -181,7 +177,7 @@ def load():
         elif isInDict == 1:
             vadd(line[:-1])
         else:
-            print(f'ERROR: {line}')
+            print(f'ERROR: {line[:-1]}')
 
 def main():
     print(f'count version: {ver[0]}.{ver[1]}.{ver[2]}')
@@ -191,6 +187,7 @@ def main():
         print('But this is python%d.%d environment!'%(sys.version_info[0], sys.version_info[1]))
         sys.exit()
     else:
+        print('Type `key` for help, `quit` to end.')
         while True:
             i = input('[%d, %d]> '%(len(data['dict']), len(data['value'])))
             interpret(i)
@@ -250,12 +247,10 @@ def show():
         else:
             pass
 
-def store():
-    # store
-    if sys.platform[:3] == 'win':
-        f = open('_count.data', 'w+')
-    else:
-        f = open('.count.data', 'w+')
+def store(name):
+    # store FILE
+    f = open(name, 'w+')
+    f.write('%%count data%%%s'%(os.linesep))
     f.write('DICT:%s'%(os.linesep))
     for k, v in data['dict'].items():
         if isinstance(v, list) == False:
@@ -264,6 +259,7 @@ def store():
             f.write(f'%s: %s%s'%(k, str(v)[1: -1], os.linesep))
     f.write('VALUE:%s'%(os.linesep))
     f.write('%s%s'%(str(data['value'])[1: -1], os.linesep))
+    f.close()
 
 def vadd(value):
     # vadd value
