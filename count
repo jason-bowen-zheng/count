@@ -150,6 +150,7 @@ def key():
     print('show\tShow data')
 
 def load():
+    # load
     if sys.platform[:3] =='win':
         if '_count.data' in os.listdir():
             f = open('_count.data', 'r+')
@@ -162,21 +163,25 @@ def load():
         else:
             print('ERROR: No such file or directory.')
             return
-        isInDict == -1
+    isInDict = -1
+    # -1 -- other
+    #  0 -- in dict
+    #  1 -- in value
     for line in f.readlines():
-        if line == '%':
+        if line[:-1] == '%':
             pass
-        elif line[0] == '%' and line[-1] == '%':
+        elif line[0] == '%' and line[-2] == '%':
             pass
-        elif line == 'DICT:':
+        elif line[:-1] == 'DICT:':
             isInDict = 0
-        elif line == 'VALUE:':
+        elif line[:-1] == 'VALUE:':
             isInDict = 1
         elif isInDict == 0:
-            add(line)
+            add(line[:-1])
         elif isInDict == 1:
-            vadd(line)if (line[0] == '%' and line[-1] == '%') or (line == '%'):
-             
+            vadd(line[:-1])
+        else:
+            print(f'ERROR: {line}')
 
 def main():
     print(f'count version: {ver[0]}.{ver[1]}.{ver[2]}')
