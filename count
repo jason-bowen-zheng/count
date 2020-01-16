@@ -16,7 +16,7 @@ data = {'dict':{}, 'value':[]}
 ver = [2, 1, 0]
 
 class LineChart():
-    '''A test function'''
+
     def __init__(self, data):
         self.data = data
         self.win = tk.Tk()
@@ -164,20 +164,21 @@ def load(name):
     #  0 -- in dict
     #  1 -- in value
     for line in f.readlines():
-        if line[:-1] == '%':
+        line = line.replace(os.linesep, '')
+        if line == '':
             pass
-        elif line[0] == '%' and line[-2] == '%':
+        elif (line[0] == '%') and (line[-1] == '%'):
             pass
-        elif line[:-1] == 'DICT:':
+        elif line == 'DICT:':
             isInDict = 0
-        elif line[:-1] == 'VALUE:':
+        elif line == 'VALUE:':
             isInDict = 1
         elif isInDict == 0:
-            add(line[:-1])
+            add(line)
         elif isInDict == 1:
-            vadd(line[:-1])
+            vadd(line)
         else:
-            print(f'ERROR: {line[:-1]}')
+            print(f'ERROR: {line}')
 
 def main():
     print(f'count version: {ver[0]}.{ver[1]}.{ver[2]}')
