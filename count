@@ -78,6 +78,38 @@ def del_(key):
     else:
         print('Delete successfully.')
 
+def help_():
+    # help
+    print(f'count version: {ver[0]}.{ver[1]}.{ver[2]}')
+    print('A programe to calculate data.')
+    print('Copyright (c) jason-bowen-zheng 2018-2020')
+    print('Fork it on `http://github.com/jason-bowen-zheng/count`')
+    print('=' * 20)
+    print('count command:')
+    print('Command\tUsage')
+    print('(v)add\tAdd data')
+    print('\t- add KEY:VALUE')
+    print('\t- add KEY:VALUE1, VALUE2 ...')
+    print('\t- vadd VALUE')
+    print('\t- vadd VALUE1, VALUE2 ...')
+    print('(v)del\tDelete data')
+    print('\t- del KEY')
+    print('\t- vdel [ALL]VALUE')
+    print('key\tShow full key-word')
+    print('load\tLoad data from hard disk.')
+    print('\t- load FILE')
+    print('quit\tQuit')
+    print('show\tShow data')
+    print('store\tStore data')
+    print('\t- store FILE')
+    print('=' *20)
+    print('Store file format:')
+    print('DICT:\t\t=>area tag: DICT')
+    print('[some detail]\t=>run `add [some detail]`')
+    print('%something%\t=>a note: %...%')
+    print('VALUE:\t\t=>area tag: VALUE')
+    print('[some detail]\t=>run `vadd [sime detail]`')
+
 def info():
     # info
     l = len(data['value'])
@@ -111,10 +143,10 @@ def interpret(i):
         chart(i[6:])
     elif i[:4] == 'del ':
         del_(i[4:])
+    elif i == 'help':
+        help_()
     elif i == 'info':
         info()
-    elif i == 'key':
-        key()
     elif i[:5] == 'load ':
         load(i[5:])
     elif i == 'quit':
@@ -131,26 +163,6 @@ def interpret(i):
         os.system(i[1:])
     else:
         print(f"ERROR: '{i}' not found.")
-
-def key():
-    # key
-    print('Command\tUse')
-    print()
-    print('(v)add\tAdd data')
-    print('\t- add KEY:VALUE')
-    print('\t- add KEY:VALUE1, VALUE2 ...')
-    print('\t- vadd VALUE')
-    print('\t- vadd VALUE1, VALUE2 ...')
-    print('(v)del\tDelete data')
-    print('\t- del KEY')
-    print('\t- vdel [ALL]VALUE')
-    print('key\tShow full key-word')
-    print('load\tLoad data from hard disk.')
-    print('\t- load FILE')
-    print('quit\tQuit')
-    print('show\tShow data')
-    print('store\tStore data')
-    print('\t- store FILE')
 
 def load(name):
     # load FILE
@@ -188,7 +200,7 @@ def main():
         print('But this is python%d.%d environment!'%(sys.version_info[0], sys.version_info[1]))
         sys.exit()
     else:
-        print('Type `key` for help, `quit` to end.')
+        print('Type `help` for help, `quit` to end.')
         while True:
             i = input('[%d, %d]> '%(len(data['dict']), len(data['value'])))
             interpret(i)
@@ -316,6 +328,7 @@ if __name__ == '__main__':
     try:
         main()
     except KeyboardInterrupt:
+        print()
         sys.exit()
     else:
         pass
