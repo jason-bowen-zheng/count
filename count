@@ -106,9 +106,11 @@ def help_():
     print('Store file format:')
     print('DICT:\t\t=>area tag: DICT')
     print('[some detail]\t=>run `add [some detail]`')
+    print('...')
     print('%something%\t=>a note: %...%')
     print('VALUE:\t\t=>area tag: VALUE')
     print('[some detail]\t=>run `vadd [sime detail]`')
+    print('...')
 
 def info():
     # info
@@ -168,6 +170,8 @@ def load(name):
     # load FILE
     if (name in os.listdir()) and (os.path.isfile(name) == True):
         f = open(name, 'r+')
+    elif os.path.isdir(name) == True:
+        print('ERROR: Is a directory.')
     else:
         print('ERROR: No such file or directory.')
         return
@@ -262,17 +266,21 @@ def show():
 
 def store(name):
     # store FILE
-    f = open(name, 'w+')
-    f.write('%%count data%%%s'%(os.linesep))
-    f.write('DICT:%s'%(os.linesep))
-    for k, v in data['dict'].items():
-        if isinstance(v, list) == False:
-            f.write(f'%s: %s%s'%(k, v, os.linesep))
-        else:
-            f.write(f'%s: %s%s'%(k, str(v)[1: -1], os.linesep))
-    f.write('VALUE:%s'%(os.linesep))
-    f.write('%s%s'%(str(data['value'])[1: -1], os.linesep))
-    f.close()
+    try:
+        f = open(name, 'w+')
+    except:
+        print('ERROR: File cannot open.')
+    else:
+        f.write('%%count data%%%s'%(os.linesep))
+        f.write('DICT:%s'%(os.linesep))
+        for k, v in data['dict'].items():
+            if isinstance(v, list) == False:
+                f.write(f'%s: %s%s'%(k, v, os.linesep))
+            else:
+                f.write(f'%s: %s%s'%(k, str(v)[1: -1], os.linesep))
+        f.write('VALUE:%s'%(os.linesep))
+        f.write('%s%s'%(str(data['value'])[1: -1], os.linesep))
+        f.close()
 
 def vadd(value):
     # vadd value
