@@ -107,9 +107,9 @@ def help_():
     print('DICT:\t\t=>area tag: DICT')
     print('[some detail]\t=>run `add [some detail]`')
     print('...')
-    print('%something%\t=>a note: %...%')
+    print('#something#\t=>a note: #...#')
     print('VALUE:\t\t=>area tag: VALUE')
-    print('[some detail]\t=>run `vadd [sime detail]`')
+    print('[some detail]\t=>run `vadd [some detail]`')
     print('...')
 
 def info():
@@ -183,7 +183,7 @@ def load(name):
         line = line.replace(os.linesep, '')
         if line == '':
             pass
-        elif (line[0] == '%') and (line[-1] == '%'):
+        elif (line[0] == '#') and (line[-1] == '#'):
             pass
         elif line == 'DICT:':
             isInDict = 0
@@ -271,7 +271,7 @@ def store(name):
     except:
         print('ERROR: File cannot open.')
     else:
-        f.write('%%count data%%%s'%(os.linesep))
+        f.write('#count data#%s'%(os.linesep))
         f.write('DICT:%s'%(os.linesep))
         for k, v in data['dict'].items():
             if isinstance(v, list) == False:
