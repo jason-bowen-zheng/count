@@ -9,7 +9,7 @@ import readline
 import statistics as stic
 import sys
 import tkinter as tk
-from tkinter import tix
+from tkinter.tix import Balloon
 from tkinter import ttk
 
 data = {'dict':{}, 'value':[]}
@@ -293,7 +293,7 @@ def store(name):
         for k, v in data['dict'].items():
             if isinstance(v, list) == False:
                 f.write(f'%s: %s%s'%(k, v, os.linesep))
-            else:   
+            else:
                 f.write(f'%s: %s%s'%(k, str(v)[1: -1], os.linesep))
         f.write('VALUE:%s'%(os.linesep))
         f.write('%s%s'%(str(data['value'])[1: -1], os.linesep))
