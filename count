@@ -71,6 +71,20 @@ def chart(t):
     else:
         print(f"ERROR: chart type '{t}' not found")
 
+def clean():
+    # clean
+    print('Do you want to delete all data?')
+    while True:
+        r = input('Press `y` to continue or `n` to pass: ')
+        if r.lower() == 'y':
+            data['dict'] = {}
+            data['value'] = []
+            break
+        elif r.lower() == 'n':
+            break
+        else:
+            print(f"ERROR: Invalid input '{r}'.")
+
 def del_(key):
     # del KEY
     if data['dict'].pop(key, False) == False:
@@ -92,6 +106,7 @@ def help_():
     print('\t- add KEY:VALUE1, VALUE2 ...')
     print('\t- vadd VALUE')
     print('\t- vadd VALUE1, VALUE2 ...')
+    print('clean\tDelete all data')
     print('(v)del\tDelete data')
     print('\t- del KEY')
     print('\t- vdel [ALL]VALUE')
@@ -143,6 +158,8 @@ def interpret(i):
         add(i[4:])
     elif i[:6] == 'chart ':
         chart(i[6:])
+    elif i == 'clean':
+        clean()
     elif i[:4] == 'del ':
         del_(i[4:])
     elif i == 'help':
@@ -276,7 +293,7 @@ def store(name):
         for k, v in data['dict'].items():
             if isinstance(v, list) == False:
                 f.write(f'%s: %s%s'%(k, v, os.linesep))
-            else:
+            else:   
                 f.write(f'%s: %s%s'%(k, str(v)[1: -1], os.linesep))
         f.write('VALUE:%s'%(os.linesep))
         f.write('%s%s'%(str(data['value'])[1: -1], os.linesep))
