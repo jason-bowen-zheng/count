@@ -7,13 +7,14 @@
 import os
 import readline
 import statistics as stic
+import string
 import sys
 import tkinter as tk
 from tkinter.tix import Balloon
 from tkinter import ttk
 
 data = {'dict':{}, 'value':[]}
-ver = [2, 1, 0]
+ver = [2, 2, 0]
 
 class LineChart():
 
@@ -23,6 +24,7 @@ class LineChart():
         self.win.title('count Graphics')
         self.win.resizable(tk.FALSE, tk.FALSE)
         self.chartArea = tk.Canvas(self.win, bg='white', width=750, height=463)
+        # 463 == 750 * 0.618
         self.xScrollBar = ttk.Scrollbar(self.win, orient=tk.HORIZONTAL, command=self.chartArea.xview)
         self.yScrollBar = ttk.Scrollbar(self.win, orient=tk.VERTICAL, command=self.chartArea.yview)
         self.chartArea.configure(xscrollcommand=self.xScrollBar.set, yscrollcommand=self.yScrollBar.set)
@@ -182,6 +184,16 @@ def interpret(i):
         os.system(i[1:])
     else:
         print(f"ERROR: '{i}' not found.")
+
+def isKey(k):
+    if (k[0] in ' \t') and (k[0] in string.digits) and (k[0] == '#'):
+        return False
+    else:
+        for char in k[1:]:
+            if char in (string.ascii_letters + string.digits + '-_'):
+                return True
+            else:
+                return False
 
 def load(name):
     # load FILE
