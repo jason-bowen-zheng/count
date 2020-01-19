@@ -40,7 +40,8 @@
   Your data are too complex? Don't worry, you don't need input them one by one, you can create a file.<br>
   The file format is particularly simple:<br>
   * Tag<br>
-    TAGNAME:> Just support `DICT:` and `VALUE:`
+    TAGNAME:
+    > Just support `DICT:` and `VALUE:`
   * Detail<br>
     Under tag
     * DICT<br>
@@ -49,5 +50,5 @@
       See `vadd`
     * Note<br>
       Also, you can take a simple note
-      `#...`
+      `#...`<br>
 See `test` file for an example.
