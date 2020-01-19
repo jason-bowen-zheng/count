@@ -48,8 +48,8 @@
       See `vadd`
     * VALUE<br>
       See `vadd`
-    * Note<br>
-      Also, you can take a simple note
+  * Note<br>
+    Also, you can take a simple note
       `#...`
 
 See `test` file for an example.
