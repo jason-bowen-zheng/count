@@ -14,6 +14,9 @@
     >Del data<br>
     *del KEY*<br>
     *vdel [ALL]VALUE*
+  * `find`
+    >Find data<br>
+    *find KEY*
   * `info`
     >Show information of data<br>
     *info*
