@@ -50,5 +50,6 @@
       See `vadd`
     * Note<br>
       Also, you can take a simple note
-      `#...`<br>
+      `#...`
+
 See `test` file for an example.
