@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # -*-coding:UTF-8-*-
-# count version: 2.1.0
+# count version: 2.2.0
 # copyright (c) jason-bowen-zheng 2018-2020
 # license is GPLv3
 
@@ -42,10 +42,10 @@ def add(value):
     try:
         k, v = value.split(':', 1)
     except:
-        print('ERROR: value must be KEY:VALUE.')
+        print('ERROR: value must be KEY:VALUE')
     else:
         if isKey(k) == False:
-            print(f"ERROR: Invalid key: '{k}'.")
+            print(f"ERROR: Invalid key: '{k}'")
         else:
             if ',' in v:
                 # if value is list
@@ -53,14 +53,14 @@ def add(value):
                 l = list()
                 for item in v:
                     if (i := number(item)) == False:
-                        print(f"ERROR: '{item}' isn't a number.")
+                        print(f"ERROR: '{item}' isn't a number")
                     else:
                         l.append(i)
                 else:
                     data['dict'][k] = l
             else:
                 if (i := number(v)) == False:
-                    print(f"ERROR: '{v}' isn't a number.")
+                    print(f"ERROR: '{v}' isn't a number")
                 else:
                     data['dict'][k] = i
 
@@ -70,7 +70,7 @@ def chart(t):
         try:
             chart = LineChart(data['dict'])
         except:
-            print('ERROR: No $DISPLAY environment.')
+            print('ERROR: No $DISPLAY environment')
         else:
            chart.show()
     else:
@@ -88,19 +88,51 @@ def clean():
         elif r.lower() == 'n':
             break
         else:
-            print(f"ERROR: Invalid input: '{r}'.")
+            print(f"ERROR: Invalid input: '{r}'")
 
 def del_(key):
     # del KEY
     if data['dict'].pop(key, False) == False:
-        print(f"ERROR: '{key}' not found.")
+        print(f"ERROR: '{key}' not found")
     else:
-        print('Delete successfully.')
+        print('Delete successfully')
+
+
+def find(s):
+    # find KEY
+    t = 0
+    print('key\tvalue')
+    for k, v in data['dict'].items():
+        if k.startswith(s) == False:
+            # s not in the begining ofdata['dict'][k]
+            pass
+        else:
+            t += 1
+            # find
+            if isinstance(v, list) == False:
+                print(f'{k}\t{str(v)}')
+            else:
+                print(f'{k}\t[list:]')
+                i = 0
+                for item in range(len(v)):
+                    i += 1
+                    if i % 5 != 0:
+                        print(v[item], end='\t')
+                    else:
+                        print(v[item])
+                else:
+                    if i % 5 != 0:
+                        print()
+                    else:
+                        pass
+    else:
+        print('=' * 20)
+        print(f'Total found: {str(t)} item(s)')
 
 def help_():
     # help
     print(f'count version: {ver[0]}.{ver[1]}.{ver[2]}')
-    print('A programe to calculate data.')
+    print('A programe to calculate data')
     print('Copyright (c) jason-bowen-zheng 2018-2020')
     print('Fork it on `http://github.com/jason-bowen-zheng/count`')
     print('=' * 20)
@@ -115,8 +147,11 @@ def help_():
     print('(v)del\tDelete data')
     print('\t- del KEY')
     print('\t- vdel [ALL]VALUE')
-    print('key\tShow full key-word')
-    print('load\tLoad data from hard disk.')
+    print('find\tFind data')
+    print('\t- find KEY')
+    print('info\tShow information of data')
+    print('key\tShow full key-word list')
+    print('load\tLoad data from hard disk')
     print('\t- load FILE')
     print('quit\tQuit')
     print('show\tShow data')
@@ -167,6 +202,8 @@ def interpret(i):
         clean()
     elif i[:4] == 'del ':
         del_(i[4:])
+    elif i[:5] == 'find ':
+        find(i[5:])
     elif i == 'help':
         help_()
     elif i == 'info':
@@ -186,7 +223,7 @@ def interpret(i):
     elif i[0] == '!':
         os.system(i[1:])
     else:
-        print(f"ERROR: '{i}' not found.")
+        print(f"ERROR: '{i}' not found")
 
 def isKey(k):
     if k[0] not in (string.ascii_letters + '_'):
@@ -201,42 +238,45 @@ def isKey(k):
 def load(name):
     # load FILE
     if (name in os.listdir()) and (os.path.isfile(name) == True):
-        f = open(name, 'r+')
-    elif os.path.isdir(name) == True:
-        print('ERROR: Is a directory.')
-    else:
-        print('ERROR: No such file or directory.')
-        return
-    isInDict = -1
-    # -1 -- other
-    #  0 -- in dict
-    #  1 -- in value
-    for line in f.readlines():
-        line = line.replace(os.linesep, '')
-        if line == '':
-            pass
-        elif line[0] == '#':
-            pass
-        elif line == 'DICT:':
-            isInDict = 0
-        elif line == 'VALUE:':
-            isInDict = 1
-        elif isInDict == 0:
-            add(line)
-        elif isInDict == 1:
-            vadd(line)
+        try:
+            f = open(name, 'r+')
+        except:
+            print('ERROR: File cannot open')
         else:
-            print(f'ERROR: {line}')
+            isInDict = -1
+            # -1 -- other
+            #  0 -- in dict
+            #  1 -- in value
+            for line in f.readlines():
+                line = line.replace(os.linesep, '')
+                if line == '':
+                    pass
+                elif line[0] == '#':
+                    pass
+                elif line == 'DICT:':
+                    isInDict = 0
+                elif line == 'VALUE:':
+                    isInDict = 1
+                elif isInDict == 0:
+                    add(line)
+                elif isInDict == 1:
+                    vadd(line)
+                else:
+                    print(f'ERROR: {line}')
+    elif os.path.isdir(name) == True:
+        print('ERROR: Is a directory')
+    else:
+        print('ERROR: No such file or directory')
 
 def main():
     print(f'count version: {ver[0]}.{ver[1]}.{ver[2]}')
-    print('A program to calculate data.')
+    print('A program to calculate data')
     if sys.version_info[:2] < (3, 8):
-        print('This program is written by python3.8.')
+        print('This program is written by python3.8')
         print('But this is python%d.%d environment!'%(sys.version_info[0], sys.version_info[1]))
         sys.exit()
     else:
-        print('Type `help` for help, `quit` to end.')
+        print('Type `help` for help, `quit` to end')
         while True:
             i = input('[%d, %d]> '%(len(data['dict']), len(data['value'])))
             interpret(i)
@@ -301,7 +341,7 @@ def store(name):
     try:
         f = open(name, 'w+')
     except:
-        print('ERROR: File cannot open.')
+        print('ERROR: File cannot open')
     else:
         f.write('# count data%s'%(os.linesep))
         f.write('DICT:%s'%(os.linesep))
@@ -323,7 +363,7 @@ def vadd(value):
         v = value.split(',')
         for item in v:
             if (i := number(item)) == False:
-                print(f"ERROR: '{item}' isn't a number.")
+                print(f"ERROR: '{item}' isn't a number")
             else:
                 data['value'].append(i)
         else:
@@ -331,7 +371,7 @@ def vadd(value):
     else:
         # if value is a number
         if (i := number(value)) == False:
-            print(f"ERROR: '{value}' isn't a number.")
+            print(f"ERROR: '{value}' isn't a number")
         else:
             data['value'].append(i)
 
@@ -340,29 +380,29 @@ def vdel(value):
     if value[:3] == 'ALL':
         # if command like 'vdel ALL...'
         if (r := number(value[3:])) == False:
-            print(f"ERROR '{value[3:]}' isn't a number.")
+            print(f"ERROR '{value[3:]}' isn't a number")
         else:
             if r in data['value']:
                 while True:
                     try:
                         data['value'].remove(r)
                     except:
-                        print('Delete successfully.')
+                        print('Delete successfully')
                         return
                     else:
                         pass
             else:
-                print(f"ERROR: '{str(r)}' not found.")
+                print(f"ERROR: '{str(r)}' not found")
     else:
         # if command like 'vdel ...'
         if (r := number(value)) == False:
-            print(f"ERROR: '{value}' isn't a number.")
+            print(f"ERROR: '{value}' isn't a number")
         else:
             if r in data['value']:
                 data['value'].remove(r)
-                print('Delete successfully.')
+                print('Delete successfully')
             else:
-                print(f"ERROR: '{str(r)}' not found.")
+                print(f"ERROR: '{str(r)}' not found")
 
 if __name__ == '__main__':
     try:
