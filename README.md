@@ -1,6 +1,6 @@
 # count
   A program to calculate data<br>
-  Version 2.1.0
+  Version 2.2.0
 
 # Command
   We have several command to control data, you can find them by typing `key`.
