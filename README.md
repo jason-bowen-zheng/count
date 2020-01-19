@@ -36,7 +36,13 @@
     > Store data<br>
     *store FILE*
 # Save Your Data
-Your data are too complex? Don't worry, you don't need input them one by one, you can create a file.<br>
-The file format is particularly simple:<br>
-* Tag
-  TAGNAME:> Just support `DICT:` and `VALUE:`
+  Your data are too complex? Don't worry, you don't need input them one by one, you can create a file.<br>
+  The file format is particularly simple:<br>
+  * Tag<br>
+    TAGNAME:> Just support `DICT:` and `VALUE:`
+  * Detail<br>
+    Under tag
+    * DICT
+      See `DICT`
+    * VALUE
+      See
