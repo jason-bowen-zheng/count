@@ -1,0 +1,414 @@
+#!/usr/bin/python3
+# -*-coding:UTF-8-*-
+# count version: 2.2.0
+# copyright (c) jason-bowen-zheng 2018-2020
+# license is GPLv3
+
+import os
+import readline
+import statistics as stic
+import string
+import sys
+import tkinter as tk
+from tkinter.tix import Balloon
+from tkinter import ttk
+
+data = {'dict':{}, 'value':[]}
+ver = [2, 2, 0]
+
+class LineChart():
+
+    def __init__(self, data):
+        self.data = data
+        self.win = tk.Tk()
+        self.win.title('count Graphics')
+        self.win.resizable(tk.FALSE, tk.FALSE)
+        self.chartArea = tk.Canvas(self.win, bg='white', width=750, height=463)
+        # 463 == 750 * 0.618
+        self.xScrollBar = ttk.Scrollbar(self.win, orient=tk.HORIZONTAL, command=self.chartArea.xview)
+        self.yScrollBar = ttk.Scrollbar(self.win, orient=tk.VERTICAL, command=self.chartArea.yview)
+        self.chartArea.configure(xscrollcommand=self.xScrollBar.set, yscrollcommand=self.yScrollBar.set)
+        self.xScrollBar.pack(side=tk.BOTTOM)
+        self.yScrollBar.pack(side=tk.RIGHT)
+        self.chartArea.pack(fill=tk.BOTH)
+
+    def show(self):
+        self.win.mainloop() 
+
+def add(value):
+    # add key:value
+    # or
+    # add key:value1, value2, value3...
+    try:
+        k, v = value.split(':', 1)
+    except:
+        print('ERROR: value must be KEY:VALUE')
+    else:
+        if isKey(k) == False:
+            print(f"ERROR: Invalid key: '{k}'")
+        else:
+            if ',' in v:
+                # if value is list
+                v = v.split(',')
+                l = list()
+                for item in v:
+                    if (i := number(item)) == False:
+                        print(f"ERROR: '{item}' isn't a number")
+                    else:
+                        l.append(i)
+                else:
+                    data['dict'][k] = l
+            else:
+                if (i := number(v)) == False:
+                    print(f"ERROR: '{v}' isn't a number")
+                else:
+                    data['dict'][k] = i
+
+def chart(t):
+    # chart LINE
+    if t ==  'LINE':
+        try:
+            chart = LineChart(data['dict'])
+        except:
+            print('ERROR: No $DISPLAY environment')
+        else:
+           chart.show()
+    else:
+        print(f"ERROR: chart type '{t}' not found")
+
+def clean():
+    # clean
+    print('Do you want to delete all data?')
+    while True:
+        r = input('Press `y` to continue or `n` to pass: ')
+        if r.lower() == 'y':
+            data['dict'] = {}
+            data['value'] = []
+            break
+        elif r.lower() == 'n':
+            break
+        else:
+            print(f"ERROR: Invalid input: '{r}'")
+
+def del_(key):
+    # del KEY
+    if data['dict'].pop(key, False) == False:
+        print(f"ERROR: '{key}' not found")
+    else:
+        print('Delete successfully')
+
+
+def find(s):
+    # find KEY
+    t = 0
+    print('key\tvalue')
+    for k, v in data['dict'].items():
+        if k.startswith(s) == False:
+            # s not in the begining ofdata['dict'][k]
+            pass
+        else:
+            t += 1
+            # find
+            if isinstance(v, list) == False:
+                print(f'{k}\t{str(v)}')
+            else:
+                print(f'{k}\t[list:]')
+                i = 0
+                for item in range(len(v)):
+                    i += 1
+                    if i % 5 != 0:
+                        print(v[item], end='\t')
+                    else:
+                        print(v[item])
+                else:
+                    if i % 5 != 0:
+                        print()
+                    else:
+                        pass
+    else:
+        print('=' * 20)
+        print(f'Total found: {str(t)} item(s)')
+
+def help_():
+    # help
+    print(f'count version: {ver[0]}.{ver[1]}.{ver[2]}')
+    print('A programe to calculate data')
+    print('Copyright (c) jason-bowen-zheng 2018-2020')
+    print('Fork it on `http://github.com/jason-bowen-zheng/count`')
+    print('=' * 20)
+    print('count command:')
+    print('Command\tUsage')
+    print('(v)add\tAdd data')
+    print('\t- add KEY:VALUE')
+    print('\t- add KEY:VALUE1, VALUE2 ...')
+    print('\t- vadd VALUE')
+    print('\t- vadd VALUE1, VALUE2 ...')
+    print('clean\tDelete all data')
+    print('(v)del\tDelete data')
+    print('\t- del KEY')
+    print('\t- vdel [ALL]VALUE')
+    print('find\tFind data')
+    print('\t- find KEY')
+    print('info\tShow information of data')
+    print('key\tShow full key-word list')
+    print('load\tLoad data from hard disk')
+    print('\t- load FILE')
+    print('quit\tQuit')
+    print('show\tShow data')
+    print('store\tStore data')
+    print('\t- store FILE')
+    print('=' *20)
+    print('Store file format:')
+    print('DICT:\t\t=>area tag: DICT')
+    print('[some detail]\t=>run `add [some detail]`')
+    print('...')
+    print('#something\t=>a note: #...')
+    print('VALUE:\t\t=>area tag: VALUE')
+    print('[some detail]\t=>run `vadd [some detail]`')
+    print('...')
+
+def info():
+    # info
+    l = len(data['value'])
+    dd = data['dict']
+    dl = data['value']
+    if l != 0:
+        print('Avg:\t', stic.mean(dl))
+    else:
+        print('Avg:\t[NULL]')
+    if l != 0:
+        print('Max:\t', max(dl))
+        print('Media:\t', stic.median(dl))
+        print(' -low:\t', stic.median_low(dl))
+        print(' -high:\t', stic.median_high(dl))
+        print('Min:\t', min(dl))
+    else:
+        print('Max:\t[NULL]')
+        print('Media:\t[NULL]')
+        print('Min:\t[NULL]')
+    print('Sum:\t', sum(dl))
+    print('Total:\t', len(dd) + len(dl))
+    print(' -data:\t', len(dd))
+    print(' -val:\t', len(dl))
+
+def interpret(i):
+    if i == '':
+        pass
+    elif i[:4] == 'add ':
+        add(i[4:])
+    elif i[:6] == 'chart ':
+        chart(i[6:])
+    elif i == 'clean':
+        clean()
+    elif i[:4] == 'del ':
+        del_(i[4:])
+    elif i[:5] == 'find ':
+        find(i[5:])
+    elif i == 'help':
+        help_()
+    elif i == 'info':
+        info()
+    elif i[:5] == 'load ':
+        load(i[5:])
+    elif i == 'quit':
+        sys.exit()
+    elif i == 'show':
+        show()
+    elif i[:6] == 'store ':
+        store(i[6:])
+    elif i[:5] == 'vadd ':
+        vadd(i[5:])
+    elif i[:5] == 'vdel ':
+        vdel(i[5:])
+    elif i[0] == '!':
+        os.system(i[1:])
+    else:
+        print(f"ERROR: '{i}' not found")
+
+def isKey(k):
+    if k[0] not in (string.ascii_letters + '_'):
+        return False
+    else:
+        for char in k[1:]:
+            if char in (string.ascii_letters + string.digits + '-_'):
+                return True
+            else:
+                return False
+
+def load(name):
+    # load FILE
+    if (name in os.listdir()) and (os.path.isfile(name) == True):
+        try:
+            f = open(name, 'r+')
+        except:
+            print('ERROR: File cannot open')
+        else:
+            isInDict = -1
+            # -1 -- other
+            #  0 -- in dict
+            #  1 -- in value
+            for line in f.readlines():
+                line = line.replace(os.linesep, '')
+                if line == '':
+                    pass
+                elif line[0] == '#':
+                    pass
+                elif line == 'DICT:':
+                    isInDict = 0
+                elif line == 'VALUE:':
+                    isInDict = 1
+                elif isInDict == 0:
+                    add(line)
+                elif isInDict == 1:
+                    vadd(line)
+                else:
+                    print(f'ERROR: {line}')
+    elif os.path.isdir(name) == True:
+        print('ERROR: Is a directory')
+    else:
+        print('ERROR: No such file or directory')
+
+def main():
+    print(f'count version: {ver[0]}.{ver[1]}.{ver[2]}')
+    print('A program to calculate data')
+    if sys.version_info[:2] < (3, 8):
+        print('This program is written by python3.8')
+        print('But this is python%d.%d environment!'%(sys.version_info[0], sys.version_info[1]))
+        sys.exit()
+    else:
+        print('Type `help` for help, `quit` to end')
+        while True:
+            i = input('[%d, %d]> '%(len(data['dict']), len(data['value'])))
+            interpret(i)
+
+def number(value):
+    # turn string into number
+    try:
+        if ('e' in value) or ('E' in value):
+            # if value is in scientific counting
+            return float(value)
+        elif '.' in value:
+            # if value is a decimal number
+            return float(value)
+        else:
+            # if value is a integer
+            return int(value)
+    except:
+        # if transform failed
+        return False
+    else:
+        pass
+
+def show():
+    # print all of the data
+    print('DATA:')
+    print('key\tvalue')
+    for k, v in data['dict'].items():
+        if isinstance(v, list) != True:
+            # if v isn't a list, it's a number
+            print(f'{k}\t{str(v)}')
+        else:
+            # if v is a list
+            print(f'{k}\t[list:]')
+            i = 0
+            for item in range(len(v)):
+                i += 1
+                if i % 5 != 0:
+                    print(v[item], end='\t')
+                else:
+                    print(v[item])
+            else:
+                if i % 5 != 0:
+                    print()
+                else:
+                    pass
+    print('VALUE:')
+    i = 0
+    for item in range(len(data['value'])):
+        i += 1
+        if i % 5 != 0:
+            print(data['value'][item], end='\t')
+        else:
+            print(data['value'][item])
+    else:
+        if i % 5 != 0:
+            print()
+        else:
+            pass
+
+def store(name):
+    # store FILE
+    try:
+        f = open(name, 'w+')
+    except:
+        print('ERROR: File cannot open')
+    else:
+        f.write('# count data%s'%(os.linesep))
+        f.write('DICT:%s'%(os.linesep))
+        for k, v in data['dict'].items():
+            if isinstance(v, list) == False:
+                f.write(f'%s: %s%s'%(k, v, os.linesep))
+            else:
+                f.write(f'%s: %s%s'%(k, str(v)[1: -1], os.linesep))
+        f.write('VALUE:%s'%(os.linesep))
+        f.write('%s%s'%(str(data['value'])[1: -1], os.linesep))
+        f.close()
+
+def vadd(value):
+    # vadd value
+    # or
+    # vadd value1, value2, value3...
+    if ',' in value:
+        # if value is a list
+        v = value.split(',')
+        for item in v:
+            if (i := number(item)) == False:
+                print(f"ERROR: '{item}' isn't a number")
+            else:
+                data['value'].append(i)
+        else:
+            pass
+    else:
+        # if value is a number
+        if (i := number(value)) == False:
+            print(f"ERROR: '{value}' isn't a number")
+        else:
+            data['value'].append(i)
+
+def vdel(value):
+    # vdel [ALL]VALUE
+    if value[:3] == 'ALL':
+        # if command like 'vdel ALL...'
+        if (r := number(value[3:])) == False:
+            print(f"ERROR '{value[3:]}' isn't a number")
+        else:
+            if r in data['value']:
+                while True:
+                    try:
+                        data['value'].remove(r)
+                    except:
+                        print('Delete successfully')
+                        return
+                    else:
+                        pass
+            else:
+                print(f"ERROR: '{str(r)}' not found")
+    else:
+        # if command like 'vdel ...'
+        if (r := number(value)) == False:
+            print(f"ERROR: '{value}' isn't a number")
+        else:
+            if r in data['value']:
+                data['value'].remove(r)
+                print('Delete successfully')
+            else:
+                print(f"ERROR: '{str(r)}' not found")
+
+if __name__ == '__main__':
+    try:
+        main()
+    except KeyboardInterrupt:
+        print()
+        sys.exit()
+    else:
+        pass
