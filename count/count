@@ -116,7 +116,7 @@ def find(s):
             pass
         else:
             t += 1
-            nk = k.replace(s, '\033[31m%s\033[0m'%(s))
+            nk = k.replace(s, '\033[31m\033[1m%s\033[0m'%(s))
             # find
             if isinstance(v, list) == False:
                 print(f'{nk}\t{str(v)}')
@@ -317,15 +317,15 @@ def number(value):
 
 def show():
     # print all of the data
-    print('DATA:')
+    print('\033[34m\033[1mDATA:\033[0m')
     print('key\tvalue')
     for k, v in data['dict'].items():
         if isinstance(v, list) != True:
             # if v isn't a list, it's a number
-            print(f'{k}\t{str(v)}')
+            print(f'\033[31m{k}\033[0m\t{str(v)}')
         else:
             # if v is a list
-            print(f'{k}\t[list:]')
+            print(f'\033[32m{k}\033[0m\t[list:]')
             i = 0
             for item in range(len(v)):
                 i += 1
@@ -338,7 +338,7 @@ def show():
                     print()
                 else:
                     pass
-    print('VALUE:')
+    print('\033[34m\033[1mVALUE:\033[0m')
     i = 0
     for item in range(len(data['value'])):
         i += 1
