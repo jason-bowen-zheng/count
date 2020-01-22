@@ -5,19 +5,27 @@
 # license is GPLv3
 
 import os
+# os.system
 import readline
+# NONE
 import statistics as stic
+# stic.mean, stic.median,
+# stic.median_low, stic.median_high,
 import string
+# string.ascii_letters, string.digit
 import sys
+# sys.exit
 import tkinter as tk
+# tk.Tk, tk.Canvas
 from tkinter.tix import Balloon
 from tkinter import ttk
+# ttk.Scrollbar
 
 data = {'dict':{}, 'value':[]}
 ver = [2, 2, 0]
 
 class LineChart():
-
+    ''' TESTING '''
     def __init__(self, data):
         self.data = data
         self.win = tk.Tk()
@@ -103,16 +111,17 @@ def find(s):
     t = 0
     print('key\tvalue')
     for k, v in data['dict'].items():
-        if k.startswith(s) == False:
-            # s not in the begining ofdata['dict'][k]
+        if k.find(s) == -1:
+            # s not in the data['dict'][k]
             pass
         else:
             t += 1
+            nk = k.replace(s, '\033[31m%s\033[0m'%(s))
             # find
             if isinstance(v, list) == False:
-                print(f'{k}\t{str(v)}')
+                print(f'{nk}\t{str(v)}')
             else:
-                print(f'{k}\t[list:]')
+                print(f'{nk}\t[list:]')
                 i = 0
                 for item in range(len(v)):
                     i += 1
@@ -134,13 +143,20 @@ def help_():
     print(f'count version: {ver[0]}.{ver[1]}.{ver[2]}')
     print('A programe to calculate data')
     print('Copyright (c) jason-bowen-zheng 2018-2020')
-    print('Fork it on `http://github.com/jason-bowen-zheng/count`')
+    print('Fork it on `http://github.com/jason-bowen-zheng/data/count`')
+    print('Read `http://github.com/jason-bowen-zheng/data/count/README.md`,')
+    print('You can get the same help like following')
     print('=' * 20)
     print('count command:')
     print('Command\tUsage')
     print('(v)add\tAdd data')
     print('\t- add KEY:VALUE')
     print('\t- add KEY:VALUE1, VALUE2 ...')
+    print('\t  NOTE:')
+    print('\t  - The first letter of KEY must in:')
+    print('\t    [a-zA-Z_]')
+    print('\t  - The other KEYs must in:')
+    print('\t    [a-zA-z0-9\-_]')
     print('\t- vadd VALUE')
     print('\t- vadd VALUE1, VALUE2 ...')
     print('clean\tDelete all data')
@@ -244,7 +260,7 @@ def load(name):
             print('ERROR: File cannot open')
         else:
             isInDict = -1
-            # -1 -- other
+            # -1 -- other place
             #  0 -- in dict
             #  1 -- in value
             for line in f.readlines():
