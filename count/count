@@ -242,10 +242,12 @@ def interpret(i):
         print(f"ERROR: '{i}' not found")
 
 def isKey(k):
-    if k[0] not in (string.ascii_letters + '_'):
+    if k[0] not in (string.ascii_letters + '$'):
+        return False
+    elif k[-1] not in string.ascii_letters:
         return False
     else:
-        for char in k[1:]:
+        for char in k[1:-1]:
             if char in (string.ascii_letters + string.digits + '-_'):
                 return True
             else:
