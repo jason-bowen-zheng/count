@@ -20,7 +20,7 @@
     *find KEY*
   * `info`
     >Show information of data<br>
-    *info*
+    *info ITEM*
   * `key`
     >Show full key-word list<br>
     *key*
