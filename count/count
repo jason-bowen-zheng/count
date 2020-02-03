@@ -5,7 +5,7 @@
 # license is GPLv3
 
 import os
-# os.system
+# os.chdir, os.system
 import readline
 # NONE
 import statistics as stic
@@ -14,34 +14,16 @@ import statistics as stic
 import string
 # string.ascii_letters, string.digit
 import sys
-# sys.exit
-import tkinter as tk
-# tk.Tk, tk.Canvas
-from tkinter.tix import Balloon
-from tkinter import ttk
-# ttk.Scrollbar
+# sys.exit, sys.version_info
+
+if sys.version_info[:2] >= (3, 8):
+    pass
+else:
+    print('ERROR: need python3.8')
+    sys.exit(1)
 
 data = {'dict':{}, 'value':[]}
-ver = [2, 2, 0]
-
-class LineChart():
-    ''' TESTING '''
-    def __init__(self, data):
-        self.data = data
-        self.win = tk.Tk()
-        self.win.title('count Graphics')
-        self.win.resizable(tk.FALSE, tk.FALSE)
-        self.chartArea = tk.Canvas(self.win, bg='white', width=750, height=463)
-        # 463 == 750 * 0.618
-        self.xScrollBar = ttk.Scrollbar(self.win, orient=tk.HORIZONTAL, command=self.chartArea.xview)
-        self.yScrollBar = ttk.Scrollbar(self.win, orient=tk.VERTICAL, command=self.chartArea.yview)
-        self.chartArea.configure(xscrollcommand=self.xScrollBar.set, yscrollcommand=self.yScrollBar.set)
-        self.xScrollBar.pack(side=tk.BOTTOM)
-        self.yScrollBar.pack(side=tk.RIGHT)
-        self.chartArea.pack(fill=tk.BOTH)
-
-    def show(self):
-        self.win.mainloop() 
+ver = [2, 2, 0] 
 
 def add(value):
     # add key:value
@@ -72,17 +54,14 @@ def add(value):
                 else:
                     data['dict'][k] = i
 
-def chart(t):
-    # chart LINE
-    if t ==  'LINE':
-        try:
-            chart = LineChart(data['dict'])
-        except:
-            print('ERROR: No $DISPLAY environment')
-        else:
-           chart.show()
+def cd(p):
+    # cd PATH
+    try:
+        os.chdir(p)
+    except:
+        print('ERROR: No such file or directory')
     else:
-        print(f"ERROR: chart type '{t}' not found")
+        pass
 
 def clean():
     # clean
@@ -116,12 +95,11 @@ def find(s):
             pass
         else:
             t += 1
-            nk = k.replace(s, '\033[31m\033[1m%s\033[0m'%(s))
             # find
             if isinstance(v, list) == False:
-                print(f'{nk}\t{str(v)}')
+                print(f'{k}\t{str(v)}')
             else:
-                print(f'{nk}\t[list:]')
+                print(f'{k}\t[list:]')
                 i = 0
                 for item in range(len(v)):
                     i += 1
@@ -154,13 +132,13 @@ def help_():
     print('\t- add KEY:VALUE1, VALUE2 ...')
     print('\t  NOTE:')
     print('\t  - The first letter of KEY must in:')
-    print('\t    [a-zA-Z$]')
+    print('\t    [a-zA-Z_]')
     print('\t  - The other KEYs must in:')
     print('\t    [a-zA-z0-9\-_]')
-    print('\t  - The last KEY must in:')
-    print('\t    [a-zA-Z]')
     print('\t- vadd VALUE')
     print('\t- vadd VALUE1, VALUE2 ...')
+    print('cd\tChange directory')
+    print('\t- cd PATH')
     print('clean\tDelete all data')
     print('(v)del\tDelete data')
     print('\t- del KEY')
@@ -168,6 +146,7 @@ def help_():
     print('find\tFind data')
     print('\t- find KEY')
     print('info\tShow information of data')
+    print('\t- info ITEM')
     print('key\tShow full key-word list')
     print('load\tLoad data from hard disk')
     print('\t- load FILE')
@@ -175,7 +154,10 @@ def help_():
     print('show\tShow data')
     print('store\tStore data')
     print('\t- store FILE')
-    print('=' *20)
+    print('=' * 20)
+    print('Global variable:')
+    print(' - $VALUE')
+    print('=' * 20)
     print('Store file format:')
     print('DICT:\t\t=>area tag: DICT')
     print('[some detail]\t=>run `add [some detail]`')
@@ -185,37 +167,42 @@ def help_():
     print('[some detail]\t=>run `vadd [some detail]`')
     print('...')
 
-def info():
-    # info
-    l = len(data['value'])
-    dd = data['dict']
-    dl = data['value']
+def info(i):
+    # info ITEM
+    if i == '$VALUE':
+        dv = data['value']
+        l = len(data['value'])
+    else:
+        if i in data['dict']:
+            dv = data['dict'][i]
+            l = len(data['dict'][i])
+        else:
+            print(f"ERROR: not found '{i}'")
+            return
     if l != 0:
-        print('Avg:\t', stic.mean(dl))
+        print('Avg:\t', stic.mean(dv))
     else:
         print('Avg:\t[NULL]')
     if l != 0:
-        print('Max:\t', max(dl))
-        print('Media:\t', stic.median(dl))
-        print(' -low:\t', stic.median_low(dl))
-        print(' -high:\t', stic.median_high(dl))
-        print('Min:\t', min(dl))
+        print('Max:\t', max(dv))
+        print('Media:\t', stic.median(dv))
+        print(' -low:\t', stic.median_low(dv))
+        print(' -high:\t', stic.median_high(dv))
+        print('Min:\t', min(dv))
     else:
         print('Max:\t[NULL]')
         print('Media:\t[NULL]')
         print('Min:\t[NULL]')
-    print('Sum:\t', sum(dl))
-    print('Total:\t', len(dd) + len(dl))
-    print(' -data:\t', len(dd))
-    print(' -val:\t', len(dl))
+    print('Sum:\t', sum(dv))
+    print('Total:\t', l)
 
 def interpret(i):
     if i == '':
         pass
     elif i[:4] == 'add ':
         add(i[4:])
-    elif i[:6] == 'chart ':
-        chart(i[6:])
+    elif i[:3] == 'cd ':
+        cd(i[3:])
     elif i == 'clean':
         clean()
     elif i[:4] == 'del ':
@@ -224,8 +211,8 @@ def interpret(i):
         find(i[5:])
     elif i == 'help':
         help_()
-    elif i == 'info':
-        info()
+    elif i[:5] == 'info ':
+        info(i[5:])
     elif i[:5] == 'load ':
         load(i[5:])
     elif i == 'quit':
@@ -244,12 +231,10 @@ def interpret(i):
         print(f"ERROR: '{i}' not found")
 
 def isKey(k):
-    if k[0] not in (string.ascii_letters + '$'):
-        return False
-    elif k[-1] not in string.ascii_letters:
+    if k[0] not in (string.ascii_letters + '_'):
         return False
     else:
-        for char in k[1:-1]:
+        for char in k[1:]:
             if char in (string.ascii_letters + string.digits + '-_'):
                 return True
             else:
@@ -291,15 +276,10 @@ def load(name):
 def main():
     print(f'count version: {ver[0]}.{ver[1]}.{ver[2]}')
     print('A program to calculate data')
-    if sys.version_info[:2] < (3, 8):
-        print('This program is written by python3.8')
-        print('But this is python%d.%d environment!'%(sys.version_info[0], sys.version_info[1]))
-        sys.exit()
-    else:
-        print('Type `help` for help, `quit` to end')
-        while True:
-            i = input('[%d, %d]> '%(len(data['dict']), len(data['value'])))
-            interpret(i)
+    print('Type `help` for help, `quit` to end')
+    while True:
+        i = input('[%d, %d]> '%(len(data['dict']), len(data['value'])))
+        interpret(i)
 
 def number(value):
     # turn string into number
@@ -321,15 +301,15 @@ def number(value):
 
 def show():
     # print all of the data
-    print('\033[34m\033[1mDATA:\033[0m')
+    print('DATA:')
     print('key\tvalue')
     for k, v in data['dict'].items():
         if isinstance(v, list) != True:
             # if v isn't a list, it's a number
-            print(f'\033[31m{k}\033[0m\t{str(v)}')
+            print(f'{k}\t{str(v)}')
         else:
             # if v is a list
-            print(f'\033[32m{k}\033[0m\t[list:]')
+            print(f'{k}\t[list:]')
             i = 0
             for item in range(len(v)):
                 i += 1
@@ -342,7 +322,7 @@ def show():
                     print()
                 else:
                     pass
-    print('\033[34m\033[1mVALUE:\033[0m')
+    print('VALUE:')
     i = 0
     for item in range(len(data['value'])):
         i += 1
