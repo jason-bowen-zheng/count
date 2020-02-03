@@ -1,15 +1,24 @@
 #!/usr/bin/python3
-# -*- coding:UTF-8 -*-
+# -*-coding:UTF-8-*-
 # data version: 1.1.0
 # copyright (c) jason-bowen-zheng 2018-2020
-#license is GPLv3
+# license is GPLv3
 
 import os
+# os.chdir
 import re
 import readline
+# None
 import statistics as stic
 import string
 import sys
+# sys.exit, sys.version_info
 
 db = {}
 ver = [1, 1, 0]
+
+if sys.version_info[:2] < (3, 8):
+    pass
+else:
+    print('ERROR: need python3.8')
+    sys.exit(1)
