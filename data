@@ -6,15 +6,11 @@
 
 import os
 # os.chdir
-import re
 import readline
 # None
-import statistics as stic
-import string
 import sys
 # sys.exit, sys.version_info
 
-db = {}
 ver = [1, 1, 0]
 
 if sys.version_info[:2] < (3, 8):
