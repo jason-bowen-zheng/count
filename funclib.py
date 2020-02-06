@@ -13,6 +13,13 @@ def math_abs(x):
     else:
         return {'ERR': 'value error'}
 
+def math_acos(x):
+    # acos(x)
+    if isinstance(x, (int, float)):
+        return {'NUM': math.acos(x)}
+    else:
+        return {'ERR': 'value error'}
+
 def math_ceil(x):
     # ceil(x)
     if isinstance(x, (int, float)):
@@ -61,7 +68,7 @@ def math_sin(x):
 
 def math_sqrt(x):
     # sqrt(x)
-    if isinstance(x, (int, float)) and x >= 0:
+    if isinstance(x, (int, float)) and (x >= 0):
         return {'NUM': math.sqrt(x)}
     else:
         return {'ERR': 'value error'}
@@ -78,6 +85,8 @@ def run_function(fname, *args):
     try:
         if fname == 'abs':
             return math_abs(*args)
+        elif fname == 'acos':
+            return math_acos(*args)
         elif fname == 'ceil':
             return math_ceil(*args)
         elif fname == 'cos':
