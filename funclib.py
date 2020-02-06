@@ -41,6 +41,10 @@ def math_floor(x):
     else:
         return {'ERR': 'value error'}
 
+def math_rand():
+    # rand()
+    return {'NUM': random.random()}
+
 def math_round(x, n=None):
     # round(x, n)
     if isinstance(x, (int, float)) and (isinstance(n, int) or n == None):
@@ -48,22 +52,43 @@ def math_round(x, n=None):
     else:
         return {'ERR': 'value error'}
 
-def sin(x):
+def math_sin(x):
     # sin(x)
     if isinstance(x, (int, float)):
         return {'NUM': math.sin(x)}
     else:
         return {'ERR': 'value error'}
 
-def sqrt(x):
+def math_sqrt(x):
     # sqrt(x)
     if isinstance(x, (int, float)) and x >= 0:
         return {'NUM': math.sqrt(x)}
     else:
         return {'ERR': 'value error'}
 
-def tan(x):
+def math_tan(x):
     if isinstance(x, (int, float)):
         return {'NUM': math.tan(x)}
     else:
         return {'ERROR': 'value error'}
+
+# Run function #
+
+def run_function(fname, *args):
+    try:
+        if fname == 'abs':
+            return math_abs(*args)
+        elif fname == 'ceil':
+            return math_ceil(*args)
+        elif fname == 'cos':
+            return math_cos(*args)
+        elif fname == 'exp':
+            return math_exp(*args)
+        elif fname == 'floor':
+            return math_floor(*args)
+        elif fname == 'rand':
+            return math_rand(*args)
+        else:
+            return {'ERR': 'function not found'}
+    except:
+        return {'ERR': 'argument error'}
