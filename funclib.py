@@ -110,7 +110,7 @@ def math_rand():
     return ['NUM', random.random()]
 
 def math_round(x, n=None):
-    # round(x, n)
+    # round(x, [n])
     if isinstance(x, (int, float)) and (isinstance(n, int) or (n == None)):
         return ['NUM', round(x, n)]
     else:
@@ -143,23 +143,34 @@ def math_TAU():
 
 # Str function #
 
-def str_formatText(text, *value):
-    # text%value
+def str_find(s, start=None, end=None):
+    # find(s, [start, [end]])
+    if isinstance(s, str) and isinstance(start, (int, None)) and isinstance(end, (int, None)):
+        pass
+
+def str_format(text, *value):
+    # format(text, value1, value2, ...)
     try:
-        return ['STR': text%value]
+        if isinstance(text, str):
+            return ['STR', text % value]
+        else:
+            return ['ERR', 'value error']
     except:
-        return ['ERR': 'argument error']
+        return ['ERR', 'argument error']
     else:
         pass
 
 def str_slice(s, start=None, end=None):
-    # s[start:end]
-    try:
-        return ['STR', s[start:end]]
-    except:
-        return ['ERR', 'index error']
+    # slice(s, [start, [end]])
+    if isinstance(s, str) and isinstance(start, (int, None)) and isinstance(end, (int, None)):
+        if (end == None) and (start > 0) and (start < len(s) - 1):
+            return ['STR', s[start:end]]
+        elif (end == None) and (start < 0) and (start < -len(s)):
+            return ['STR', s[start:end]]
+        else:
+            return ['ERR', 'index error']
     else:
-        pass
+        return ['ERR', 'value error']
 
 # Run function #
 
@@ -210,8 +221,8 @@ def run_function(fname, *args):
         elif fname == 'TAU':
             return math_TAU(*args)
         # Str function #
-        elif fname == 'formatText':
-            return str_formatText(*args)
+        elif fname == 'format':
+            return str_format(*args)
         elif fname == 'slice':
             return str_slice(*args)
         else:
