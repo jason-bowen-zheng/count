@@ -162,6 +162,13 @@ def str_format(text, *value):
     else:
         pass
 
+def str_len(s):
+    # len(s)
+    if isinstance(s, str):
+        return ['NUM', len(s)]
+    else:
+        return ['ERR', 'value error']
+
 def str_slice(s, start, end=None):
     # slice(s, start, [end])
     if isinstance(s, str) and isinstance(start, int) and (isinstance(end, int) or (end == None)):
@@ -180,7 +187,7 @@ def run_function(fname, *args):
     # fname(*args)
     try:
         # Math function #
-        if fname == 'abs':
+        if   fname == 'abs':
             return math_abs(*args)
         elif fname == 'acos':
             return math_acos(*args)
@@ -223,8 +230,12 @@ def run_function(fname, *args):
         elif fname == 'TAU':
             return math_TAU(*args)
         # Str function #
+        elif fname == 'find':
+            return str_find(*args)
         elif fname == 'format':
             return str_format(*args)
+        elif fname == 'len':
+            return str_len(*args)
         elif fname == 'slice':
             return str_slice(*args)
         else:
