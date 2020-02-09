@@ -143,10 +143,12 @@ def math_TAU():
 
 # Str function #
 
-def str_find(s, start=None, end=None):
+def str_find(s, text, start=None, end=None):
     # find(s, [start, [end]])
-    if isinstance(s, str) and isinstance(start, (int, None)) and isinstance(end, (int, None)):
-        pass
+    if isinstance(s, str) and isinstance(text, str) and (isinstance(start, int) or (start == None)) and (isinstance(end, int) or (end == None)):
+        return ['NUM', s.find(text, start, end)]
+    else:
+        return ['ERR', 'value error']
 
 def str_format(text, *value):
     # format(text, value1, value2, ...)
@@ -160,12 +162,12 @@ def str_format(text, *value):
     else:
         pass
 
-def str_slice(s, start=None, end=None):
-    # slice(s, [start, [end]])
-    if isinstance(s, str) and isinstance(start, (int, None)) and isinstance(end, (int, None)):
-        if (end == None) and (start > 0) and (start < len(s) - 1):
+def str_slice(s, start, end=None):
+    # slice(s, start, [end])
+    if isinstance(s, str) and isinstance(start, int) and (isinstance(end, int) or (end == None)):
+        if (start > 0) and (start < len(s) - 1):
             return ['STR', s[start:end]]
-        elif (end == None) and (start < 0) and (start < -len(s)):
+        elif (start < 0) and (start < -len(s)):
             return ['STR', s[start:end]]
         else:
             return ['ERR', 'index error']
