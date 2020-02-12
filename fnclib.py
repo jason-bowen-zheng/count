@@ -1,6 +1,7 @@
-# funclib.py
+# data/fnclib.py
 # function library
 
+from datatype import *
 import math
 import random
 
@@ -8,63 +9,63 @@ import random
 
 def math_abs(x):
     # abs(x)
-    if isinstance(x, (int, float)):
+    if isinstance(x, data_num):
         return ['NUM', math.fabs(x)]
     else:
         return ['ERR', 'value error']
 
 def math_acos(x):
     # acos(x)
-    if isinstance(x, (int, float)):
+    if isinstance(x, data_num):
         return ['NUM', math.acos(x)]
     else:
         return ['ERR', 'value error']
 
 def math_asin(x):
     # asin(x)
-    if isinstance(x, (int, float)):
+    if isinstance(x, data_num):
         return ['NUM', math.asin(x)]
     else:
         return ['ERR', 'value error']
 
 def math_atan(x):
     # atan(x)
-    if isinstance(x, (int, float)):
+    if isinstance(x, data_num):
         return ['NUM', math.atan(x)]
     else:
         return ['ERR', 'value error']
 
 def math_atan2(y, x):
     # atan2(y, x)
-    if isinstance(x, (int, float)) and isinstance(x, (int, float)):
+    if isinstance(x, data_num) and isinstance(x, data_num):
         return ['NUM', math.atan2(y,x)]
     else:
         return ['ERR', 'value error']
 
 def math_ceil(x):
     # ceil(x)
-    if isinstance(x, (int, float)):
+    if isinstance(x, data_num):
         return ['NUM', math.ceil(x)]
     else:
         return ['ERR', 'value error']
 
 def math_cos(x):
     # cos(x)
-    if isinstance(x, (int, float)):
+    if isinstance(x, data_num):
         return ['NUM', math.cos(x)]
     else:
         return ['ERR', 'value error']
 
 def math_degrees(x):
     # degrees(x)
-    if isinstance(x, (int, float)):
+    if isinstance(x, data_num):
         return ['NUM',  math.degrees(x)]
     else:
         return ['ERR',  'value error']
 
 def math_exp(x):
     # exp(x)
-    if isinstance(x, (int, float)):
+    if isinstance(x, data_num):
         return ['NUM', math.exp(x)]
     else:
         return ['ERR', 'value error']
@@ -75,21 +76,21 @@ def math_E():
 
 def math_floor(x):
     # floor(x)
-    if isinstance(x, (int, float)):
+    if isinstance(x, data_num):
         return ['NUM', math.floor(x)]
     else:
         return ['ERR', 'value error']
 
 def math_mod(x, y):
-    # mod(x, y)
-    if isinstance(x, (int, float)) and isinstance(y, (int, float)):
+    # mod(x, y)d
+    if isinstance(x, data_num) and isinstance(y, data_num):
         return ['NUM', math.fmod(x, y)]
     else:
         return ['ERR', 'value error']
 
 def math_pow(x, y):
     # pow(x, y)
-    if isinstance(x, (int, float)) and isinstance(x, (int, float)):
+    if isinstance(x, data_num) and isinstance(x, data_num):
         return ['NUM', math.pow(x, y)]
     else:
         return ['ERR', 'value error']
@@ -100,7 +101,7 @@ def math_PI():
 
 def math_radians(x):
     # radians(x)
-    if isinstance(x, (int, float)):
+    if isinstance(x, data_num):
         return ['NUM', math.radians(x)]
     else:
         return ['ERR', 'value error']
@@ -111,27 +112,27 @@ def math_rand():
 
 def math_round(x, n=None):
     # round(x, [n])
-    if isinstance(x, (int, float)) and (isinstance(n, int) or (n == None)):
+    if isinstance(x, data_num) and (isinstance(n, int) or (n == None)):
         return ['NUM', round(x, n)]
     else:
         return ['ERR', 'value error']
 
 def math_sin(x):
     # sin(x)
-    if isinstance(x, (int, float)):
+    if isinstance(x, data_num):
         return ['NUM', math.sin(x)]
     else:
         return ['ERR', 'value error']
 
 def math_sqrt(x):
     # sqrt(x)
-    if isinstance(x, (int, float)) and (x >= 0):
+    if isinstance(x, data_num) and (x >= 0):
         return ['NUM', math.sqrt(x)]
     else:
         return ['ERR', 'value error']
 
 def math_tan(x):
-    if isinstance(x, (int, float)):
+    if isinstance(x, data_num):
         return ['NUM', math.tan(x)]
     else:
         return ['ERROR', 'value error']
@@ -145,7 +146,7 @@ def math_TAU():
 
 def str_find(s, text, start=None, end=None):
     # find(s, [start, [end]])
-    if isinstance(s, str) and isinstance(text, str) and (isinstance(start, int) or (start == None)) and (isinstance(end, int) or (end == None)):
+    if isinstance(s, data_str) and isinstance(text, str) and (isinstance(start, int) or (start == None)) and (isinstance(end, int) or (end == None)):
         return ['NUM', s.find(text, start, end)]
     else:
         return ['ERR', 'value error']
