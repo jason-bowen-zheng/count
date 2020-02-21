@@ -45,9 +45,9 @@
     > Just support `DICT:` and `VALUE:`
   * Detail<br>
     Under tag
-    * DICT<br>
+    * DICT:<br>
       See `vadd`
-    * VALUE<br>
+    * VALU:<br>
       See `vadd`
   * Note<br>
     Also, you can take a simple note
