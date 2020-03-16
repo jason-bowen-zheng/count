@@ -300,9 +300,7 @@ class SheetParser:
 class BaseCell:
     __init__ = None # Must provide
     """Abstract base class for sheet cells.
-
     Subclasses may but needn't provide the following APIs:
-
     cell.reset() -- prepare for recalculation
     cell.recalc(ns) -> value -- recalculate formula
     cell.format() -> (value, alignment) -- return formatted value
@@ -471,9 +469,7 @@ import tkinter.ttk as ttk
 
 class SheetGUI:
 
-    """Beginnings of a GUI for a spreadsheet.
-
-    TO DO:
+    """TO DO:
     - clear multiple cells
     - Insert, clear, remove rows or columns
     - Show new contents while typing
@@ -487,7 +483,6 @@ class SheetGUI:
 
     def __init__(self, filename="sheet1.xml", rows=25, columns=20):
         """Constructor.
-
         Load the sheet from the filename argument.
         Set up the tk widget tree.
         """
@@ -793,7 +788,16 @@ class SheetGUI:
 if __name__ == '__main__':
     if sys.argv[1:]:
         filename = sys.argv[1]
-    else:
-        filename = "sheet1.xml"
-    g = SheetGUI(filename)
+        try:
+            rows = int(sys.argv[2])
+        except:
+            rows = 25
+        try:
+            columns = int(sys.argv[3])
+        except:
+            columns = 20
+	else:
+        filename = "untitled.xml"
+        rows, columns = 25, 20
+    g = SheetGUI(filename, rows, columns)
     g.root.mainloop()
