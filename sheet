@@ -20,7 +20,7 @@ class SheetGUI:
         columns = max(columns, maxx)
         # Create the widgets
         self.root = tk.Tk()
-        self.root.wm_title("iSheet: %s" % self.filename)
+        self.root.wm_title("sheets: %s" % self.filename)
         self.beacon = tk.Label(self.root, text="A1",
                                font=('helvetica', 16, 'bold'))
         self.entry = tk.Entry(self.root)
@@ -167,8 +167,6 @@ class SheetGUI:
 
     release = motion
 
-    def selectxy(self, event):
-        pass
     
     def whichxy(self, event):
         w = self.cellgrid.winfo_containing(event.x_root, event.y_root)
@@ -319,14 +317,15 @@ class SheetGUI:
 
 
 class ScrolledFrame(ttk.Frame):
-    "The another version of idlelib.configdialog.VerticalScrolledFrame"
+    "Another version of idlelib.configdialog.VerticalScrolledFrame"
     def __init__(self, parent, *args, **kw):
         ttk.Frame.__init__(self, parent, *args, **kw)
         # Create a canvas object and two scrollbars for scrolling it.
+        space = ttk.Label(self, text="  ")
         hscrollbar = ttk.Scrollbar(self, orient=tk.HORIZONTAL)
         vscrollbar = ttk.Scrollbar(self, orient=tk.VERTICAL)
-        hscrollbar.pack(fill="x", side="bottom", expand=0)
         vscrollbar.pack(fill="y", side="right", expand=0)
+        hscrollbar.pack(fill="x", side="bottom", expand=0)
         canvas = tk.Canvas(self, borderwidth=0, highlightthickness=0,
                            xscrollcommand=hscrollbar.set,
                            yscrollcommand=vscrollbar.set, width=240)
@@ -349,10 +348,7 @@ class ScrolledFrame(ttk.Frame):
         interior.bind('<Configure>', _configure_interior)
 
         def _configure_canvas(event):
-            # It's wise not to do anything
-            # if interior.winfo_reqwidth() != canvas.winfo_width():
-                # Update the inner frame's width to fill the canvas.
-            #   canvas.itemconfigure(interior_id, width=canvas.winfo_width())
+            # It's wise not to do anything.
             pass
         canvas.bind('<Configure>', _configure_canvas)
         

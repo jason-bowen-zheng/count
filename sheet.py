@@ -1,5 +1,8 @@
+# sheet.py
+
 import os
 import re
+import sheetfunc as func
 import sys
 from xml.parsers import expat
 from xml.sax.saxutils import escape
@@ -22,22 +25,19 @@ xml2align = {"left": LEFT, "center": CENTER, "right": RIGHT}
 
 align2anchor = {LEFT: "w", CENTER: "center", RIGHT: "e"}
 
-def sum(seq):
-    total = 0
-    for x in seq:
-        if x is not None:
-            total += x
-    return total
 
 class Sheet:
 
     def __init__(self):
         self.cells = {} # {(x, y): cell, ...}
-        self.ns = dict(
-            cell = self.cellvalue,
-            cells = self.multicellvalue,
-            sum = sum,
-        )
+        self.ns = {
+            'cell': self.cellvalue,
+            'cells': self.multicellvalue,
+            'average': func.average,
+            'choose': func.choose,
+            'chooses': func.chooses,
+            'sum': func.sum_,
+        }
 
     def cellvalue(self, x, y):
         cell = self.getcell(x, y)
@@ -219,6 +219,7 @@ class Sheet:
         with open(filename, 'rb') as f:
             SheetParser(self).parsefile(f)
 
+
 class SheetParser:
 
     def __init__(self, sheet):
@@ -297,6 +298,7 @@ class SheetParser:
 
     def end_cell(self, text):
         self.sheet.setcell(self.x, self.y, self.cell)
+
 
 class BaseCell:
     __init__ = None # Must provide
