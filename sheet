@@ -2,11 +2,13 @@
 
 from sheet import *
 import tkinter as tk
+import tkinter.messagebox as messagebox
 import tkinter.ttk as ttk
+
 
 class SheetGUI:
 
-    def __init__(self, filename="untitled.xml", rows=10, columns=5):
+    def __init__(self, filename="untitled.xml", rows=64, columns=32):
         """Constructor.
         Load the sheet from the filename argument.
         Set up the tk widget tree.
@@ -28,15 +30,15 @@ class SheetGUI:
         self.entry = tk.Entry(self.root)
         self.savebutton = ttk.Button(self.root, text="Save",
                                     command=self.save)
-        self.cells = ScrolledFrame(self.root)
-        self.cellgrid = self.cells.interior
+        self.cellgrids = ScrolledFrame(self.root)
+        self.cellgrid = self.cellgrids.interior
         self.separator = ttk.Separator(self.root)
         self.statuebar = tk.Label(self.root, text=filename,
                                   font=('helvetica', 10))
         # Configure the widget lay-out
         self.statuebar.pack(side="bottom", fill="both")
         self.separator.pack(side="bottom", fill="both")
-        self.cells.pack(side="bottom", expand=1, fill="both")
+        self.cellgrids.pack(side="bottom", expand=1, fill="both")
         self.beacon.pack(side="left")
         self.savebutton.pack(side="right")
         self.entry.pack(side="left", expand=1, fill="x")
@@ -169,6 +171,9 @@ class SheetGUI:
 
     release = motion
 
+    def selectxy(self, event):
+        pass
+    
     def whichxy(self, event):
         w = self.cellgrid.winfo_containing(event.x_root, event.y_root)
         if w is not None and isinstance(w, tk.Label):
@@ -315,6 +320,7 @@ class SheetGUI:
                     text, alignment = str(cell), LEFT
                 gridcell['text'] = text
                 gridcell['anchor'] = align2anchor[alignment]
+
 
 class ScrolledFrame(ttk.Frame):
 
