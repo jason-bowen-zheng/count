@@ -1,10 +1,39 @@
 #sheet/sheetfuncion.py
 
-
-
 import cmath
 import math
-import statistics as static
+
+def abs_(x):
+    """math function
+    abs(x: (int, float, complex)) => abs(x)
+    return the absolute value of x.
+    """
+    if instance(x, (int, float, complex)):
+        return abs(x)
+    else:
+        raise TypeError
+
+def all_(seq):
+    """logic function
+    all(seq: list) => bool
+    return True if all value in seq is not None.
+    """
+    for i in seq:
+        if not i:
+            return False
+    else:
+        return True
+
+def any_(seq):
+    """logic function
+    any(seq: list) => bool
+    return True if one value in seq is not None.
+    """
+    for i in seq:
+        if i:
+            return True
+    else:
+        return False
 
 def average(seq):
     """statistics function
@@ -93,3 +122,16 @@ def tan(x):
         return math.tan(x)
     else:
         raise TypeError
+
+functions = {
+    'abs': abs_,
+    'all': all_,
+    'any': any_,
+    'average': average,
+    'choose': choose,
+    'chooses': chooses,
+    'cos': cos,
+    'sin': sin,
+    'sum': sum_,
+    'tan': tan
+}

@@ -2,7 +2,7 @@
 
 import os
 import re
-import sheetfunc as func
+import sheetfunction as func
 import sys
 from xml.parsers import expat
 from xml.sax.saxutils import escape
@@ -33,11 +33,7 @@ class Sheet:
         self.ns = {
             'cell': self.cellvalue,
             'cells': self.multicellvalue,
-            'average': func.average,
-            'choose': func.choose,
-            'chooses': func.chooses,
-            'sum': func.sum_,
-        }
+        }.update(func.functions)
 
     def cellvalue(self, x, y):
         cell = self.getcell(x, y)
@@ -386,7 +382,7 @@ class FormulaCell(BaseCell):
     def recalc(self, ns):
         if self.value is None:
             try:
-                self.value = eval(self.translated, ns)
+                self.value = eval(self.translated, None, ns)
             except:
                 exc = sys.exc_info()[0]
                 if hasattr(exc, "__name__"):
