@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python3 -S
 
 from sheet import *
 import tkinter as tk
@@ -140,7 +140,7 @@ class SheetGUI:
                                  underline=0)
         self.menubar.add_cascade(menu=self.menu_edit, label='Edit',
                                  underline=0)
-        # Create File menu
+        # Create File menu.
         self.menu_file.add_command(label='New')
         self.menu_file.add_command(label='Open...')
         self.menu_file.add_separator()
