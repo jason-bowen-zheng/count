@@ -31,9 +31,10 @@ class Sheet:
     def __init__(self):
         self.cells = {} # {(x, y): cell, ...}
         self.ns = {
-            'cell': self.cellvalue,
-            'cells': self.multicellvalue,
-        }.update(func.functions)
+            'cell':     self.cellvalue,
+            'cells':    self.multicellvalue,
+        }
+        self.ns.update(func.functions)
 
     def cellvalue(self, x, y):
         cell = self.getcell(x, y)
@@ -382,7 +383,7 @@ class FormulaCell(BaseCell):
     def recalc(self, ns):
         if self.value is None:
             try:
-                self.value = eval(self.translated, None, ns)
+                self.value = eval(self.translated, ns)
             except:
                 exc = sys.exc_info()[0]
                 if hasattr(exc, "__name__"):
