@@ -1,14 +1,16 @@
 #!/usr/bin/python3 -S
 
 from sheet import *
+import sys
 import tkinter as tk
+import tkinter.filedialog as filedialog
 import tkinter.messagebox as messagebox
 import tkinter.ttk as ttk
 
 
 class SheetGUI:
 
-    def __init__(self, filename="untitled.xml", rows=32, columns=32):
+    def __init__(self, filename='', rows=32, columns=32):
         # Create and load the sheet.
         self.filename = filename
         self.sheet = Sheet()
@@ -20,31 +22,34 @@ class SheetGUI:
         columns = max(columns, maxx)
         # Create the widgets.
         self.root = tk.Tk()
-        self.root.wm_title("sheets: %s" % self.filename)
+        if self.filename:
+            self.root.wm_title('sheets: %s' % self.filename)
+        else:
+            self.root.wm_title('sheets')
         self.makemenu()
-        self.beacon = tk.Label(self.root, text="A1",
+        self.beacon = tk.Label(self.root, text='A1',
                                font=('helvetica', 16, 'bold'))
         self.entry = tk.Entry(self.root)
-        self.whitespace = ttk.Label(self.root, text=" ")
+        self.whitespace = ttk.Label(self.root, text=' ')
         self.cellgrids = ScrolledFrame(self.root)
         self.cellgrid = self.cellgrids.interior
         self.separator = ttk.Separator(self.root)
-        self.statuebar = tk.Label(self.root, anchor="e",
+        self.statuebar = tk.Label(self.root, anchor='e',
                                   text=filename, font=('helvetica', 10))
         # Configure the widget lay-out.
-        self.statuebar.pack(side="bottom", fill="both")
-        self.separator.pack(side="bottom", fill="both")
-        self.cellgrids.pack(side="bottom", expand=1, fill="both")
-        self.beacon.pack(side="left")
-        self.entry.pack(side="left", expand=1, fill="x")
-        self.whitespace.pack(side="left")
+        self.statuebar.pack(side='bottom', fill='both')
+        self.separator.pack(side='bottom', fill='both')
+        self.cellgrids.pack(side='bottom', expand=1, fill='both')
+        self.beacon.pack(side='left')
+        self.entry.pack(side='left', expand=1, fill='x')
+        self.whitespace.pack(side='left')
         # Bind some events.
-        self.entry.bind("<Return>", self.return_event)
-        self.entry.bind("<Shift-Return>", self.shift_return_event)
-        self.entry.bind("<Tab>", self.tab_event)
-        self.entry.bind("<Shift-Tab>", self.shift_tab_event)
-        self.entry.bind("<Delete>", self.delete_event)
-        self.entry.bind("<Escape>", self.escape_event)
+        self.entry.bind('<Return>', self.return_event)
+        self.entry.bind('<Shift-Return>', self.shift_return_event)
+        self.entry.bind('<Tab>', self.tab_event)
+        self.entry.bind('<Shift-Tab>', self.shift_tab_event)
+        self.entry.bind('<Delete>', self.delete_event)
+        self.entry.bind('<Escape>', self.escape_event)
         # Now create the cell grid
         self.makegrid(rows, columns)
         # Select the top-left cell
@@ -61,7 +66,7 @@ class SheetGUI:
             self.sheet.clearcell(*self.currentxy)
         self.sync()
         self.entry.delete(0, 'end')
-        return "break"
+        return 'break'
 
     def escape_event(self, event):
         x, y = self.currentxy
@@ -70,7 +75,7 @@ class SheetGUI:
     def load_entry(self, x, y):
         cell = self.sheet.getcell(x, y)
         if cell is None:
-            text = ""
+            text = ''
         elif isinstance(cell, FormulaCell):
             text = '=' + cell.formula
         else:
@@ -80,17 +85,17 @@ class SheetGUI:
         self.entry.selection_range(0, 'end')
 
     def makegrid(self, rows, columns):
-        """Helper to create the grid of GUI cells.
+        '''Helper to create the grid of GUI cells.
 
         The edge (x==0 or y==0) is filled with labels; the rest is real cells.
-        """
+        '''
         self.rows = rows
         self.columns = columns
         self.gridcells = {}
         # Create the top left corner cell (which selects all).
         cell = tk.Label(self.cellgrid, relief='raised')
         cell.grid_configure(column=0, row=0, sticky='NSWE')
-        cell.bind("<ButtonPress-1>", self.selectall)
+        cell.bind('<ButtonPress-1>', self.selectall)
         # Create the top row of labels, and configure the grid columns.
         for x in range(1, columns+1):
             self.cellgrid.grid_columnconfigure(x, minsize=64)
@@ -99,10 +104,10 @@ class SheetGUI:
             self.gridcells[x, 0] = cell
             cell.__x = x
             cell.__y = 0
-            cell.bind("<ButtonPress-1>", self.selectcolumn)
-            cell.bind("<B1-Motion>", self.extendcolumn)
-            cell.bind("<ButtonRelease-1>", self.extendcolumn)
-            cell.bind("<Shift-Button-1>", self.extendcolumn)
+            cell.bind('<ButtonPress-1>', self.selectcolumn)
+            cell.bind('<B1-Motion>', self.extendcolumn)
+            cell.bind('<ButtonRelease-1>', self.extendcolumn)
+            cell.bind('<Shift-Button-1>', self.extendcolumn)
         # Create the leftmost column of labels.
         for y in range(1, rows+1):
             cell = tk.Label(self.cellgrid, text=str(y), relief='raised')
@@ -110,10 +115,10 @@ class SheetGUI:
             self.gridcells[0, y] = cell
             cell.__x = 0
             cell.__y = y
-            cell.bind("<ButtonPress-1>", self.selectrow)
-            cell.bind("<B1-Motion>", self.extendrow)
-            cell.bind("<ButtonRelease-1>", self.extendrow)
-            cell.bind("<Shift-Button-1>", self.extendrow)
+            cell.bind('<ButtonPress-1>', self.selectrow)
+            cell.bind('<B1-Motion>', self.extendrow)
+            cell.bind('<ButtonRelease-1>', self.extendrow)
+            cell.bind('<Shift-Button-1>', self.extendrow)
         # Create the real cells.
         for x in range(1, columns+1):
             for y in range(1, rows+1):
@@ -124,10 +129,10 @@ class SheetGUI:
                 cell.__x = x
                 cell.__y = y
                 # Bind mouse events.
-                cell.bind("<ButtonPress-1>", self.press)
-                cell.bind("<B1-Motion>", self.motion)
-                cell.bind("<ButtonRelease-1>", self.release)
-                cell.bind("<Shift-Button-1>", self.release)
+                cell.bind('<ButtonPress-1>', self.press)
+                cell.bind('<B1-Motion>', self.motion)
+                cell.bind('<ButtonRelease-1>', self.release)
+                cell.bind('<Shift-Button-1>', self.release)
 
     def makemenu(self):
         self.root.option_add('*tearOff', 0)
@@ -136,20 +141,45 @@ class SheetGUI:
         self.root['menu'] = self.menubar
         self.menu_file = tk.Menu(self.menubar)
         self.menu_edit = tk.Menu(self.menubar)
+        self.menu_function = tk.Menu(self.menubar)
         self.menubar.add_cascade(menu=self.menu_file, label='File',
                                  underline=0)
         self.menubar.add_cascade(menu=self.menu_edit, label='Edit',
                                  underline=0)
+        self.menubar.add_cascade(menu=self.menu_function, label='Function',
+                                 underline=1)
         # Create File menu.
-        self.menu_file.add_command(label='New')
-        self.menu_file.add_command(label='Open...')
+        self.menu_file.add_command(label='New', accelerator='Ctrl+N')
+        self.menu_file.add_command(label='Open...', accelerator='Ctrl+O')
         self.menu_file.add_separator()
-        self.menu_file.add_command(label='Save', command=self.save)
-        self.menu_file.add_command(label='Save As...')
+        self.menu_file.add_command(label='Save', accelerator='Ctrl+S',
+                                   command=self.save)
+        self.menu_file.add_command(label='Save As...', accelerator='Ctrl+Shift+S',
+                                   command=self.saveas)
         self.menu_file.add_separator()
-        self.menu_file.add_command(label='Exit')
+        self.menu_file.add_command(label='Exit', accelerator='Ctrl-+Q')
+        # Create Edit menu.
+        self.menu_edit.add_command(label='Recalc',accelerator='F5',
+                                   command=self.sync)
+        self.menu_edit.add_separator()
+        self.menu_edit.add_command(label='Cut', accelerator='Ctrl+X')
+        self.menu_edit.add_command(label='Copy', accelerator='Ctrl+C')
+        self.menu_edit.add_command(label='Paste', accelerator='Ctrl+V')
+        self.menu_edit.add_command(label='Select All', accelerator='Ctrl+A',
+                                   command=self.selectall)
+        self.menu_edit.add_separator()
+        self.menu_edit.add_command(label='Find...', accelerator='Ctrl+F')
+        self.menu_edit.add_command(label='Find Next', accelerator='F3')
+        self.menu_edit.add_command(label='Replace...', accelerator='Ctrl+R')
+        self.menu_edit.add_command(label='Goto...', accelerator='Ctrl+G')
+        # Create Function menu.
+        self.menu_function.add_command(label='Function...')
+        self.menu_function.add_separator()
+        self.menu_function.add_command(label='Logical')
+        self.menu_function.add_command(label='Math')
+        self.menu_function.add_command(label='String')
 
-    def selectall(self, event):
+    def selectall(self, event=None):
         self.setcurrent(1, 1)
         self.setcorner(sys.maxsize, sys.maxsize)
 
@@ -187,7 +217,6 @@ class SheetGUI:
 
     release = motion
 
-    
     def whichxy(self, event):
         w = self.cellgrid.winfo_containing(event.x_root, event.y_root)
         if w is not None and isinstance(w, tk.Label):
@@ -198,10 +227,24 @@ class SheetGUI:
         return 0, 0
 
     def save(self):
-        self.sheet.save(self.filename)
+        if self.filename:
+            self.sheet.save(self.filename)
+        else:
+            name = filedialog.askopenfilename(title='sheets: Save')
+            if name:
+                self.filename = name
+                self.sheet.save(sekf.filename)
+            else:
+                pass
+
+    def saveas(self):
+        if name := filedialog.askopenfilename(title='sheets: Save As'):
+            self.save(name)
+        else:
+            pass
 
     def setcurrent(self, x, y):
-        "Make (x, y) the current cell."
+        'Make (x, y) the current cell.'
         if self.currentxy is not None:
             self.change_cell()
         self.clearfocus()
@@ -236,23 +279,22 @@ class SheetGUI:
 
     def setbeacon(self, x1, y1, x2, y2):
         if x1 == y1 == 1 and x2 == y2 == sys.maxsize:
-            name = ":"
+            name = ':'
         elif (x1, x2) == (1, sys.maxsize):
             if y1 == y2:
-                name = "%d" % y1
+                name = '%d' % y1
             else:
-                name = "%d:%d" % (y1, y2)
+                name = '%d:%d' % (y1, y2)
         elif (y1, y2) == (1, sys.maxsize):
             if x1 == x2:
-                name = "%s" % colnum2name(x1)
+                name = '%s' % colnum2name(x1)
             else:
-                name = "%s:%s" % (colnum2name(x1), colnum2name(x2))
+                name = '%s:%s' % (colnum2name(x1), colnum2name(x2))
         else:
             name1 = cellname(*self.currentxy)
             name2 = cellname(*self.cornerxy)
-            name = "%s:%s" % (name1, name2)
+            name = '%s:%s' % (name1, name2)
         self.beacon['text'] = name
-
 
     def clearfocus(self):
         if self.currentxy is not None:
@@ -267,35 +309,35 @@ class SheetGUI:
                     cell['bg'] = 'white'
 
     def return_event(self, event):
-        "Callback for the Return key."
+        'Callback for the Return key.'
         self.change_cell()
         x, y = self.currentxy
         self.setcurrent(x, y+1)
-        return "break"
+        return 'break'
 
     def shift_return_event(self, event):
-        "Callback for the Return key with Shift modifier."
+        'Callback for the Return key with Shift modifier.'
         self.change_cell()
         x, y = self.currentxy
         self.setcurrent(x, max(1, y-1))
-        return "break"
+        return 'break'
 
     def tab_event(self, event):
-        "Callback for the Tab key."
+        'Callback for the Tab key.'
         self.change_cell()
         x, y = self.currentxy
         self.setcurrent(x+1, y)
-        return "break"
+        return 'break'
 
     def shift_tab_event(self, event):
-        "Callback for the Tab key with Shift modifier."
+        'Callback for the Tab key with Shift modifier.'
         self.change_cell()
         x, y = self.currentxy
         self.setcurrent(max(1, x-1), y)
-        return "break"
+        return 'break'
 
     def change_cell(self):
-        "Set the current cell from the entry widget."
+        'Set the current cell from the entry widget.'
         x, y = self.currentxy
         text = self.entry.get()
         cell = None
@@ -326,7 +368,7 @@ class SheetGUI:
                 continue
             cell = self.sheet.getcell(x, y)
             if cell is None:
-                gridcell['text'] = ""
+                gridcell['text'] = ''
             else:
                 if hasattr(cell, 'format'):
                     text, alignment = cell.format()
@@ -337,19 +379,19 @@ class SheetGUI:
 
 
 class ScrolledFrame(ttk.Frame):
-    "Another version of idlelib.configdialog.VerticalScrolledFrame"
+    'Another version of idlelib.configdialog.VerticalScrolledFrame'
     def __init__(self, parent, *args, **kw):
         ttk.Frame.__init__(self, parent, *args, **kw)
         # Create a canvas object and two scrollbars for scrolling it.
-        space = ttk.Label(self, text="  ")
+        space = ttk.Label(self, text='  ')
         hscrollbar = ttk.Scrollbar(self, orient=tk.HORIZONTAL)
         vscrollbar = ttk.Scrollbar(self, orient=tk.VERTICAL)
-        vscrollbar.pack(fill="y", side="right", expand=0)
-        hscrollbar.pack(fill="x", side="bottom", expand=0)
+        vscrollbar.pack(fill='y', side='right', expand=0)
+        hscrollbar.pack(fill='x', side='bottom', expand=0)
         canvas = tk.Canvas(self, borderwidth=0, highlightthickness=0,
                            xscrollcommand=hscrollbar.set,
                            yscrollcommand=vscrollbar.set, width=240)
-        canvas.pack(fill="both", expand=1)
+        canvas.pack(fill='both', expand=1)
         hscrollbar.config(command=canvas.xview)
         vscrollbar.config(command=canvas.yview)
         # Reset the view.
@@ -357,14 +399,14 @@ class ScrolledFrame(ttk.Frame):
         canvas.yview_moveto(0)
         # Create a frame inside the canvas which will be scrolled with it.
         self.interior = interior = ttk.Frame(canvas)
-        interior_id = canvas.create_window(0, 0, window=interior, anchor="nw")
+        interior_id = canvas.create_window(0, 0, window=interior, anchor='nw')
         
         def _configure_interior(event):
             # Track changes to the canvas and frame width and sync them,
             # also updating the scrollbar.
             # Update the scrollbars to match the size of the inner frame.
             size = (interior.winfo_reqwidth(), interior.winfo_reqheight())
-            canvas.config(scrollregion="0 0 %s %s" % size)
+            canvas.config(scrollregion='0 0 %s %s' % size)
         interior.bind('<Configure>', _configure_interior)
 
         def _configure_canvas(event):
@@ -374,10 +416,11 @@ class ScrolledFrame(ttk.Frame):
         
         return
 
+
 if __name__ == '__main__':
     if sys.argv[1:]:
         filename = sys.argv[1]
     else:
-        filename = 'untitled.xml'
+        filename = ''
     win = SheetGUI(filename)
     win.root.mainloop()

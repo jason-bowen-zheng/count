@@ -7,7 +7,7 @@ import sys
 from xml.parsers import expat
 from xml.sax.saxutils import escape
 
-LEFT, CENTER, RIGHT = "LEFT", "CENTER", "RIGHT"
+LEFT, CENTER, RIGHT = 'LEFT', 'CENTER', 'RIGHT'
 
 def ljust(x, n):
     return x.ljust(n)
@@ -20,10 +20,10 @@ def rjust(x, n):
 
 align2action = {LEFT: ljust, CENTER: center, RIGHT: rjust}
 
-align2xml = {LEFT: "left", CENTER: "center", RIGHT: "right"}
-xml2align = {"left": LEFT, "center": CENTER, "right": RIGHT}
+align2xml = {LEFT: 'left', CENTER: 'center', RIGHT: 'right'}
+xml2align = {'left': LEFT, 'center': CENTER, 'right': RIGHT}
 
-align2anchor = {LEFT: "w", CENTER: "center", RIGHT: "e"}
+align2anchor = {LEFT: 'w', CENTER: 'center', RIGHT: 'e'}
 
 
 class Sheet:
@@ -175,16 +175,16 @@ class Sheet:
             full[x, y] = (text, alignment)
             colwidth[x] = max(colwidth[x], len(text))
         # Calculate the horizontal separator line (dashes and dots)
-        sep = ""
+        sep = ''
         for x in range(width):
             if sep:
-                sep += "+"
-            sep += "-"*colwidth[x]
+                sep += '+'
+            sep += '-'*colwidth[x]
         # Now print The full grid
         for y in range(height):
-            line = ""
+            line = ''
             for x in range(width):
-                text, alignment = full.get((x, y)) or ("", LEFT)
+                text, alignment = full.get((x, y)) or ('', LEFT)
                 text = align2action[alignment](text, colwidth[x])
                 if line:
                     line += '|'
@@ -200,14 +200,14 @@ class Sheet:
                 cellxml = cell.xml()
             else:
                 cellxml = '<value>%s</value>' % escape(cell)
-            out.append('<cell row="%s" col="%s">\n  %s\n</cell>' %
+            out.append("<cell row='%s' col='%s'>\n  %s\n</cell>" %
                        (y, x, cellxml))
         out.append('</sheet>')
         return '\n'.join(out)
 
     def save(self, filename):
         text = self.xml()
-        with open(filename, "w", encoding='utf-8') as f:
+        with open(filename, 'w', encoding='utf-8') as f:
             f.write(text)
             if text and not text.endswith('\n'):
                 f.write('\n')
@@ -241,11 +241,11 @@ class SheetParser:
     def endelement(self, tag):
         method = getattr(self, 'end_'+tag, None)
         if method:
-            method("".join(self.texts))
+            method(''.join(self.texts))
 
     def start_cell(self, attrs):
-        self.y = int(attrs.get("row"))
-        self.x = int(attrs.get("col"))
+        self.y = int(attrs.get('row'))
+        self.x = int(attrs.get('col'))
 
     def start_value(self, attrs):
         self.fmt = attrs.get('format')
@@ -281,16 +281,16 @@ class SheetParser:
             self.cell = self.value
         elif isinstance(self.value, str):
             self.cell = StringCell(self.value,
-                                   self.fmt or "%s",
+                                   self.fmt or '%s',
                                    self.alignment or LEFT)
         else:
             self.cell = NumericCell(self.value,
-                                    self.fmt or "%s",
+                                    self.fmt or '%s',
                                     self.alignment or RIGHT)
 
     def end_formula(self, text):
         self.cell = FormulaCell(text,
-                                self.fmt or "%s",
+                                self.fmt or '%s',
                                 self.alignment or RIGHT)
 
     def end_cell(self, text):
@@ -299,17 +299,18 @@ class SheetParser:
 
 class BaseCell:
     __init__ = None # Must provide
-    """Abstract base class for sheet cells.
+    '''Abstract base class for sheet cells.
     Subclasses may but needn't provide the following APIs:
     cell.reset() -- prepare for recalculation
     cell.recalc(ns) -> value -- recalculate formula
     cell.format() -> (value, alignment) -- return formatted value
     cell.xml() -> string -- return XML
-    """
+    '''
+
 
 class NumericCell(BaseCell):
 
-    def __init__(self, value, fmt="%s", alignment=RIGHT):
+    def __init__(self, value, fmt='%s', alignment=RIGHT):
         assert isinstance(value, (int, float, complex))
         assert alignment in (LEFT, CENTER, RIGHT)
         self.value = value
@@ -328,7 +329,7 @@ class NumericCell(BaseCell):
 
     def xml(self):
         method = getattr(self, '_xml_' + type(self.value).__name__)
-        return '<value align="%s" format="%s">%s</value>' % (
+        return "<value align='%s' format='%s'>%s</value>" % (
                 align2xml[self.alignment],
                 self.fmt,
                 method())
@@ -345,9 +346,10 @@ class NumericCell(BaseCell):
     def _xml_complex(self):
         return '<complex>%r</complex>' % self.value
 
+
 class StringCell(BaseCell):
 
-    def __init__(self, text, fmt="%s", alignment=LEFT):
+    def __init__(self, text, fmt='%s', alignment=LEFT):
         assert isinstance(text, str)
         assert alignment in (LEFT, CENTER, RIGHT)
         self.text = text
@@ -361,15 +363,16 @@ class StringCell(BaseCell):
         return self.text, self.alignment
 
     def xml(self):
-        s = '<value align="%s" format="%s"><string>%s</string></value>'
+        s = "<value align='%s' format='%s'><string>%s</string></value>"
         return s % (
             align2xml[self.alignment],
             self.fmt,
             escape(self.text))
 
+
 class FormulaCell(BaseCell):
 
-    def __init__(self, formula, fmt="%s", alignment=RIGHT):
+    def __init__(self, formula, fmt='%s', alignment=RIGHT):
         assert alignment in (LEFT, CENTER, RIGHT)
         self.formula = formula
         self.translated = translate(self.formula)
@@ -386,7 +389,7 @@ class FormulaCell(BaseCell):
                 self.value = eval(self.translated, ns)
             except:
                 exc = sys.exc_info()[0]
-                if hasattr(exc, "__name__"):
+                if hasattr(exc, '__name__'):
                     self.value = exc.__name__
                 else:
                     self.value = str(exc)
@@ -400,7 +403,7 @@ class FormulaCell(BaseCell):
         return text, self.alignment
 
     def xml(self):
-        return '<formula align="%s" format="%s">%s</formula>' % (
+        return "<formula align='%s' format='%s'>%s</formula>" % (
             align2xml[self.alignment],
             self.fmt,
             escape(self.formula))
@@ -416,38 +419,39 @@ class FormulaCell(BaseCell):
                 if x1 <= x <= x2 and y1 <= y <= y2:
                     part = cellname(x+dx, y+dy)
             out.append(part)
-        return FormulaCell("".join(out), self.fmt, self.alignment)
+        return FormulaCell(''.join(out), self.fmt, self.alignment)
+
 
 def translate(formula):
-    """Translate a formula containing fancy cell names to valid Python code.
+    '''Translate a formula containing fancy cell names to valid Python code.
 
     Examples:
         B4 -> cell(2, 4)
         B4:Z100 -> cells(2, 4, 26, 100)
-    """
+    '''
     out = []
-    for part in re.split(r"(\w+(?::\w+)?)", formula):
-        m = re.match(r"^([A-Z]+)([1-9][0-9]*)(?::([A-Z]+)([1-9][0-9]*))?$", part)
+    for part in re.split(r'(\w+(?::\w+)?)', formula):
+        m = re.match(r'^([A-Z]+)([1-9][0-9]*)(?::([A-Z]+)([1-9][0-9]*))?$', part)
         if m is None:
             out.append(part)
         else:
             x1, y1, x2, y2 = m.groups()
             x1 = colname2num(x1)
             if x2 is None:
-                s = "cell(%s, %s)" % (x1, y1)
+                s = 'cell(%s, %s)' % (x1, y1)
             else:
                 x2 = colname2num(x2)
-                s = "cells(%s, %s, %s, %s)" % (x1, y1, x2, y2)
+                s = 'cells(%s, %s, %s, %s)' % (x1, y1, x2, y2)
             out.append(s)
-    return "".join(out)
+    return ''.join(out)
 
 def cellname(x, y):
-    "Translate a cell coordinate to a fancy cell name (e.g. (1, 1)->'A1')."
+    # Translate a cell coordinate to a fancy cell name (e.g. (1, 1)->'A1').
     assert x > 0 # Column 0 has an empty name, so can't use that
     return colnum2name(x) + str(y)
 
 def colname2num(s):
-    "Translate a column name to number (e.g. 'A'->1, 'Z'->26, 'AA'->27)."
+    # Translate a column name to number (e.g. 'A'->1, 'Z'->26, 'AA'->27).
     s = s.upper()
     n = 0
     for c in s:
@@ -456,9 +460,9 @@ def colname2num(s):
     return n
 
 def colnum2name(n):
-    "Translate a column number to name (e.g. 1->'A', etc.)."
+    # Translate a column number to name (e.g. 1->'A', etc.).
     assert n > 0
-    s = ""
+    s = ''
     while n:
         n, m = divmod(n-1, 26)
         s = chr(m+ord('A')) + s

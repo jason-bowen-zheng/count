@@ -28,20 +28,20 @@ v_pi = math.pi
 v_tau = math.tau
 
 def f_abs(x):
-    """math function
+    '''math function
 abs(x: (int, float, complex)) => abs(x)
 return the absolute value of x.
-"""
+'''
     if instance(x, (int, float, complex)):
         return abs(x)
     else:
         raise TypeError
 
 def f_all(seq):
-    """logical function
+    '''logical function
 all(seq: list) => bool
 return True if all value in seq is not None.
-"""
+'''
     for i in seq:
         if not i:
             return False
@@ -49,10 +49,10 @@ return True if all value in seq is not None.
         return True
 
 def f_any(seq):
-    """logical function
+    '''logical function
 any(seq: list) => bool
 return True if one value in seq is not None.
-"""
+'''
     for i in seq:
         if i:
             return True
@@ -60,10 +60,10 @@ return True if one value in seq is not None.
         return False
 
 def f_average(seq):
-    """statistics function
+    '''statistics function
 average(seq: list) => float
 return average number of seq.
-"""
+'''
     l = []
     for x in seq:
         if x is not None:
@@ -72,33 +72,33 @@ return average number of seq.
         return static.fmean(l)
 
 def f_bin(n):
-    """logical function
+    '''logical function
 bin(n: int) => '0b...'
 return the binary representation of n.
-"""
+'''
     return bin(n)
 
 def f_choose(con, a, b):
-    """logical function
+    '''logical function
 choose(con: bool, a, b) => a or b
 if con is True:
  return a
 else:
  return b
-"""
+'''
     if con:
         return a
     else:
         return b
 
 def f_chooses(n, l):
-    """logical function
+    '''logical function
 chooses(n: int, l: list) => l[int(n)]
 if n < 0 or n > length of l:
  return l[0] or l[-1]
 else:
  return l[int(n)]
-"""
+'''
     if  not instance(l, list):
         raise TypeError
     elif int(n) < 0:
@@ -109,10 +109,10 @@ else:
         return l[int(n)]
 
 def f_cos(x):
-    """math function
+    '''math function
 cos(x: (int, float, complex)) => (float, complex)
 return the cos of x.
-"""
+'''
     if isinstance(x, complex):
         return cmath.cos(x)
     elif isinstance(x, (int, float)):
@@ -121,24 +121,24 @@ return the cos of x.
         raise TypeError
 
 def f_hex(n):
-    """logical function
+    '''logical function
 hex(n: int) => '0x...'
 return the hexadecimal representation of n.
-"""
+'''
     return hex(n)
 
 def f_oct(n):
-    """logical function
+    '''logical function
 oct(n: int) => '0o...'
 return the octal representation of n.
-    """
+    '''
     return oct(n)
 
 def f_sin(x):
-    """math function
+    '''math function
 sin(x: (int, float, complex)) => (float, complex)
 return the sin of x
-"""
+'''
     if isinstance(x, complex):
         return cmath.sin(x)
     elif isinstance(x, (int, float)):
@@ -147,10 +147,10 @@ return the sin of x
         raise TypeError
 
 def f_sum(seq):
-    """statistics function
+    '''statistics function
 sum(seq: list) => float
 return sum of seq
-"""
+'''
     total = 0
     for x in seq:
         if x is not None:
@@ -159,10 +159,10 @@ return sum of seq
         return total
 
 def f_tan(x):
-    """"math function
+    ''''math function
 tan(x: (int, float, complex)) => (float, complex)
 return the tan of x
-"""
+'''
     if isinstance(x, complex):
         return cmath.tan(x)
     elif isinstance(x, (int, foat)):
