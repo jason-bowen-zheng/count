@@ -9,36 +9,36 @@ import tkinter.ttk as ttk
 class SheetGUI:
 
     def __init__(self, filename="untitled.xml", rows=32, columns=32):
-        # Create and load the sheet
+        # Create and load the sheet.
         self.filename = filename
         self.sheet = Sheet()
         if os.path.isfile(filename):
             self.sheet.load(filename)
-        # Calculate the needed grid size
+        # Calculate the needed grid size.
         maxx, maxy = self.sheet.getsize()
         rows = max(rows, maxy)
         columns = max(columns, maxx)
-        # Create the widgets
+        # Create the widgets.
         self.root = tk.Tk()
         self.root.wm_title("sheets: %s" % self.filename)
+        self.makemenu()
         self.beacon = tk.Label(self.root, text="A1",
                                font=('helvetica', 16, 'bold'))
         self.entry = tk.Entry(self.root)
-        self.savebutton = ttk.Button(self.root, text="Save",
-                                    command=self.save)
+        self.whitespace = ttk.Label(self.root, text=" ")
         self.cellgrids = ScrolledFrame(self.root)
         self.cellgrid = self.cellgrids.interior
         self.separator = ttk.Separator(self.root)
         self.statuebar = tk.Label(self.root, anchor="e",
                                   text=filename, font=('helvetica', 10))
-        # Configure the widget lay-out
+        # Configure the widget lay-out.
         self.statuebar.pack(side="bottom", fill="both")
         self.separator.pack(side="bottom", fill="both")
         self.cellgrids.pack(side="bottom", expand=1, fill="both")
         self.beacon.pack(side="left")
-        self.savebutton.pack(side="right")
         self.entry.pack(side="left", expand=1, fill="x")
-        # Bind some events
+        self.whitespace.pack(side="left")
+        # Bind some events.
         self.entry.bind("<Return>", self.return_event)
         self.entry.bind("<Shift-Return>", self.shift_return_event)
         self.entry.bind("<Tab>", self.tab_event)
@@ -51,7 +51,7 @@ class SheetGUI:
         self.currentxy = None
         self.cornerxy = None
         self.setcurrent(1, 1)
-        # Copy the sheet cells to the GUI cells
+        # Copy the sheet cells to the GUI cells.
         self.sync()
 
     def delete_event(self, event):
@@ -87,11 +87,11 @@ class SheetGUI:
         self.rows = rows
         self.columns = columns
         self.gridcells = {}
-        # Create the top left corner cell (which selects all)
+        # Create the top left corner cell (which selects all).
         cell = tk.Label(self.cellgrid, relief='raised')
         cell.grid_configure(column=0, row=0, sticky='NSWE')
         cell.bind("<ButtonPress-1>", self.selectall)
-        # Create the top row of labels, and configure the grid columns
+        # Create the top row of labels, and configure the grid columns.
         for x in range(1, columns+1):
             self.cellgrid.grid_columnconfigure(x, minsize=64)
             cell = tk.Label(self.cellgrid, text=colnum2name(x), relief='raised')
@@ -103,7 +103,7 @@ class SheetGUI:
             cell.bind("<B1-Motion>", self.extendcolumn)
             cell.bind("<ButtonRelease-1>", self.extendcolumn)
             cell.bind("<Shift-Button-1>", self.extendcolumn)
-        # Create the leftmost column of labels
+        # Create the leftmost column of labels.
         for y in range(1, rows+1):
             cell = tk.Label(self.cellgrid, text=str(y), relief='raised')
             cell.grid_configure(column=0, row=y, sticky='WE')
@@ -114,7 +114,7 @@ class SheetGUI:
             cell.bind("<B1-Motion>", self.extendrow)
             cell.bind("<ButtonRelease-1>", self.extendrow)
             cell.bind("<Shift-Button-1>", self.extendrow)
-        # Create the real cells
+        # Create the real cells.
         for x in range(1, columns+1):
             for y in range(1, rows+1):
                 cell = tk.Label(self.cellgrid, relief='sunken',
@@ -123,11 +123,31 @@ class SheetGUI:
                 self.gridcells[x, y] = cell
                 cell.__x = x
                 cell.__y = y
-                # Bind mouse events
+                # Bind mouse events.
                 cell.bind("<ButtonPress-1>", self.press)
                 cell.bind("<B1-Motion>", self.motion)
                 cell.bind("<ButtonRelease-1>", self.release)
                 cell.bind("<Shift-Button-1>", self.release)
+
+    def makemenu(self):
+        self.root.option_add('*tearOff', 0)
+        # Create menu bar.
+        self.menubar = tk.Menu(self.root)
+        self.root['menu'] = self.menubar
+        self.menu_file = tk.Menu(self.menubar)
+        self.menu_edit = tk.Menu(self.menubar)
+        self.menubar.add_cascade(menu=self.menu_file, label='File',
+                                 underline=0)
+        self.menubar.add_cascade(menu=self.menu_edit, label='Edit',
+                                 underline=0)
+        # Create File menu
+        self.menu_file.add_command(label='New')
+        self.menu_file.add_command(label='Open...')
+        self.menu_file.add_separator()
+        self.menu_file.add_command(label='Save', command=self.save)
+        self.menu_file.add_command(label='Save As...')
+        self.menu_file.add_separator()
+        self.menu_file.add_command(label='Exit')
 
     def selectall(self, event):
         self.setcurrent(1, 1)
