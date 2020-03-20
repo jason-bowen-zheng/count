@@ -1,5 +1,15 @@
 #!/usr/bin/python3
 
+# sheet v1.0
+# A simple GUI sheet program.
+# Copyright (c) jason-bowen-zheng 2018-2029
+# All Right Reserved.
+# The source code can fibd in:
+# http://github.com/jasin-bowen-zheng/sheets
+# The license is GPLv3.
+
+from aboutdialog import AboutDialog
+from licensedialog import LicenseDialog
 from scrolledframe import ScrolledFrame
 from sheet import *
 import os
@@ -10,7 +20,7 @@ import tkinter.messagebox as messagebox
 import tkinter.ttk as ttk
 
 
-class SheetGUI:
+class SheetGUI():
 
     def __init__(self, filename='', rows=64, columns=32):
         # Create and load the sheet.
@@ -27,9 +37,9 @@ class SheetGUI:
         self.root.geometry('640x480')
         self.root.minsize(640, 480)
         if self.filename:
-            self.root.wm_title('sheets - %s' % self.filename)
+            self.root.title('sheets - %s' % self.filename)
         else:
-            self.root.wm_title('sheets')
+            self.root.title('sheets')
         self.makemenu()
         self.beacon = tk.Label(self.root, text='A1',
                                font=('helvetica', 16, 'bold'))
