@@ -1,5 +1,6 @@
-#!/usr/bin/python3 -S
+#!/usr/bin/python3
 
+from scrolledframe import ScrolledFrame
 from sheet import *
 import os
 import sys
@@ -24,6 +25,7 @@ class SheetGUI:
         # Create the widgets.
         self.root = tk.Tk()
         self.root.geometry('640x480')
+        self.root.minsize(640, 480)
         if self.filename:
             self.root.wm_title('sheets - %s' % self.filename)
         else:
@@ -32,7 +34,7 @@ class SheetGUI:
         self.beacon = tk.Label(self.root, text='A1',
                                font=('helvetica', 16, 'bold'))
         self.entry = tk.Entry(self.root)
-        self.whitespace = ttk.Label(self.root, text=' ')
+        self.whitespace = ttk.Label(self.root, text='  ')
         self.cellgrids = ScrolledFrame(self.root)
         self.cellgrid = self.cellgrids.interior
         self.separator = ttk.Separator(self.root)
@@ -144,12 +146,15 @@ class SheetGUI:
         self.menu_file = tk.Menu(self.menubar)
         self.menu_edit = tk.Menu(self.menubar)
         self.menu_function = tk.Menu(self.menubar)
+        self.menu_help = tk.Menu(self.menubar)
         self.menubar.add_cascade(menu=self.menu_file, label='File',
                                  underline=0)
         self.menubar.add_cascade(menu=self.menu_edit, label='Edit',
                                  underline=0)
         self.menubar.add_cascade(menu=self.menu_function, label='Function',
                                  underline=1)
+        self.menubar.add_cascade(menu=self.menu_help, label='Help',
+                                 underline=0)
         # Create File menu.
         self.menu_file.add_command(label='New', accelerator='Ctrl+N')
         self.menu_file.add_command(label='Open...', accelerator='Ctrl+O',
@@ -181,6 +186,11 @@ class SheetGUI:
         self.menu_function.add_command(label='Logical')
         self.menu_function.add_command(label='Math')
         self.menu_function.add_command(label='String')
+        # Create Help menu.
+        self.menu_help.add_command(label='Help', accelerator='F1')
+        self.menu_help.add_separator()
+        self.menu_help.add_command(label='About')
+        self.menu_help.add_command(label='License')
 
     def selectall(self, event=None):
         self.setcurrent(1, 1)
@@ -395,45 +405,6 @@ class SheetGUI:
                     text, alignment = str(cell), LEFT
                 gridcell['text'] = text
                 gridcell['anchor'] = align2anchor[alignment]
-
-
-class ScrolledFrame(ttk.Frame):
-    'Another version of idlelib.configdialog.VerticalScrolledFrame'
-    def __init__(self, parent, *args, **kw):
-        ttk.Frame.__init__(self, parent, *args, **kw)
-        # Create a canvas object and two scrollbars for scrolling it.
-        space = ttk.Label(self, text='  ')
-        hscrollbar = ttk.Scrollbar(self, orient=tk.HORIZONTAL)
-        vscrollbar = ttk.Scrollbar(self, orient=tk.VERTICAL)
-        vscrollbar.pack(fill='y', side='right', expand=0)
-        hscrollbar.pack(fill='x', side='bottom', expand=0)
-        canvas = tk.Canvas(self, borderwidth=0, highlightthickness=0,
-                           xscrollcommand=hscrollbar.set,
-                           yscrollcommand=vscrollbar.set, width=240)
-        canvas.pack(fill='both', expand=1)
-        hscrollbar.config(command=canvas.xview)
-        vscrollbar.config(command=canvas.yview)
-        # Reset the view.
-        canvas.xview_moveto(0)
-        canvas.yview_moveto(0)
-        # Create a frame inside the canvas which will be scrolled with it.
-        self.interior = interior = ttk.Frame(canvas)
-        interior_id = canvas.create_window(0, 0, window=interior, anchor='nw')
-        
-        def _configure_interior(event):
-            # Track changes to the canvas and frame width and sync them,
-            # also updating the scrollbar.
-            # Update the scrollbars to match the size of the inner frame.
-            size = (interior.winfo_reqwidth(), interior.winfo_reqheight())
-            canvas.config(scrollregion='0 0 %s %s' % size)
-        interior.bind('<Configure>', _configure_interior)
-
-        def _configure_canvas(event):
-            # It's wise not to do anything.
-            pass
-        canvas.bind('<Configure>', _configure_canvas)
-        
-        return
 
 
 if __name__ == '__main__':
