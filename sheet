@@ -1,6 +1,7 @@
 #!/usr/bin/python3 -S
 
 from sheet import *
+import os
 import sys
 import tkinter as tk
 import tkinter.filedialog as filedialog
@@ -10,7 +11,7 @@ import tkinter.ttk as ttk
 
 class SheetGUI:
 
-    def __init__(self, filename='', rows=32, columns=32):
+    def __init__(self, filename='', rows=64, columns=32):
         # Create and load the sheet.
         self.filename = filename
         self.sheet = Sheet()
@@ -22,8 +23,9 @@ class SheetGUI:
         columns = max(columns, maxx)
         # Create the widgets.
         self.root = tk.Tk()
+        self.root.geometry('640x480')
         if self.filename:
-            self.root.wm_title('sheets: %s' % self.filename)
+            self.root.wm_title('sheets - %s' % self.filename)
         else:
             self.root.wm_title('sheets')
         self.makemenu()
@@ -35,7 +37,7 @@ class SheetGUI:
         self.cellgrid = self.cellgrids.interior
         self.separator = ttk.Separator(self.root)
         self.statuebar = tk.Label(self.root, anchor='e',
-                                  text=filename, font=('helvetica', 10))
+                                  text=filename, font=('helvetica', 8))
         # Configure the widget lay-out.
         self.statuebar.pack(side='bottom', fill='both')
         self.separator.pack(side='bottom', fill='both')
@@ -150,7 +152,8 @@ class SheetGUI:
                                  underline=1)
         # Create File menu.
         self.menu_file.add_command(label='New', accelerator='Ctrl+N')
-        self.menu_file.add_command(label='Open...', accelerator='Ctrl+O')
+        self.menu_file.add_command(label='Open...', accelerator='Ctrl+O',
+                                   command=self.openfile)
         self.menu_file.add_separator()
         self.menu_file.add_command(label='Save', accelerator='Ctrl+S',
                                    command=self.save)
@@ -226,23 +229,39 @@ class SheetGUI:
                 pass
         return 0, 0
 
-    def save(self):
+    filetypes = [
+        ('xml files', '*.xml', 'TEXT'),
+        ('csv files', '*.csv', 'TEXT'),
+        ('all files', '*')
+        ]
+
+    def save(self, filename=None):
         if self.filename:
             self.sheet.save(self.filename)
         else:
-            name = filedialog.askopenfilename(title='sheets: Save')
+            name = filedialog.SaveAs(filetypes=self.filetypes,
+                                 defaultextension='*.xml',
+                                 initialdir=os.getcwd(),
+                                 initialfile='untitled.xml').show()
             if name:
                 self.filename = name
-                self.sheet.save(sekf.filename)
+                self.sheet.save(self.filename)
             else:
                 pass
 
     def saveas(self):
-        if name := filedialog.askopenfilename(title='sheets: Save As'):
-            self.save(name)
+        name = filedialog.SaveAs(filetypes=self.filetypes,
+                                 defaultextension='*.xml',
+                                 initialdir=os.getcwd(),
+                                 initialfile='untitled.xml').show()
+        if name:
+            self.sheet.save(name)
         else:
             pass
 
+    def openfile(self, event):
+        pass
+    
     def setcurrent(self, x, y):
         'Make (x, y) the current cell.'
         if self.currentxy is not None:
