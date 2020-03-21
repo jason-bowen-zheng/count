@@ -9,7 +9,6 @@
 # The license is GPLv3.
 
 from aboutdialog import AboutDialog
-from licensedialog import LicenseDialog
 from scrolledframe import ScrolledFrame
 from sheet import *
 import os
@@ -147,7 +146,7 @@ class SheetGUI():
                 cell.bind('<B1-Motion>', self.motion)
                 cell.bind('<ButtonRelease-1>', self.release)
                 cell.bind('<Shift-Button-1>', self.release)
-
+    
     def makemenu(self):
         self.root.option_add('*tearOff', 0)
         # Create menu bar.
@@ -199,7 +198,8 @@ class SheetGUI():
         # Create Help menu.
         self.menu_help.add_command(label='Help', accelerator='F1')
         self.menu_help.add_separator()
-        self.menu_help.add_command(label='About')
+        self.menu_help.add_command(label='About',
+                                   command=AboutDialog(self.root))
         self.menu_help.add_command(label='License')
 
     def selectall(self, event=None):
@@ -279,7 +279,7 @@ class SheetGUI():
         else:
             pass
 
-    def openfile(self, event):
+    def openfile(self, event=None):
         pass
     
     def setcurrent(self, x, y):

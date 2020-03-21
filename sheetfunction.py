@@ -14,7 +14,10 @@ __all__ = [
     'f_chooses',
     'f_cos',
     'f_hex',
+    'f_max',
+    'f_min',
     'f_oct',
+    'f_round',
     'f_sin',
     'f_sum',
     'f_tan',
@@ -66,7 +69,7 @@ return average number of seq.
 '''
     l = []
     for x in seq:
-        if x is not None:
+        if x:
             l.append(x)
     else:
         return static.fmean(l)
@@ -127,12 +130,43 @@ return the hexadecimal representation of n.
 '''
     return hex(n)
 
+def f_max(seq):
+    '''math function
+max(seq: list) => (int, float)
+return the maximum number in seq
+'''
+    l = []
+    for x in seq:
+        if x:
+            l.append(x)
+    else:
+        return max(l)
+
+def f_min(seq):
+    '''math function
+min(seq: list) => (int, float)
+return the minimum number in seq
+'''
+    l = []
+    for x in seq:
+        if x:
+            l.append(x)
+    else:
+        return min(l)
+
 def f_oct(n):
     '''logical function
 oct(n: int) => '0o...'
 return the octal representation of n.
-    '''
+'''
     return oct(n)
+
+def f_round(x, n=None):
+    '''math function
+round(x: (int, float), n: (int)=None) => (int, float)
+
+'''
+    return round(x, n)
 
 def f_sin(x):
     '''math function
@@ -153,7 +187,7 @@ return sum of seq
 '''
     total = 0
     for x in seq:
-        if x is not None:
+        if x:
             total += x
     else:
         return total
@@ -180,7 +214,10 @@ functions = {
     'chooses':  f_chooses,
     'cos':      f_cos,
     'hex':      f_hex,
+    'max':      f_max,
+    'min':      f_min,
     'oct':      f_oct,
+    'round':    f_round,
     'sin':      f_sin,
     'sum':      f_sum,
     'tan':      f_tan,
