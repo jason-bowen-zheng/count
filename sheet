@@ -21,7 +21,7 @@ import tkinter.ttk as ttk
 
 class SheetGUI():
 
-    def __init__(self, filename='', rows=64, columns=32):
+    def __init__(self, filename='', rows=10, columns=10):
         # Create and load the sheet.
         self.filename = filename
         self.sheet = Sheet()
@@ -71,6 +71,9 @@ class SheetGUI():
         self.setcurrent(1, 1)
         # Copy the sheet cells to the GUI cells.
         self.sync()
+
+    def aboutdialog(self, event=None):
+        AboutDialog(self.root).show()
 
     def delete_event(self, event):
         if self.cornerxy != self.currentxy and self.cornerxy is not None:
@@ -199,8 +202,7 @@ class SheetGUI():
         self.menu_help.add_command(label='Help', accelerator='F1')
         self.menu_help.add_separator()
         self.menu_help.add_command(label='About',
-                                   command=AboutDialog(self.root))
-        self.menu_help.add_command(label='License')
+                                   command=self.aboutdialog)
 
     def selectall(self, event=None):
         self.setcurrent(1, 1)
