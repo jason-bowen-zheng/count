@@ -10,29 +10,39 @@ class AboutDialog():
     'About dialog of sheets.'
     def __init__(self, master):
         self.aboutdialog = tk.Toplevel(master)
-        self.aboutdialog.geometry('600x500')
+        self.aboutdialog.geometry('550x450')
         self.aboutdialog.resizable(False, False)
         self.aboutdialog.title('Sheets - About')
         self.notebook = ttk.Notebook(self.aboutdialog)
         self.aboutnotebook = ttk.Frame(self.notebook)
         self.licensenotebook = ttk.Frame(self.notebook)
         self.readmenotebook = ttk.Frame(self.notebook)
+        self.closebutton = ttk.Button(self.aboutdialog, text='Close',
+                                      command=self._destory)
         self.notebook.add(self.aboutnotebook, text='About')
         self.notebook.add(self.licensenotebook, text='License')
         self.notebook.add(self.readmenotebook, text='README')
+        self.closebutton.pack(side='bottom' ,padx=10, pady=10)
         self.notebook.pack(fill='both', expand=1)
         self._createabout()
         self._createlicense()
         self._createreadme()
 
+    def _destory(self, event=None):
+        self.aboutdialog.destroy()
+    
     def _createabout(self):
         abouttext = '''\
 Sheet version 1.0.0
 
 A simple GUI sheet program.
 
-Copyright (c) 2018-2020 jason-bowen-zheng.
+You can find source code on:
+http://github.com/jason-bowen-zheng/sheets
+
+Copyright (c) 2020 jason-bowen-zheng.
 All Right Reserved
+
 
 The license is GPLv3.
 '''
