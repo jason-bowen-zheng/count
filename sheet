@@ -47,7 +47,6 @@ class SheetGUI():
         self.whitespace = ttk.Label(self.root, text='  ')
         self.cellgrids = ScrolledFrame(self.root)
         self.cellgrid = self.cellgrids.interior
-        self.sizegrip = ttk.Sizegrip(self.cellgrids)
         self.separator = ttk.Separator(self.root)
         self.statuebar = tk.Label(self.root, anchor='e',
                                   text=filename, font=('helvetica', 8))
@@ -55,7 +54,6 @@ class SheetGUI():
         self.statuebar.pack(side='bottom', fill='both')
         self.separator.pack(side='bottom', fill='both')
         self.cellgrids.pack(side='bottom', expand=1, fill='both')
-        self.sizegrip.pack(fill='both',expand=1)
         self.beacon.pack(side='left')
         self.entry.pack(side='left', expand=1, fill='x')
         self.whitespace.pack(side='left')
