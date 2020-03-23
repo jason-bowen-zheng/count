@@ -75,16 +75,33 @@ The license is GPLv3.
         self.aboutdialog.mainloop()
 
 
-class HTMLFileParser(HTMLParser):
+class Parser(HTMLParser):
 
-    def __init__(self, text, filename):
-        self.text = text
-        self.HTML = open(filename)
-        self.createtag()
+    def handle_starttag(self, tag, attrs):
+        return 'start', tag, attrs
 
-    def createtag(self):
-        self.text.tag_configure('h1')
-        self.text.tag_configure('pre', background='#F1F1F1')
+    def handle_endtag(self, tag):
+        return 'end', tag
+
+    def handle_startendtag(self, tag, attrs):
+        return 'startend', tag, attrs
+
+    def handle_data(self, data):
+        return 'data', data
+
+
+class SheetHelpParser():
+
+    def __init__(self, helparea, topic):
+        self.parser = Parser()
+        self.helparea = helparea
+        self.topic = topic
+        self.helparea.tag_configure('a', foreground='blue', underline=True)
+        self.helparea.tag_configure('h1', font=('helvetica', 20, 'bold'))
+        self.helparea.tag_configure('h2', font=('helvetica', 18, 'bold'))
+        self.helparea.tag_configure('h3', font=('helvetica', 15, 'bold'))
+        self.helparea.tag_configure('p', font=('helvetica', 10))
+
 
 class HelpDialog():
     'Help dialog of sheet.'
@@ -96,8 +113,8 @@ Click 'View online' see help online.
         self.helpdialog = tk.Toplevel(master)
         self.helpdialog.title('Sheet - Help')
         self.helpdialog.geometry('500x600')
-        self.helpdialog.resizable(False, False)
         if not os.path.isfile(r'%s%sdocs%sindex.html' % (sys.path[0], os.sep, os.sep)):
+            self.helpdialog.resizable(False, False)
             self.helpdialog.geometry('300x100')
             self.label = ttk.Label(self.helpdialog, text=defaulttext)
             self.button = ttk.Button(self.helpdialog, text='View online',
@@ -106,11 +123,16 @@ Click 'View online' see help online.
             self.button.pack()
         else:
             self.label = ttk.Label(self.helpdialog, text='Topic:')
+            self.separator = ttk.Separator(self.helpdialog)
             self.topic = ttk.Combobox(self.helpdialog)
+            self.topic['state'] = 'readonly'
             self.helparea = ScrolledText(self.helpdialog)
             self.helparea.pack(side='bottom', fill='both', expand=1)
+            self.separator.pack(side='bottom', fill='both', pady=3)
             self.label.pack(side='left')
-            self.topic.pack(side='left', fill='x', expand=1,padx=1)
+            self.topic.pack(side='left', fill='x', expand=1,padx=3, pady=1)
+            p = HTMLHelpParser()
+            p.feed(open(r'%s%sdocs%sindex.html' % (sys.path[0], os.sep, os.sep)).read())
 
     def show(self):
         self.helpdialog.mainloop()
