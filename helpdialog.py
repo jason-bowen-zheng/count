@@ -75,32 +75,30 @@ The license is GPLv3.
         self.aboutdialog.mainloop()
 
 
-class Parser(HTMLParser):
+class HelpParser(HTMLParser):
+
+    def __init__(self, text):
+        HTMLParser.__init__(self, covert_charrefs=True)
+        self.text = text
+        self.tags = []
 
     def handle_starttag(self, tag, attrs):
-        return 'start', tag, attrs
+        pass
 
     def handle_endtag(self, tag):
-        return 'end', tag
+        pass
 
     def handle_startendtag(self, tag, attrs):
-        return 'startend', tag, attrs
+        pass
 
     def handle_data(self, data):
-        return 'data', data
+        pass
 
 
-class SheetHelpParser():
+class SheetHelp():
 
-    def __init__(self, helparea, topic):
-        self.parser = Parser()
-        self.helparea = helparea
-        self.topic = topic
-        self.helparea.tag_configure('a', foreground='blue', underline=True)
-        self.helparea.tag_configure('h1', font=('helvetica', 20, 'bold'))
-        self.helparea.tag_configure('h2', font=('helvetica', 18, 'bold'))
-        self.helparea.tag_configure('h3', font=('helvetica', 15, 'bold'))
-        self.helparea.tag_configure('p', font=('helvetica', 10))
+    def __init__(self, helparea, topicbox):
+        pass
 
 
 class HelpDialog():
@@ -131,8 +129,6 @@ Click 'View online' see help online.
             self.separator.pack(side='bottom', fill='both', pady=3)
             self.label.pack(side='left')
             self.topic.pack(side='left', fill='x', expand=1,padx=3, pady=1)
-            p = HTMLHelpParser()
-            p.feed(open(r'%s%sdocs%sindex.html' % (sys.path[0], os.sep, os.sep)).read())
 
     def show(self):
         self.helpdialog.mainloop()
