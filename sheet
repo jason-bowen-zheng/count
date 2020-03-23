@@ -37,14 +37,13 @@ class SheetGUI():
         self.root.geometry('640x480')
         self.root.minsize(640, 480)
         if self.filename:
-            self.root.title('sheets - %s' % self.filename)
+            self.root.title('sheet - %s' % self.filename)
         else:
-            self.root.title('sheets')
+            self.root.title('sheet')
         self.makemenu()
         self.beacon = tk.Label(self.root, text='A1',
                                font=('helvetica', 16, 'bold'))
         self.entry = tk.Entry(self.root)
-        self.whitespace = ttk.Label(self.root, text='  ')
         self.cellgrids = ScrolledFrame(self.root)
         self.cellgrid = self.cellgrids.interior
         self.separator = ttk.Separator(self.root)
@@ -55,8 +54,7 @@ class SheetGUI():
         self.separator.pack(side='bottom', fill='both')
         self.cellgrids.pack(side='bottom', expand=1, fill='both')
         self.beacon.pack(side='left')
-        self.entry.pack(side='left', expand=1, fill='x')
-        self.whitespace.pack(side='left')
+        self.entry.pack(side='left', expand=1, fill='x', padx=3)
         # Bind some events.
         self.entry.bind('<Return>', self.return_event)
         self.entry.bind('<Shift-Return>', self.shift_return_event)

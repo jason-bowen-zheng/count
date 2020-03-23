@@ -97,7 +97,6 @@ Click 'View online' see help online.
         self.helpdialog.title('Sheet - Help')
         self.helpdialog.geometry('500x600')
         self.helpdialog.resizable(False, False)
-        print(r'%s%sdocs%sindex.html' % (sys.path[0], os.sep, os.sep))
         if not os.path.isfile(r'%s%sdocs%sindex.html' % (sys.path[0], os.sep, os.sep)):
             self.helpdialog.geometry('300x100')
             self.label = ttk.Label(self.helpdialog, text=defaulttext)
@@ -106,14 +105,16 @@ Click 'View online' see help online.
             self.label.pack()
             self.button.pack()
         else:
+            self.label = ttk.Label(self.helpdialog, text='Topic:')
             self.topic = ttk.Combobox(self.helpdialog)
             self.helparea = ScrolledText(self.helpdialog)
-            self.topic.pack(side='top', fill='x')
             self.helparea.pack(side='bottom', fill='both', expand=1)
+            self.label.pack(side='left')
+            self.topic.pack(side='left', fill='x', expand=1,padx=1)
 
     def show(self):
         self.helpdialog.mainloop()
     
     def view_online(self, event=None):
         self.helpdialog.destroy()
-        webbrowser.open('http://github.com/jason-bowen-zheng/sheet/docs/index.html')
+        webbrowser.open('https://jason-bowen-zheng.github.io/sheet/')
