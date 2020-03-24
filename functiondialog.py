@@ -38,7 +38,9 @@ class FunctionDialog():
         self.typebox.pack(side='left', fill='x', expand=1, padx=3, pady=2)     
 
     def typeboxsel(self, event):
-        print(dir(event))
+        for k, v in function.functions.items():
+            if v.__doc__.split('\n')[0].lower() == self.typebox.get():
+                self.listbox.insert('end', k)
     
     def show(self):
         # self.functiondialog.geometry('300x270')
