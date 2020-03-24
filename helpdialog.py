@@ -12,6 +12,7 @@ class AboutDialog():
     'About dialog of sheets.'
     def __init__(self, master):
         self.aboutdialog = tk.Toplevel(master)
+        self.aboutdialog.transient(master)
         self.aboutdialog.geometry('550x450')
         self.aboutdialog.resizable(False, False)
         self.aboutdialog.title('Sheets - About')
@@ -26,6 +27,7 @@ class AboutDialog():
         self.notebook.add(self.readmenotebook, text='README')
         self.closebutton.pack(side='bottom' ,padx=10, pady=10)
         self.notebook.pack(fill='both', expand=1)
+        self.closebutton.focus_set()
         self._createabout()
         self._createlicense()
         self._createreadme()
@@ -72,6 +74,8 @@ The license is GPLv3.
         self.textarea['state'] = 'disabled'
 
     def show(self):
+        self.aboutdialog.deiconify()
+        self.aboutdialog.wait_window()
         self.aboutdialog.mainloop()
 
 
@@ -126,9 +130,9 @@ Click 'View online' see help online.
             self.topic['state'] = 'readonly'
             self.helparea = ScrolledText(self.helpdialog)
             self.helparea.pack(side='bottom', fill='both', expand=1)
-            self.separator.pack(side='bottom', fill='both', pady=3)
+            self.separator.pack(side='bottom', fill='both', padx=20, pady=5)
             self.label.pack(side='left')
-            self.topic.pack(side='left', fill='x', expand=1,padx=3, pady=1)
+            self.topic.pack(side='left', fill='x', expand=1,padx=3, pady=3)
 
     def show(self):
         self.helpdialog.mainloop()

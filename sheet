@@ -209,6 +209,8 @@ class SheetGUI():
         self.menu_function.add_command(label='Logical', underline=0)
         self.menu_function.add_command(label='Math', underline=0)
         self.menu_function.add_command(label='String', underline=0)
+        self.menu_function.add_separator()
+        self.menu_function.add_command(label='Variable', underline=0)
         # Create Help menu.
         self.menu_help.add_command(label='Help', accelerator='F1',
                                    underline=0, command=self.helpdialog)
