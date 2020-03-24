@@ -8,6 +8,7 @@
 # http://github.com/jasin-bowen-zheng/sheets
 # The license is GPLv3.
 
+from functiondialog import FunctionDialog
 from helpdialog import (AboutDialog, HelpDialog)
 from editdialog import (FindDialog, ReplaceDialog, GotoDialog)
 from scrolledframe import ScrolledFrame
@@ -73,6 +74,9 @@ class SheetGUI():
 
     def aboutdialog(self, event=None):
         AboutDialog(self.root).show()
+
+    def functiondialog(self, event=None):
+        FunctionDialog(self.root).show()
 
     def helpdialog(self, event=None):
         HelpDialog(self.root).show()
@@ -204,7 +208,8 @@ class SheetGUI():
         self.menu_edit.add_command(label='Goto...', accelerator='Ctrl+G',
                                    underline=0)
         # Create Function menu.
-        self.menu_function.add_command(label='Function...', underline=0)
+        self.menu_function.add_command(label='Function...', underline=0,
+                                       command=self.functiondialog)
         self.menu_function.add_separator()
         self.menu_function.add_command(label='Logical', underline=0)
         self.menu_function.add_command(label='Math', underline=0)

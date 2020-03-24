@@ -75,6 +75,7 @@ The license is GPLv3.
 
     def show(self):
         self.aboutdialog.deiconify()
+        self.aboutdialog.grab_set()
         self.aboutdialog.wait_window()
         self.aboutdialog.mainloop()
 

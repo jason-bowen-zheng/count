@@ -32,7 +32,7 @@ v_tau = math.tau
 
 def f_abs(x):
     '''math function
-abs(x: (int, float, complex)) => abs(x)
+abs(x:ifc) => abs(x)
 return the absolute value of x.
 '''
     if instance(x, (int, float, complex)):
@@ -42,7 +42,7 @@ return the absolute value of x.
 
 def f_all(seq):
     '''logical function
-all(seq: list) => bool
+all(seq:l) => b
 return True if all value in seq is not None.
 '''
     for i in seq:
@@ -53,7 +53,7 @@ return True if all value in seq is not None.
 
 def f_any(seq):
     '''logical function
-any(seq: list) => bool
+any(seq:l) => b
 return True if one value in seq is not None.
 '''
     for i in seq:
@@ -64,7 +64,7 @@ return True if one value in seq is not None.
 
 def f_average(seq):
     '''statistics function
-average(seq: list) => float
+average(seq:l) => f
 return average number of seq.
 '''
     l = []
@@ -76,14 +76,14 @@ return average number of seq.
 
 def f_bin(n):
     '''logical function
-bin(n: int) => '0b...'
+bin(n:i) => '0b...'
 return the binary representation of n.
 '''
     return bin(n)
 
 def f_choose(con, a, b):
     '''logical function
-choose(con: bool, a, b) => a or b
+choose(con:b, a, b) => a or b
 if con is True:
  return a
 else:
@@ -96,7 +96,7 @@ else:
 
 def f_chooses(n, l):
     '''logical function
-chooses(n: int, l: list) => l[int(n)]
+chooses(n:i, l:l) => l[int(n)]
 if n < 0 or n > length of l:
  return l[0] or l[-1]
 else:
@@ -113,7 +113,7 @@ else:
 
 def f_cos(x):
     '''math function
-cos(x: (int, float, complex)) => (float, complex)
+cos(x:ifc) => fc
 return the cos of x.
 '''
     if isinstance(x, complex):
@@ -125,14 +125,14 @@ return the cos of x.
 
 def f_hex(n):
     '''logical function
-hex(n: int) => '0x...'
+hex(n:i) => '0x...'
 return the hexadecimal representation of n.
 '''
     return hex(n)
 
 def f_max(seq):
     '''math function
-max(seq: list) => (int, float)
+max(seq:l) => if
 return the maximum number in seq
 '''
     l = []
@@ -144,7 +144,7 @@ return the maximum number in seq
 
 def f_min(seq):
     '''math function
-min(seq: list) => (int, float)
+min(seq:l) => if
 return the minimum number in seq
 '''
     l = []
@@ -156,21 +156,21 @@ return the minimum number in seq
 
 def f_oct(n):
     '''logical function
-oct(n: int) => '0o...'
+oct(n:i) => '0o...'
 return the octal representation of n.
 '''
     return oct(n)
 
 def f_round(x, n=None):
     '''math function
-round(x: (int, float), n: (int)=None) => (int, float)
+round(x:i, n:i=None) => (int, float)
 
 '''
     return round(x, n)
 
 def f_sin(x):
     '''math function
-sin(x: (int, float, complex)) => (float, complex)
+sin(x:ifc) => fc
 return the sin of x
 '''
     if isinstance(x, complex):
@@ -182,7 +182,7 @@ return the sin of x
 
 def f_sum(seq):
     '''statistics function
-sum(seq: list) => float
+sum(seq:l) => f
 return sum of seq
 '''
     total = 0
@@ -194,7 +194,7 @@ return sum of seq
 
 def f_tan(x):
     ''''math function
-tan(x: (int, float, complex)) => (float, complex)
+tan(x: ifc) => fc
 return the tan of x
 '''
     if isinstance(x, complex):
