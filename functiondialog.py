@@ -17,7 +17,7 @@ class FunctionDialog():
         self.typebox['state'] ='readonly'
         self.typebox['values'] = ('All',
                                   'Economy',
-                                  'logic',
+                                  'Logical',
                                   'Math',
                                   'Statistics',
                                   'Text')
@@ -26,6 +26,7 @@ class FunctionDialog():
         self.scrollbar = ttk.Scrollbar(self.frame)
         self.listbox = tk.Listbox(self.frame, height=8,
                                   yscrollcommand=self.scrollbar.set)
+        self.listbox.bind('<<ListBoxSelect>>', self.listboxsel)
         self.scrollbar.config(command=self.listbox.yview)
         self.labeldetail = ttk.Label(self.functiondialog, text='Detail:')
         self.detail = ScrolledText(self.functiondialog, height=5)
@@ -38,12 +39,29 @@ class FunctionDialog():
         self.typebox.pack(side='left', fill='x', expand=1, padx=3, pady=2)     
 
     def typeboxsel(self, event):
-        for k, v in function.functions.items():
-            if v.__doc__.split('\n')[0].lower() == self.typebox.get():
+        self.listbox.delete(0, 'end')
+        types = self.typebox.get()
+        if types == 'All':
+            for k, v in function.functions.items():
                 self.listbox.insert('end', k)
+        else:
+            for k, v in function.functions.items():
+                print(v.__doc__.split('\n')[0])
+                if v.__doc__.split('\n')[0] == types + ' function':
+                    self.listbox.insert('end', k)
+
+    def listboxsel(self, event):
+        f = self.listbox.curselection()
+        for k, v in function.functions.items():
+            if k == f:
+                self.detail['state'] = 'normal'
+                detail = '\n'.join(v.__doc__.split('\n', 2)[1:])
+                self.detail.delete('1.0', 'end')
+                self.detail.insert('end', detail)
+                self.detail['state'] = 'disable'
     
     def show(self):
-        # self.functiondialog.geometry('300x270')
+        self.functiondialog.geometry('300x270')
         self.functiondialog.resizable(False, False)
         self.functiondialog.mainloop()
 

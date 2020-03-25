@@ -21,9 +21,6 @@ __all__ = [
     'f_sin',
     'f_sum',
     'f_tan',
-    'v_e',
-    'v_pi',
-    'v_tau'
 ]
 
 v_e = math.e
@@ -31,7 +28,7 @@ v_pi = math.pi
 v_tau = math.tau
 
 def f_abs(x):
-    '''math function
+    '''Math function
 abs(x:ifc) => abs(x)
 return the absolute value of x.
 '''
@@ -41,7 +38,7 @@ return the absolute value of x.
         raise TypeError
 
 def f_all(seq):
-    '''logical function
+    '''Logical function
 all(seq:l) => b
 return True if all value in seq is not None.
 '''
@@ -52,7 +49,7 @@ return True if all value in seq is not None.
         return True
 
 def f_any(seq):
-    '''logical function
+    '''Logical function
 any(seq:l) => b
 return True if one value in seq is not None.
 '''
@@ -63,7 +60,7 @@ return True if one value in seq is not None.
         return False
 
 def f_average(seq):
-    '''statistics function
+    '''Statistics function
 average(seq:l) => f
 return average number of seq.
 '''
@@ -75,14 +72,14 @@ return average number of seq.
         return static.fmean(l)
 
 def f_bin(n):
-    '''logical function
+    '''Logical function
 bin(n:i) => '0b...'
 return the binary representation of n.
 '''
     return bin(n)
 
 def f_choose(con, a, b):
-    '''logical function
+    '''Logical function
 choose(con:b, a, b) => a or b
 if con is True:
  return a
@@ -95,7 +92,7 @@ else:
         return b
 
 def f_chooses(n, l):
-    '''logical function
+    '''Logical function
 chooses(n:i, l:l) => l[int(n)]
 if n < 0 or n > length of l:
  return l[0] or l[-1]
@@ -112,7 +109,7 @@ else:
         return l[int(n)]
 
 def f_cos(x):
-    '''math function
+    '''Math function
 cos(x:ifc) => fc
 return the cos of x.
 '''
@@ -124,14 +121,14 @@ return the cos of x.
         raise TypeError
 
 def f_hex(n):
-    '''logical function
+    '''Logical function
 hex(n:i) => '0x...'
 return the hexadecimal representation of n.
 '''
     return hex(n)
 
 def f_max(seq):
-    '''math function
+    '''Math function
 max(seq:l) => if
 return the maximum number in seq
 '''
@@ -143,7 +140,7 @@ return the maximum number in seq
         return max(l)
 
 def f_min(seq):
-    '''math function
+    '''Math function
 min(seq:l) => if
 return the minimum number in seq
 '''
@@ -155,21 +152,21 @@ return the minimum number in seq
         return min(l)
 
 def f_oct(n):
-    '''logical function
+    '''Logical function
 oct(n:i) => '0o...'
 return the octal representation of n.
 '''
     return oct(n)
 
 def f_round(x, n=None):
-    '''math function
+    '''Math function
 round(x:i, n:i=None) => (int, float)
 
 '''
     return round(x, n)
 
 def f_sin(x):
-    '''math function
+    '''Math function
 sin(x:ifc) => fc
 return the sin of x
 '''
@@ -181,7 +178,7 @@ return the sin of x
         raise TypeError
 
 def f_sum(seq):
-    '''statistics function
+    '''Statistics function
 sum(seq:l) => f
 return sum of seq
 '''
@@ -193,7 +190,7 @@ return sum of seq
         return total
 
 def f_tan(x):
-    ''''math function
+    '''Math function
 tan(x: ifc) => fc
 return the tan of x
 '''
@@ -221,8 +218,4 @@ functions = {
     'sin':      f_sin,
     'sum':      f_sum,
     'tan':      f_tan,
-    ####################
-    'E':        v_e,
-    'PI':       v_pi,
-    'TAU':      v_tau
 }
