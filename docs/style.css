@@ -1,3 +1,15 @@
 hr {
-	border:	0.5px solid #EAECEF;
+	border:					0.5px solid #EAECEF;
+}
+
+pre {
+	background-color:		#EAECEF;
+	border:					0.5px solid #EAECEF;
+	-moz-border-radius:		5px;
+	-webkit-border-radius:	5px;
+	border-radius:			5px;
+}
+
+table, th, td {
+	border:					1px solid black;
 }
