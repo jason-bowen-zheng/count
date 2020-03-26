@@ -23,7 +23,7 @@ import tkinter.ttk as ttk
 
 class SheetGUI():
 
-    def __init__(self, filename='', rows=64, columns=32):
+    def __init__(self, filename='', rows=16, columns=16):
         # Create and load the sheet.
         self.filename = filename
         self.sheet = Sheet()

@@ -2,7 +2,7 @@
 
 import tkinter as tk
 import tkinter.ttk as ttk
-from scrolledframe import ScrolledText
+from scrolledframe import (ScrolledText, VerticalScrolledFrame)
 import sheetfunction as function
 
 
@@ -84,6 +84,17 @@ class FunctionDialog():
         self.typebox.set('All')
         for f in function.functions.keys():
             self.listbox.insert('end', f)
+            self.functiondialog.geometry('+%d+%d' % (self.master.winfo_x() + 50, self.master.winfo_y() + 50))
         self.functiondialog.resizable(False, False)
         self.functiondialog.mainloop()
 
+
+class CompleteFunctiondialog():
+
+    def __init__(self, master, entry, x, y, function):
+        self.master = master
+        self.entry = entry
+        self.function = function
+        self.dialog = tk.toplevel(self.master)
+        self.dialog.title('Insert function - %s' % function)
+        self.dialog.geometry('+%d+%d' % (x, y))

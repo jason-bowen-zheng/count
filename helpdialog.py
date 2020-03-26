@@ -13,7 +13,7 @@ class AboutDialog():
     def __init__(self, master):
         self.aboutdialog = tk.Toplevel(master)
         self.aboutdialog.transient(master)
-        self.aboutdialog.geometry('550x450')
+        self.aboutdialog.geometry('550x450+%d+%d' % (master.winfo_x() + 50, master.winfo_y() + 50))
         self.aboutdialog.resizable(False, False)
         self.aboutdialog.title('Sheets - About')
         self.notebook = ttk.Notebook(self.aboutdialog)
@@ -115,10 +115,10 @@ Click 'View online' see help online.
 '''
         self.helpdialog = tk.Toplevel(master)
         self.helpdialog.title('Sheet - Help')
-        self.helpdialog.geometry('500x600')
+        self.helpdialog.geometry('500x600+%d+%d' % (master.winfo_x() + 50, master.winfo_y() + 50))
         if not os.path.isfile(r'%s%sdocs%sindex.html' % (sys.path[0], os.sep, os.sep)):
             self.helpdialog.resizable(False, False)
-            self.helpdialog.geometry('300x100')
+            self.helpdialog.geometry('300x100+%d+%d' % (master.winfo_x() + 50, master_winfoy() + 50))
             self.label = ttk.Label(self.helpdialog, text=defaulttext)
             self.button = ttk.Button(self.helpdialog, text='View online',
                                      command=self.view_online)
