@@ -29,9 +29,9 @@ v_tau = math.tau
 
 def f_abs(x):
     '''Math function
-abs(x:ifc) => abs(x)
-return the absolute value of x.
-'''
+int, float, complex
+abs(x) => abs(x)
+return the absolute value of x.'''
     if instance(x, (int, float, complex)):
         return abs(x)
     else:
@@ -39,9 +39,9 @@ return the absolute value of x.
 
 def f_all(seq):
     '''Logical function
-all(seq:l) => b
-return True if all value in seq is not None.
-'''
+list
+all(seq) => boolean
+return True if all value in seq is not None.'''
     for i in seq:
         if not i:
             return False
@@ -50,9 +50,9 @@ return True if all value in seq is not None.
 
 def f_any(seq):
     '''Logical function
-any(seq:l) => b
-return True if one value in seq is not None.
-'''
+list
+any(seq) => boolean
+return True if one value in seq is not None.'''
     for i in seq:
         if i:
             return True
@@ -61,9 +61,9 @@ return True if one value in seq is not None.
 
 def f_average(seq):
     '''Statistics function
-average(seq:l) => f
-return average number of seq.
-'''
+list
+average(seq) => float
+return average number of seq.'''
     l = []
     for x in seq:
         if x:
@@ -73,19 +73,19 @@ return average number of seq.
 
 def f_bin(n):
     '''Logical function
-bin(n:i) => '0b...'
-return the binary representation of n.
-'''
+int
+bin(n) => '0b...'
+return the binary representation of n.'''
     return bin(n)
 
 def f_choose(con, a, b):
     '''Logical function
-choose(con:b, a, b) => a or b
+boolean; boolean; boolean
+choose(con, a, b) => a or b
 if con is True:
  return a
 else:
- return b
-'''
+ return b'''
     if con:
         return a
     else:
@@ -93,12 +93,12 @@ else:
 
 def f_chooses(n, l):
     '''Logical function
-chooses(n:i, l:l) => l[int(n)]
+int; list
+chooses(n, l) => l[int(n)]
 if n < 0 or n > length of l:
  return l[0] or l[-1]
 else:
- return l[int(n)]
-'''
+ return l[int(n)]'''
     if  not instance(l, list):
         raise TypeError
     elif int(n) < 0:
@@ -110,9 +110,9 @@ else:
 
 def f_cos(x):
     '''Math function
-cos(x:ifc) => fc
-return the cos of x.
-'''
+int, float, complex
+cos(x) => cos(x)
+return the cos of x.'''
     if isinstance(x, complex):
         return cmath.cos(x)
     elif isinstance(x, (int, float)):
@@ -122,16 +122,16 @@ return the cos of x.
 
 def f_hex(n):
     '''Logical function
-hex(n:i) => '0x...'
-return the hexadecimal representation of n.
-'''
+int
+hex(n) => '0x...'
+return the hexadecimal representation of n.'''
     return hex(n)
 
 def f_max(seq):
     '''Math function
-max(seq:l) => if
-return the maximum number in seq
-'''
+list
+max(seq) => int,float
+return the maximum number in seq.'''
     l = []
     for x in seq:
         if x:
@@ -141,9 +141,9 @@ return the maximum number in seq
 
 def f_min(seq):
     '''Math function
-min(seq:l) => if
-return the minimum number in seq
-'''
+list
+min(seq) => int, float
+return the minimum number in seq.'''
     l = []
     for x in seq:
         if x:
@@ -153,23 +153,24 @@ return the minimum number in seq
 
 def f_oct(n):
     '''Logical function
-oct(n:i) => '0o...'
-return the octal representation of n.
-'''
+int
+oct(n) => '0o...'
+return the octal representation of n.'''
     return oct(n)
 
 def f_round(x, n=None):
     '''Math function
-round(x:i, n:i=None) => (int, float)
-
+int, float; int
+round(x, n=None) => int, float
+round a number to a given precision in decimal digits.
 '''
     return round(x, n)
 
 def f_sin(x):
     '''Math function
-sin(x:ifc) => fc
-return the sin of x
-'''
+int, float, complex
+sin(x) => sin(x)
+return the sin of x.'''
     if isinstance(x, complex):
         return cmath.sin(x)
     elif isinstance(x, (int, float)):
@@ -179,9 +180,9 @@ return the sin of x
 
 def f_sum(seq):
     '''Statistics function
-sum(seq:l) => f
-return sum of seq
-'''
+list
+sum(seq) => float
+return sum of seq'''
     total = 0
     for x in seq:
         if x:
@@ -191,9 +192,9 @@ return sum of seq
 
 def f_tan(x):
     '''Math function
-tan(x: ifc) => fc
-return the tan of x
-'''
+int, float, complex
+tan(x) => tan(x)
+return the tan of x'''
     if isinstance(x, complex):
         return cmath.tan(x)
     elif isinstance(x, (int, foat)):

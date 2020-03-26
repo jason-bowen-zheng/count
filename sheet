@@ -23,7 +23,7 @@ import tkinter.ttk as ttk
 
 class SheetGUI():
 
-    def __init__(self, filename='', rows=10, columns=10):
+    def __init__(self, filename='', rows=64, columns=32):
         # Create and load the sheet.
         self.filename = filename
         self.sheet = Sheet()
@@ -44,7 +44,7 @@ class SheetGUI():
         self.makemenu()
         self.beacon = tk.Label(self.root, text='A1',
                                font=('helvetica', 16, 'bold'))
-        self.entry = tk.Entry(self.root)
+        self.entry = ttk.Entry(self.root)
         self.cellgrids = ScrolledFrame(self.root)
         self.cellgrid = self.cellgrids.interior
         self.separator = ttk.Separator(self.root)
@@ -55,7 +55,7 @@ class SheetGUI():
         self.separator.pack(side='bottom', fill='both')
         self.cellgrids.pack(side='bottom', expand=1, fill='both')
         self.beacon.pack(side='left')
-        self.entry.pack(side='left', expand=1, fill='x', padx=3)
+        self.entry.pack(side='left', expand=1, fill='x', padx=3, pady=2)
         # Bind some events.
         self.entry.bind('<Return>', self.return_event)
         self.entry.bind('<Shift-Return>', self.shift_return_event)
@@ -76,7 +76,7 @@ class SheetGUI():
         AboutDialog(self.root).show()
 
     def functiondialog(self, event=None):
-        FunctionDialog(self.root).show()
+        FunctionDialog(self.root, self.entry).show()
 
     def helpdialog(self, event=None):
         HelpDialog(self.root).show()
@@ -187,9 +187,6 @@ class SheetGUI():
         self.menu_file.add_command(label='Exit', accelerator='Ctrl+Q',
                                    underline=0)
         # Create Edit menu.
-        self.menu_edit.add_command(label='Recalc',accelerator='F5',
-                                   underline=0,command=self.sync)
-        self.menu_edit.add_separator()
         self.menu_edit.add_command(label='Cut', accelerator='Ctrl+X',
                                    underline=0)
         self.menu_edit.add_command(label='Copy', accelerator='Ctrl+C',
@@ -208,14 +205,11 @@ class SheetGUI():
         self.menu_edit.add_command(label='Goto...', accelerator='Ctrl+G',
                                    underline=0)
         # Create Function menu.
-        self.menu_function.add_command(label='Function...', underline=0,
+        self.menu_function.add_command(label='Insert function...', underline=0,
                                        command=self.functiondialog)
         self.menu_function.add_separator()
-        self.menu_function.add_command(label='Logical', underline=0)
-        self.menu_function.add_command(label='Math', underline=0)
-        self.menu_function.add_command(label='String', underline=0)
-        self.menu_function.add_separator()
-        self.menu_function.add_command(label='Variable', underline=0)
+        self.menu_function.add_command(label='Recalc',accelerator='F5',
+                                   underline=0,command=self.sync)
         # Create Help menu.
         self.menu_help.add_command(label='Help', accelerator='F1',
                                    underline=0, command=self.helpdialog)
@@ -331,7 +325,7 @@ class SheetGUI():
             y1, y2 = y2, y1
         for (x, y), cell in self.gridcells.items():
             if x1 <= x <= x2 and y1 <= y <= y2:
-                cell['bg'] = 'lightBlue'
+                cell['bg'] = 'lightblue'
         gridcell = self.gridcells.get(self.currentxy)
         if gridcell is not None:
             gridcell['bg'] = 'white'
