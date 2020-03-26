@@ -49,6 +49,13 @@ return the minimum number in seq.'''
     else:
         return min(l)
 
+def math_pi():
+    '''Math function
+None
+pi() => 3.14...
+return PI.'''
+    return math.pi
+
 def math_round(x, n=None):
     '''Math function
 int, float; int
@@ -81,11 +88,20 @@ return the tan of x'''
     else:
         raise TypeError
 
+def math_tau():
+    '''Math function
+None
+tau() => 6.28...
+return TAU.'''
+    return math.tau
+
 functions = {
     'cos':      math_cos,
     'max':      math_max,
     'min':      math_min,
+    'pi':       math_pi,
     'round':    math_round,
     'sin':      math_sin,
-    'tan':      math_tan
+    'tan':      math_tan,
+    'tau':      math_tau
 }

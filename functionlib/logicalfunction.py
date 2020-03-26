@@ -1,4 +1,5 @@
 # sheet/functionlib/logicalfunction
+# logical function
 
 def logical_all(seq):
     '''Logical function
@@ -59,6 +60,26 @@ else:
     else:
         return l[int(n)]
 
+def logical_count(seq):
+    '''Logical function
+list
+count(seq) => int
+return the number of not null cells.'''
+    count = 0
+    for x in seq:
+        if x:
+            count += 1
+    else:
+        return count
+            
+
+def logical_false():
+    '''Logical function
+None
+false() => False
+return boolean False.'''
+    return False
+
 def logical_hex(n):
     '''Logical function
 int
@@ -73,12 +94,22 @@ oct(n) => '0o...'
 return the octal representation of n.'''
     return oct(n)
 
+def logical_true():
+    '''Logical function
+None
+true() => True
+return boolean True.'''
+    return True
+
 functions = {
     'all':      logical_all,
     'any':      logical_any,
     'bin':      logical_bin,
     'choose':   logical_choose,
     'chooses':  logical_chooses,
+    'count':    logical_count,
+    'false':    logical_false,
     'hex':      logical_hex,
-    'oct':      logical_oct
+    'oct':      logical_oct,
+    'true':     logical_true
     }
