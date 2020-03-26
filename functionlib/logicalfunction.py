@@ -64,7 +64,7 @@ def logical_count(seq):
     '''Logical function
 list
 count(seq) => int
-return the number of not null cells.'''
+count non empty cells.'''
     count = 0
     for x in seq:
         if x:
