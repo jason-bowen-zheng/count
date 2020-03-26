@@ -2,7 +2,7 @@
 
 import os
 import re
-import sheetfunction as func
+import functionlib as func
 import sys
 from xml.parsers import expat
 from xml.sax.saxutils import escape
@@ -34,7 +34,7 @@ class Sheet:
             'cell':     self.cellvalue,
             'cells':    self.multicellvalue,
         }
-        self.ns.update(func.functions)
+        self.ns.update(func.functions())
 
     def cellvalue(self, x, y):
         cell = self.getcell(x, y)

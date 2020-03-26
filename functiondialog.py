@@ -3,7 +3,7 @@
 import tkinter as tk
 import tkinter.ttk as ttk
 from scrolledframe import (ScrolledText, VerticalScrolledFrame)
-import sheetfunction as function
+import functionlib as function
 
 
 class FunctionDialog():
@@ -48,10 +48,10 @@ class FunctionDialog():
         self.listbox.delete(0, 'end')
         types = self.typebox.get()
         if types == 'All':
-            for k, v in function.functions.items():
+            for k, v in function.functions().items():
                 self.listbox.insert('end', k)
         else:
-            for k, v in function.functions.items():
+            for k, v in function.functions().items():
                 if v.__doc__.split('\n')[0] == types + ' function':
                     self.listbox.insert('end', k)
 
@@ -60,7 +60,7 @@ class FunctionDialog():
             f = self.listbox.get(0)
         else:
             f = self.listbox.get(self.listbox.curselection()[0])
-        for k, v in function.functions.items():
+        for k, v in function.functions().items():
             if k == f:
                 self.detail['state'] = 'normal'
                 if hasattr(v, '__doc__'):
@@ -82,7 +82,7 @@ class FunctionDialog():
     def show(self):
         self.detail['state'] = 'disabled'
         self.typebox.set('All')
-        for f in function.functions.keys():
+        for f in function.functions().keys():
             self.listbox.insert('end', f)
             self.functiondialog.geometry('+%d+%d' % (self.master.winfo_x() + 50, self.master.winfo_y() + 50))
         self.functiondialog.resizable(False, False)
