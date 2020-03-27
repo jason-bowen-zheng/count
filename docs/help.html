@@ -1,22 +1,92 @@
 <html>
 	<head>
+		<link rel='stylesheet' type='text/css' href='style.css'>
 		<title>Help</title>
 	</head>
 	<body>
-		<h1 align='center'>Help for sheet</h1>
-		<h2 align='center'>Function</h2>
-		<h3 align='center'>Logic function</h3>
-		<table>
+		<h1>Help for xSheets</h1>
+		<h2>Function</h2>
+		<h3>Logic function</h3>
+		<table border='1'>
 			<tr>
 				<th>Functions</th>
 				<th>Useage</th>
 				<th>Detail</th>
 			</tr>
 			<tr>
-				<td>and</td>
-				<td>and(*args)</td>
+				<td>all</td>
+				<td>all(seq)</td>
 				<td>
-					Return <pre>True</pre> if all args is <pre>True</pre>
+					return True if all value in seq is not None.
+				</td>
+			</tr>
+			<tr>
+				<td>any</td>
+				<td>any(seq)</td>
+				<td>
+					return True if all value in seq is not None.
+				</td>
+			</tr>
+			<tr>
+				<td>bin</td>
+				<td>bin(n)</td>
+				<td>
+					return the binary representation of n.
+				</td>
+			</tr>
+			<tr>
+				<td>choose</td>
+				<td>choose(con, a, b)</td>
+				<td>
+					if con is True:<br>
+					&nbsp; &nbsp; return a<br>
+					else:<br>
+					&nbsp; &nbsp; return b
+				</td>
+			</tr>
+			<tr>
+				<td>chooses</td>
+				<td>choose(n, l)</td>
+				<td>
+					if n < 0 or n > length of l:<br>
+					&nbsp; &nbsp; return l[0] or l[-1]<br>
+					else:<br>
+					&nbsp; &nbsp; return l[int(n)]
+				</td>
+			</tr>
+			<tr>
+				<td>count</td>
+				<td>count(seq)</td>
+				<td>
+					return the number of not null cells.
+				</td>
+			</tr>
+			<tr>
+				<td>false</td>
+				<td>false()</td>
+				<td>
+					return boolean false.
+				</td>
+			</tr>
+			<tr>
+				<td>hex</td>
+				<td>hex(n)</td>
+				<td>
+					return the hexadecimal representation of n.
+				</td>
+			</tr>
+			<tr>
+				<td>oct</td>
+				<td>oct(n)</td>
+				<td>
+					return the octal representation of n.
+				</td>
+			</tr>
+			<tr>
+				<td>true</td>
+				<td>true()</td>
+				<td>
+					return boolean true.
 				</td>
 			</tr>
 		</table>
