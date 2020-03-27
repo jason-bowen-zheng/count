@@ -1,4 +1,4 @@
-# sheets/scrolledframe.py
+# xSheets/scrolledframe.py
 
 import tkinter as tk
 import tkinter.ttk as ttk

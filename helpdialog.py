@@ -1,4 +1,4 @@
-# sheets/helpdialog.py
+# xSheets/helpdialog.py
 
 from html.parser import HTMLParser
 import os
@@ -15,7 +15,7 @@ class AboutDialog():
         self.aboutdialog.transient(master)
         self.aboutdialog.geometry('550x450+%d+%d' % (master.winfo_x() + 50, master.winfo_y() + 50))
         self.aboutdialog.resizable(False, False)
-        self.aboutdialog.title('Sheets - About')
+        self.aboutdialog.title('xSheets - About')
         self.notebook = ttk.Notebook(self.aboutdialog)
         self.aboutnotebook = ttk.Frame(self.notebook)
         self.licensenotebook = ttk.Frame(self.notebook)
@@ -37,7 +37,7 @@ class AboutDialog():
     
     def _createabout(self):
         abouttext = '''\
-Sheet version 1.0.0
+xSheets version 1.0.0
 
 A simple GUI sheet program.
 
@@ -114,7 +114,7 @@ No HTML help file found in sheet/docs.
 Click 'View online' see help online.
 '''
         self.helpdialog = tk.Toplevel(master)
-        self.helpdialog.title('Sheet - Help')
+        self.helpdialog.title('xSheets - Help')
         self.helpdialog.geometry('500x600+%d+%d' % (master.winfo_x() + 50, master.winfo_y() + 50))
         if not os.path.isfile(r'%s%sdocs%sindex.html' % (sys.path[0], os.sep, os.sep)):
             self.helpdialog.resizable(False, False)
@@ -140,4 +140,4 @@ Click 'View online' see help online.
     
     def view_online(self, event=None):
         self.helpdialog.destroy()
-        webbrowser.open('https://jason-bowen-zheng.github.io/sheet/')
+        webbrowser.open('https://jason-bowen-zheng.github.io/xsheets/')

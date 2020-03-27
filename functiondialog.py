@@ -18,10 +18,10 @@ class FunctionDialog():
         self.typebox = ttk.Combobox(self.functiondialog)
         self.typebox['state'] ='readonly'
         self.typebox['values'] = ('All',
-                                  'Economy',
+                                  'Economic',
                                   'Logical',
                                   'Math',
-                                  'Statistics',
+                                  'Statistical',
                                   'Text')
         self.typebox.bind('<<ComboboxSelected>>', self._typeboxsel)
         self.typebox.set('All')
@@ -80,6 +80,8 @@ class FunctionDialog():
             self.functiondialog.destroy()
     
     def show(self):
+        self.detail.insert('end', 'Double click the items for more information.\n')
+        self.detail.insert('end', "Click 'Insert' to insert function.")
         self.detail['state'] = 'disabled'
         self.typebox.set('All')
         for f in function.functions().keys():
