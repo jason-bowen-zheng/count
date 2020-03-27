@@ -1,4 +1,4 @@
-# sheet/functionlib/logicalfunction
+# xSheets/functionlib/logicalfunction
 # logical function
 
 def logical_all(seq):
@@ -64,7 +64,7 @@ def logical_count(seq):
     '''Logical function
 list
 count(seq) => int
-count non empty cells.'''
+return the number of not null cells.'''
     count = 0
     for x in seq:
         if x:

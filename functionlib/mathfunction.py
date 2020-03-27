@@ -1,4 +1,4 @@
-# sheet/functionlib/mathfunction.py
+# xSheets/functionlib/mathfunction.py
 
 import cmath
 import math
