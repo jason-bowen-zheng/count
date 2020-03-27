@@ -33,9 +33,6 @@ class xSheetsGUI():
             self.root.title('xSheets - %s' % self.filename)
         else:
             self.root.title('xSheets')
-        self.img = {
-            'select-all':   tk.PhotoImage(file='%s%simg%sselect-all.jpg' % (sys.path[0], os.sep, os.sep))
-            }
         self.makemenu()
         self.beacon = tk.Label(self.root, text='A1',
                                font=('helvetica', 16, 'bold'))
@@ -110,14 +107,13 @@ class xSheetsGUI():
         self.columns = columns
         self.gridcells = {}
         # Create the top left corner cell (which selects all).
-        cell = ttk.Label(self.cellgrid, image=self.img['select-all'])
+        cell = ttk.Label(self.cellgrid)
         cell.grid_configure(column=0, row=0, sticky='NSWE')
         cell.bind('<ButtonPress-1>', self.selectall)
         # Create the top row of labels, and configure the grid columns.
         for x in range(1, columns+1):
             self.cellgrid.grid_columnconfigure(x, minsize=64)
-            cell = tk.Label(self.cellgrid, text=colnum2name(x), border=2,
-                            fg='black', bg='#EAECEF')
+            cell = tk.Label(self.cellgrid, text=colnum2name(x))
             cell.grid_configure(column=x, row=0, sticky='WE')
             self.gridcells[x, 0] = cell
             cell.__x = x
@@ -128,7 +124,7 @@ class xSheetsGUI():
             cell.bind('<Shift-Button-1>', self.extendcolumn)
         # Create the leftmost column of labels.
         for y in range(1, rows+1):
-            cell = tk.Label(self.cellgrid, text=str(y), bg='#EAECEF')
+            cell = tk.Label(self.cellgrid, text=str(y))
             cell.grid_configure(column=0, row=y, sticky='WE')
             self.gridcells[0, y] = cell
             cell.__x = 0
@@ -140,7 +136,7 @@ class xSheetsGUI():
         # Create the real cells.
         for x in range(1, columns+1):
             for y in range(1, rows+1):
-                cell = tk.Label(self.cellgrid, relief='sunken',
+                cell = tk.Label(self.cellgrid, relief='flat',
                                 bg='white', fg='black')
                 cell.grid_configure(column=x, row=y, sticky='NSWE')
                 self.gridcells[x, y] = cell
