@@ -3,7 +3,7 @@
 def statistical_average(seq):
     '''Statistical function
 list
-average(seq) => float
+average(seq)
 return average number of seq.'''
     l = []
     for x in seq:
@@ -15,7 +15,7 @@ return average number of seq.'''
 def statistical_sum(seq):
     '''Statistical function
 list
-sum(seq) => float
+sum(seq)
 return sum of seq'''
     total = 0
     for x in seq:

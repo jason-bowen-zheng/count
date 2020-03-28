@@ -6,7 +6,7 @@ import math
 def math_abs(x):
     '''Math function
 int, float, complex
-abs(x) => abs(x)
+abs(x)
 return the absolute value of x.'''
     if instance(x, (int, float, complex)):
         return abs(x)
@@ -16,7 +16,7 @@ return the absolute value of x.'''
 def math_cos(x):
     '''Math function
 int, float, complex
-cos(x) => cos(x)
+cos(x)
 return the cos of x.'''
     if isinstance(x, complex):
         return cmath.cos(x)
@@ -28,7 +28,7 @@ return the cos of x.'''
 def math_max(seq):
     '''Math function
 list
-max(seq) => int,float
+max(seq)
 return the maximum number in seq.'''
     l = []
     for x in seq:
@@ -40,7 +40,7 @@ return the maximum number in seq.'''
 def math_min(seq):
     '''Math function
 list
-min(seq) => int, float
+min(seq)
 return the minimum number in seq.'''
     l = []
     for x in seq:
@@ -52,14 +52,14 @@ return the minimum number in seq.'''
 def math_pi():
     '''Math function
 None
-pi() => 3.14...
+pi()
 return PI.'''
     return math.pi
 
 def math_round(x, n=None):
     '''Math function
 int, float; int
-round(x, n=None) => int, float
+round(x, n=None)
 round a number to a given precision in decimal digits.
 '''
     return round(x, n)
@@ -67,7 +67,7 @@ round a number to a given precision in decimal digits.
 def math_sin(x):
     '''Math function
 int, float, complex
-sin(x) => sin(x)
+sin(x)
 return the sin of x.'''
     if isinstance(x, complex):
         return cmath.sin(x)
@@ -79,7 +79,7 @@ return the sin of x.'''
 def math_tan(x):
     '''Math function
 int, float, complex
-tan(x) => tan(x)
+tan(x)
 return the tan of x'''
     if isinstance(x, complex):
         return cmath.tan(x)
@@ -91,7 +91,7 @@ return the tan of x'''
 def math_tau():
     '''Math function
 None
-tau() => 6.28...
+tau()
 return TAU.'''
     return math.tau
 
