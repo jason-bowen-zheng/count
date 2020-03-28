@@ -96,6 +96,7 @@ return TAU.'''
     return math.tau
 
 functions = {
+    'abs':      math_abs,
     'cos':      math_cos,
     'max':      math_max,
     'min':      math_min,
