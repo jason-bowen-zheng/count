@@ -2,7 +2,7 @@
 
 from functiondialog import FunctionDialog
 from helpdialog import (AboutDialog, HelpDialog)
-from editdialog import (FindDialog, ReplaceDialog, GotoDialog)
+from xsheetsdialog import (FindDialog, ReplaceDialog, GotoDialog)
 from scrolledframe import ScrolledFrame
 from xsheetstools import *
 import os

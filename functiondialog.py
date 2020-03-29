@@ -13,6 +13,7 @@ class FunctionDialog():
         self.entry = entry
         self.functiontype = type_ or 'All'
         self.functiondialog = tk.Toplevel(master)
+        self.functiondialog.transient(master)
         self.functiondialog.title('Insert function')
         self.labeltype = ttk.Label(self.functiondialog, text='Type:')
         self.typebox = ttk.Combobox(self.functiondialog)
@@ -86,8 +87,11 @@ class FunctionDialog():
         self.typebox.set('All')
         for f in function.functions().keys():
             self.listbox.insert('end', f)
-            self.functiondialog.geometry('+%d+%d' % (self.master.winfo_x() + 50, self.master.winfo_y() + 50))
+        self.functiondialog.geometry('+%d+%d' % (self.master.winfo_x() + 50, self.master.winfo_y() + 50))
         self.functiondialog.resizable(False, False)
+        self.functiondialog.deiconify()
+        self.functiondialog.grab_set()
+        self.functiondialog.wait_window()
         self.functiondialog.mainloop()
 
 

@@ -30,6 +30,7 @@ class Sheet:
 
     def __init__(self):
         self.cells = {} # {(x, y): cell, ...}
+        self.changed = False
         self.ns = {
             'cell':     self.cellvalue,
             'cells':    self.multicellvalue,
@@ -60,17 +61,20 @@ class Sheet:
     def setcell(self, x, y, cell):
         assert x > 0 and y > 0
         assert isinstance(cell, BaseCell)
+        self.changed = True
         self.cells[x, y] = cell
 
     def clearcell(self, x, y):
         try:
             del self.cells[x, y]
+            self.changed = True
         except KeyError:
             pass
 
     def clearcells(self, x1, y1, x2, y2):
         for xy in self.selectcells(x1, y1, x2, y2):
             del self.cells[xy]
+            self.changed = True
 
     def clearrows(self, y1, y2):
         self.clearcells(0, y1, sys.maxsize, y2)
@@ -94,6 +98,7 @@ class Sheet:
         if y1 > y2:
             y1, y2 = y2, y1
         assert x1+dx > 0 and y1+dy > 0
+        self.changed = True
         new = {}
         for x, y in self.cells:
             cell = self.cells[x, y]
@@ -215,6 +220,7 @@ class Sheet:
     def load(self, filename):
         with open(filename, 'rb') as f:
             SheetParser(self).parsefile(f)
+            self.changed = False
 
 
 class SheetParser:
@@ -387,12 +393,16 @@ class FormulaCell(BaseCell):
         if self.value is None:
             try:
                 self.value = eval(self.translated, ns)
+            except NameError:
+                self.value = '#NAME?#'
+            except TypeError:
+                self.value = '#TYPE?#'
+            except ValueError:
+                self.value = '#VALUE?#'
+            except ZeroDivisionError:
+                self.value = '#DIV/0?#'
             except:
-                exc = sys.exc_info()[0]
-                if hasattr(exc, '__name__'):
-                    self.value = exc.__name__
-                else:
-                    self.value = str(exc)
+                self.value = '#ERROR?#'
         return self.value
 
     def format(self):
