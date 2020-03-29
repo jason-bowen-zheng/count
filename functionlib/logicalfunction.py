@@ -1,6 +1,8 @@
 # xSheets/functionlib/logicalfunction
 # logical function
 
+import random
+
 def logical_all(seq):
     '''Logical function
 list
@@ -71,7 +73,6 @@ return the number of not null cells.'''
             count += 1
     else:
         return count
-            
 
 def logical_false():
     '''Logical function
@@ -101,6 +102,20 @@ int
 oct(n)
 return the octal representation of n.'''
     return oct(n)
+
+def logical_rand():
+    '''Logical function
+None
+rand()
+return a random number.'''
+    return random.random()
+
+def logical_randint(a, b):
+    '''Logical function
+int; int
+randint(a, b)
+return a random number between a and b.'''
+    return random.randint(a, b)
 
 def logical_roman2int(roman):
     '''Logical function
@@ -140,6 +155,8 @@ functions = {
     'hex':          logical_hex,
     'not':          logical_not,
     'oct':          logical_oct,
+    'rand':         logical_rand,
+    'randint':      logical_randint,
     'roman2int':    logical_roman2int,
     'true':         logical_true
     }
