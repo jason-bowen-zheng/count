@@ -1,6 +1,12 @@
+.footer {
+	color:			#555555;
+	font-size:		75%;
+	text-align:		right;
+}
+
 table {
 	border:			1px solid black;
-	border-collapse:	collapse;
+	border-collapse:collapse;
 }
 
 th, td {
