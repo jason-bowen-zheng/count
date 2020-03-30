@@ -1,5 +1,25 @@
 # xSheets/functionlib/textfunction.py
 
+def text_concatenate(*seq):
+    '''Text function
+str
+concatenate(*s)
+concatenate the given string.'''
+    string = ''
+    for x in seq:
+        if x :
+            string += str(x)
+    else:
+        return string
+    
+
+def text_format(s, *formatlist):
+    '''Text function
+str; list
+format(s, formatlist)
+return s % formatlist.'''
+    return s % tuple(formatlist)
+
 def text_find(s, start=None, end=None):
     '''Text function
 str; int; int
@@ -46,10 +66,12 @@ return uppercase of s.'''
     return s.upper()
 
 functions = {
-    'find':     text_find,
-    'lower':    text_lower,
-    'repeat':   text_repeat,
-    'replace':  text_replace,
-    'slice':    text_slice,
-    'upper':    text_upper
+    'concatenate':  text_concatenate,
+    'format':       text_format,
+    'find':         text_find,
+    'lower':        text_lower,
+    'repeat':       text_repeat,
+    'replace':      text_replace,
+    'slice':        text_slice,
+    'upper':        text_upper
     }
