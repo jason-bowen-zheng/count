@@ -41,6 +41,7 @@ class xSheetsGUI():
         self.cellgrid = self.cellgrids.interior
         self.separator = ttk.Separator(self.root)
         self.statuebar = ttk.Frame(self.root)
+        self.statuebaritem = []
         # Configure the widget lay-out.
         self.statuebar.pack(side='bottom', fill='both')
         self.separator.pack(side='bottom', fill='both')
@@ -366,10 +367,14 @@ class xSheetsGUI():
                 else:
                     v['border'] =1
     
-    def setstatuebar(self, text):
+    def setstatuebar(self, text=[]):
+        for item in self.statuebaritem:
+            if hasattr(item, 'destroy'):
+                item.destroy()
         for item in text:
-            if item == '|':
-                ttk.Separator(self.statuebar, orient='vertical').pack(side='right', padx=3, pady=2)
+            if item == ':sep:':
+                self.statuebaritem.append(ttk.Separator(self.statuebar, orient='vertical'))
+                self.statuebaritem[-1].pack(fill='y', side='right', pady=2)
             else:
                 ttk.Label(self.statuebar, text=item).pack(side='right', padx=3, pady=2)
 
