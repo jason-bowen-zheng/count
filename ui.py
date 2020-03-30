@@ -34,14 +34,13 @@ class xSheetsGUI():
         else:
             self.root.title('xSheets')
         self.makemenu()
-        self.beacon = tk.Label(self.root, text='A1',
+        self.beacon = ttk.Label(self.root, text='A1',
                                font=('helvetica', 16, 'bold'))
         self.entry = ttk.Entry(self.root)
         self.cellgrids = ScrolledFrame(self.root)
         self.cellgrid = self.cellgrids.interior
         self.separator = ttk.Separator(self.root)
-        self.statuebar = tk.Label(self.root, anchor='e',
-                                  text=filename, font=('helvetica', 8))
+        self.statuebar = ttk.Frame(self.root)
         # Configure the widget lay-out.
         self.statuebar.pack(side='bottom', fill='both')
         self.separator.pack(side='bottom', fill='both')
@@ -107,7 +106,7 @@ class xSheetsGUI():
         self.columns = columns
         self.gridcells = {}
         # Create the top left corner cell (which selects all).
-        cell = tk.Label(self.cellgrid, relief='raised',
+        cell = tk.Label(self.cellgrid, relief='solid',
                          border=1, fg='black')
         cell.grid_configure(column=0, row=0, sticky='NSWE')
         cell.bind('<ButtonPress-1>', self.selectall)
@@ -115,7 +114,7 @@ class xSheetsGUI():
         for x in range(1, columns+1):
             self.cellgrid.grid_columnconfigure(x, minsize=64)
             cell = tk.Label(self.cellgrid, text=colnum2name(x), border=1,
-                            fg='black', relief='raised')
+                            fg='black', relief='solid')
             cell.grid_configure(column=x, row=0, sticky='WE')
             self.gridcells[x, 0] = cell
             cell.__x = x
@@ -126,7 +125,7 @@ class xSheetsGUI():
             cell.bind('<Shift-Button-1>', self.extendcolumn)
         # Create the leftmost column of labels.
         for y in range(1, rows+1):
-            cell = tk.Label(self.cellgrid, text=str(y), relief='raised',
+            cell = tk.Label(self.cellgrid, text=str(y), relief='solid',
                             border=1, fg='black')
             cell.grid_configure(column=0, row=y, sticky='WE')
             self.gridcells[0, y] = cell
@@ -139,7 +138,7 @@ class xSheetsGUI():
         # Create the real cells.
         for x in range(1, columns+1):
             for y in range(1, rows+1):
-                cell = tk.Label(self.cellgrid, relief='sunken',
+                cell = tk.Label(self.cellgrid, relief='solid',
                                 bg='white', fg='black')
                 cell.grid_configure(column=x, row=y, sticky='NSWE')
                 self.gridcells[x, y] = cell
@@ -325,6 +324,7 @@ class xSheetsGUI():
         if gridcell is not None:
             gridcell['bg'] = 'white'
         self.setbeacon(x1, y1, x2, y2)
+        self.setstatuebar()
 
     def setbeacon(self, x1, y1, x2, y2):
         if x1 == y1 == 1 and x2 == y2 == sys.maxsize:
@@ -344,6 +344,9 @@ class xSheetsGUI():
             name2 = cellname(*self.cornerxy)
             name = '%s:%s' % (name1, name2)
         self.beacon['text'] = name
+
+    def setstatuebar(self):
+        pass
 
     def clearfocus(self):
         if self.currentxy is not None:
