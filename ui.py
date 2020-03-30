@@ -15,7 +15,7 @@ import tkinter.ttk as ttk
 
 class xSheetsGUI():
 
-    def __init__(self, filename='', rows=16, columns=16):
+    def __init__(self, filename='', rows=10, columns=10):
         # Create and load the sheet.
         self.filename = filename
         self.sheet = Sheet()
@@ -106,15 +106,15 @@ class xSheetsGUI():
         self.columns = columns
         self.gridcells = {}
         # Create the top left corner cell (which selects all).
-        cell = tk.Label(self.cellgrid, relief='solid',
-                         border=1, fg='black')
+        cell = tk.Label(self.cellgrid, border=1, relief='solid',
+                        fg='black')
         cell.grid_configure(column=0, row=0, sticky='NSWE')
         cell.bind('<ButtonPress-1>', self.selectall)
         # Create the top row of labels, and configure the grid columns.
         for x in range(1, columns+1):
             self.cellgrid.grid_columnconfigure(x, minsize=64)
-            cell = tk.Label(self.cellgrid, text=colnum2name(x), border=1,
-                            fg='black', relief='solid')
+            cell = tk.Label(self.cellgrid, text=colnum2name(x), border=1, relief='solid',
+                            fg='black')
             cell.grid_configure(column=x, row=0, sticky='WE')
             self.gridcells[x, 0] = cell
             cell.__x = x
@@ -125,8 +125,8 @@ class xSheetsGUI():
             cell.bind('<Shift-Button-1>', self.extendcolumn)
         # Create the leftmost column of labels.
         for y in range(1, rows+1):
-            cell = tk.Label(self.cellgrid, text=str(y), relief='solid',
-                            border=1, fg='black')
+            cell = tk.Label(self.cellgrid, text=str(y), border=1, relief='solid',
+                            fg='black')
             cell.grid_configure(column=0, row=y, sticky='WE')
             self.gridcells[0, y] = cell
             cell.__x = 0
@@ -138,7 +138,7 @@ class xSheetsGUI():
         # Create the real cells.
         for x in range(1, columns+1):
             for y in range(1, rows+1):
-                cell = tk.Label(self.cellgrid, relief='solid',
+                cell = tk.Label(self.cellgrid, border=1, relief='solid',
                                 bg='white', fg='black')
                 cell.grid_configure(column=x, row=y, sticky='NSWE')
                 self.gridcells[x, y] = cell
@@ -157,14 +157,20 @@ class xSheetsGUI():
         self.root['menu'] = self.menubar
         self.menu_file = tk.Menu(self.menubar)
         self.menu_edit = tk.Menu(self.menubar)
+        self.menu_data = tk.Menu(self.menubar)
         self.menu_formula = tk.Menu(self.menubar)
+        self.menu_view = tk.Menu(self.menubar)
         self.menu_help = tk.Menu(self.menubar)
         self.menubar.add_cascade(menu=self.menu_file, label='File',
                                  underline=0)
         self.menubar.add_cascade(menu=self.menu_edit, label='Edit',
                                  underline=0)
+        self.menubar.add_cascade(menu=self.menu_data, label='Data',
+                                 underline=0)
         self.menubar.add_cascade(menu=self.menu_formula, label='Formula',
                                  underline=1)
+        self.menubar.add_cascade(menu=self.menu_view, label='View',
+                                 underline=0)
         self.menubar.add_cascade(menu=self.menu_help, label='Help',
                                  underline=0)
         # Create File menu.
@@ -198,12 +204,19 @@ class xSheetsGUI():
                                    underline=1)
         self.menu_edit.add_command(label='Goto...', accelerator='Ctrl+G',
                                    underline=0)
+        # Create Data menu.
+        self.menu_data.add_command(label='Data validity...', underline=5)
         # Create Function menu.
         self.menu_formula.add_command(label='Insert function...', underline=0,
                                        command=self.functiondialog)
         self.menu_formula.add_separator()
         self.menu_formula.add_command(label='Recalc',accelerator='F5',
-                                   underline=0,command=self.sync)
+                                      underline=0,command=self.sync)
+        # Create View menu.
+        self.showgridline = tk.BooleanVar(self.root, True)
+        self.menu_view.add_checkbutton(label='Show gridline',
+                                       underline=5, variable=self.showgridline,
+                                       onvalue=True, offvalue=False, command=self.setgridline)
         # Create Help menu.
         self.menu_help.add_command(label='Help', accelerator='F1',
                                    underline=0, command=self.helpdialog)
@@ -345,6 +358,14 @@ class xSheetsGUI():
             name = '%s:%s' % (name1, name2)
         self.beacon['text'] = name
 
+    def setgridline(self, event=None):
+        for k, v in self.gridcells.items():
+            if k[0] != 0 and k[1] != 0:
+                if v['border'] == 1:
+                    v['border'] = 0
+                else:
+                    v['border'] =1
+    
     def setstatuebar(self):
         pass
 
@@ -428,7 +449,3 @@ class xSheetsGUI():
                     text, alignment = str(cell), LEFT
                 gridcell['text'] = text
                 gridcell['anchor'] = align2anchor[alignment]
-
-
-class MacOSGUI():
-    pass
