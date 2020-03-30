@@ -1,15 +1,16 @@
 # xSheets/functionlib/textfunction.py
 
-def text_concatenate(*seq):
+def text_cat(*seq):
     '''Text function
 str
-concatenate(*s)
+cat(*seq)
 concatenate the given string.'''
     string = ''
-    for x in seq:
+    for x in seq[:-1]:
         if x :
-            string += str(x)
+            string += str(x) + ' '
     else:
+        string += str(seq[-1])
         return string
     
 
@@ -66,7 +67,7 @@ return uppercase of s.'''
     return s.upper()
 
 functions = {
-    'concatenate':  text_concatenate,
+    'cat':          text_cat,
     'format':       text_format,
     'find':         text_find,
     'lower':        text_lower,
