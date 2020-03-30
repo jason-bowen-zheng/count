@@ -62,6 +62,7 @@ class xSheetsGUI():
         self.setcurrent(1, 1)
         # Copy the sheet cells to the GUI cells.
         self.sync()
+        self.setstatuebar(['a', '|', 'b'])
 
     def aboutdialog(self, event=None):
         AboutDialog(self.root).show()
@@ -213,9 +214,9 @@ class xSheetsGUI():
         self.menu_formula.add_command(label='Recalc',accelerator='F5',
                                       underline=0,command=self.sync)
         # Create View menu.
-        self.showgridline = tk.BooleanVar(self.root, True)
+        self.gridlinestatue = tk.BooleanVar(self.root, True)
         self.menu_view.add_checkbutton(label='Show gridline',
-                                       underline=5, variable=self.showgridline,
+                                       underline=5, variable=self.gridlinestatue,
                                        onvalue=True, offvalue=False, command=self.setgridline)
         # Create Help menu.
         self.menu_help.add_command(label='Help', accelerator='F1',
@@ -337,7 +338,6 @@ class xSheetsGUI():
         if gridcell is not None:
             gridcell['bg'] = 'white'
         self.setbeacon(x1, y1, x2, y2)
-        self.setstatuebar()
 
     def setbeacon(self, x1, y1, x2, y2):
         if x1 == y1 == 1 and x2 == y2 == sys.maxsize:
@@ -366,8 +366,12 @@ class xSheetsGUI():
                 else:
                     v['border'] =1
     
-    def setstatuebar(self):
-        pass
+    def setstatuebar(self, text):
+        for item in text:
+            if item == '|':
+                ttk.Separator(self.statuebar, orient='vertical').pack(side='right', padx=3, pady=2)
+            else:
+                ttk.Label(self.statuebar, text=item).pack(side='right', padx=3, pady=2)
 
     def clearfocus(self):
         if self.currentxy is not None:
