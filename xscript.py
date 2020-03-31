@@ -86,8 +86,3 @@ class XscriptInterpreter():
                 del self.var[name]
             except KeyError:
                 return 'error Unknow name: %s' % name
-
-code = '''puts Hello
-'''
-ipr = XscriptInterpreter(code, debug=0)
-ipr.run()
