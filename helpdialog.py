@@ -2,7 +2,7 @@
 
 from html.parser import HTMLParser
 import os
-from scrolledframe import ScrolledText
+from xsheetsframe import ScrolledText
 import sys
 import tkinter as tk
 import tkinter.ttk as ttk

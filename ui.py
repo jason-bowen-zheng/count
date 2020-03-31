@@ -3,7 +3,7 @@
 from functiondialog import FunctionDialog
 from helpdialog import (AboutDialog, HelpDialog)
 from xsheetsdialog import (FindDialog, ReplaceDialog, GotoDialog)
-from scrolledframe import ScrolledFrame
+from xsheetsframe import ScrolledFrame, StatueBar
 from xsheetstools import *
 import os
 import sys
@@ -40,7 +40,7 @@ class xSheetsGUI():
         self.cellgrids = ScrolledFrame(self.root)
         self.cellgrid = self.cellgrids.interior
         self.separator = ttk.Separator(self.root)
-        self.statuebar = ttk.Frame(self.root)
+        self.statuebar = StatueBar(self.root)
         self.statuebaritem = []
         # Configure the widget lay-out.
         self.statuebar.pack(side='bottom', fill='both')
@@ -63,7 +63,6 @@ class xSheetsGUI():
         self.setcurrent(1, 1)
         # Copy the sheet cells to the GUI cells.
         self.sync()
-        self.setstatuebar(['a', '|', 'b'])
 
     def aboutdialog(self, event=None):
         AboutDialog(self.root).show()
@@ -112,6 +111,7 @@ class xSheetsGUI():
                         fg='black')
         cell.grid_configure(column=0, row=0, sticky='NSWE')
         cell.bind('<ButtonPress-1>', self.selectall)
+        self.gridcells[0, 0] = cell
         # Create the top row of labels, and configure the grid columns.
         for x in range(1, columns+1):
             self.cellgrid.grid_columnconfigure(x, minsize=64)
@@ -216,9 +216,13 @@ class xSheetsGUI():
                                       underline=0,command=self.sync)
         # Create View menu.
         self.gridlinestatue = tk.BooleanVar(self.root, True)
-        self.menu_view.add_checkbutton(label='Show gridline',
+        self.menu_view.add_checkbutton(label='Show cell gridline',
                                        underline=5, variable=self.gridlinestatue,
-                                       onvalue=True, offvalue=False, command=self.setgridline)
+                                       onvalue=True, offvalue=False, command=self.setcellgridline)
+        self.titlelinestatue = tk.BooleanVar(self.root, True)
+        self.menu_view.add_checkbutton(label='Show title gridline',
+                                       underline=5, variable=self.titlelinestatue,
+                                       onvalue=True, offvalue=False, command=self.settitlegridline)
         # Create Help menu.
         self.menu_help.add_command(label='Help', accelerator='F1',
                                    underline=0, command=self.helpdialog)
@@ -359,24 +363,29 @@ class xSheetsGUI():
             name = '%s:%s' % (name1, name2)
         self.beacon['text'] = name
 
-    def setgridline(self, event=None):
+    def setcellgridline(self, event=None):
         for k, v in self.gridcells.items():
             if k[0] != 0 and k[1] != 0:
                 if v['border'] == 1:
                     v['border'] = 0
                 else:
                     v['border'] =1
+
+    def settitlegridline(self, event=None):
+        for k, v in self.gridcells.items():
+            if k[0] == 0 or k[1] == 0:
+                if v['border'] == 1:
+                    v['border'] = 0
+                else:
+                    v['border'] = 1
     
-    def setstatuebar(self, text=[]):
-        for item in self.statuebaritem:
-            if hasattr(item, 'destroy'):
-                item.destroy()
-        for item in text:
+    def setstatuebar(self, obj=[]):
+        self.statuebar.del_item()
+        for item in obj[::-1]:
             if item == ':sep:':
-                self.statuebaritem.append(ttk.Separator(self.statuebar, orient='vertical'))
-                self.statuebaritem[-1].pack(fill='y', side='right', pady=2)
+                self.statuebar.add_separator()
             else:
-                ttk.Label(self.statuebar, text=item).pack(side='right', padx=3, pady=2)
+                self.statuebar.add_text(item)
 
     def clearfocus(self):
         if self.currentxy is not None:

@@ -2,7 +2,7 @@
 
 import tkinter as tk
 import tkinter.ttk as ttk
-from scrolledframe import (ScrolledText, VerticalScrolledFrame)
+from xsheetsframe import (ScrolledText, VerticalScrolledFrame)
 import functionlib as function
 
 
